@@ -190,7 +190,7 @@ public class Banemodel extends ViewGroup{
                         Log.i("size?w",""+display_width);
                         */
 
-                        addNode(str,nodeindex);
+                        addNode(str, nodeindex, imgwidth/reduction, imgheight/reduction);
 
                         nodeimage.setTranslationX((float) nodes[nodeindex].x);
                         nodeimage.setTranslationY((float) nodes[nodeindex].y);
@@ -240,6 +240,8 @@ public class Banemodel extends ViewGroup{
 
             double x;
             double y;
+            double width;
+            double height;
 
             double dx;
             double dy;
@@ -282,15 +284,17 @@ public class Banemodel extends ViewGroup{
 
 
         //ノードの追加
-        public static void addNode(String lbl, int index){
+        public static void addNode(String lbl, int index, int width, int height){
             //System.out.println(lbl);
             Node n = new Node();
 
             n.x = (nodearea_width)*Math.random();
             n.y = (nodearea_height-10)*(Math.random())+10;
             n.nodename = lbl;
-            Log.i("hoge",lbl+" : "+n.x);
-            Log.i("hoge",lbl+" : "+n.y);
+            n.width = width;
+            n.height = height;
+            n.dx = 0;
+            n.dy = 0;
 
             nodes[index] = n;
 
@@ -309,38 +313,44 @@ public class Banemodel extends ViewGroup{
 
         //ばねの動作
         private void relax(){
+            if(edges.length != 0){
+                for(int i=0; i<nodeindex; i++){
+                    double fx = 0,fy = 0;
 
-            if(links.length != 0){
-                for(int i=0; i<links.length; i=i+1){
-                    double x1,x2,y1,y2;
-                    x1 = nodes[edges[i].from].x + width/2;
-                    y1 = nodes[edges[i].from].y + height/2;
-                    x2 = nodes[edges[i].to].x + width/2;
-                    y2 = nodes[edges[i].to].y + height/2;
+                    for(int j=0; j<nodeindex; j++){
+                        double distX = (nodes[i].x + nodes[i].width/2) - (nodes[j].x + nodes[j].width/2);
+                        double distY = (nodes[i].y + nodes[i].height/2) - (nodes[j].y + nodes[j].height/2);
+                        double rsq = distX * distX + distY *distY;
 
-                    double vx = x1-x2;
-                    double vy = y1-y2;
-
-                    if(get_distance(x1,y1,x2,y2) < nodes_dis){
-                        if(!nodeObj[links[i].to].unchor){
-                            nodeObj[links[i].to].x += vx * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10;
-                            nodeObj[links[i].to].y += vy * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10;
-                        }
-                        if(!nodeObj[links[i].from].unchor){
-                            nodeObj[links[i].from].x -= vx * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10;
-                            nodeObj[links[i].from].y -= vy * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10;
-                        }
-                    }else if(get_distance(x1,y1,x2,y2) > nodes_dis){
-                        if(!nodeObj[links[i].to].unchor){
-                            nodeObj[links[i].to].x += vx * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10000;
-                            nodeObj[links[i].to].y += vy * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10000;
-                        }
-                        if(!nodeObj[links[i].from].unchor){
-                            nodeObj[links[i].from].x -= vx * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10000;
-                            nodeObj[links[i].from].y -= vy * ((get_distance(x1,y1,x2,y2)-nodes_dis))/10000;
-                        }
+                        fx += coulomb * distX / rsq;
+                        fy += coulomb * distY / rsq;
                     }
+
+                    //target node
+                    for(int j=0; j<nedges; j++){
+                        double distX=0,distY=0;
+                        if(i == edges[i].from ){
+                            distX = nodes[edges[i].to].x - nodes[i].x;
+                            distY = nodes[edges[i].to].y - nodes[i].y;
+
+                        } else if( i== edges[i].to){
+                            distX = nodes[edges[i].from].x - nodes[i].x;
+                            distY = nodes[edges[i].from].y - nodes[i].y;
+                        }
+                        fx += bounce *distX;
+                        fy += bounce *distY;
+                    }
+
+                    //速度の算出
+                    nodes[i].dx = (nodes[i].dx + fx) * attenuation;
+                    nodes[i].dy = (nodes[i].dy + fy) * attenuation;
+
+                    //速度をもとに収束させてく
+                    nodes[i].x += nodes[i].dx;
+                    nodes[i].y += nodes[i].dy;
+
                 }
+
             }
 
         }

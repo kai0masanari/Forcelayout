@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,10 +27,6 @@ public class Banemodel extends ViewGroup{
         mView = vg;
     }
 
-    /*
-    private Banemodel(){
-        super();
-    }*/
 
     public static Properties with(Context context){
         mContext = context;
@@ -60,11 +57,14 @@ public class Banemodel extends ViewGroup{
                     //view更新
                     //String = name Integer = Resourcefile
                     for (final String str : nodes.keySet()) {
+                        final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
                         Bitmap bitmap = null;
                         bitmap = BitmapFactory.decodeResource(mContext.getResources(), nodes.get(str));
                         ImageView image = new ImageView(mContext);
                         image.setImageBitmap(bitmap);
-                        mView.addView(image, new ViewGroup.LayoutParams(10, 10));
+                        mView.addView(image, new ViewGroup.LayoutParams(WC, WC));
+
+                        Log.i("hoge","hogeeeee");
                     }
                 }
             });

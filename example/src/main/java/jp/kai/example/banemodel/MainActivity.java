@@ -1,9 +1,11 @@
 package jp.kai.example.banemodel;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 
@@ -23,8 +25,14 @@ public class MainActivity extends Activity {
         Banemodel _bane =  new Banemodel(getApplicationContext(), linearLayout);
 
         HashMap<String, Integer> nodes = new HashMap<>();
-        nodes.put("",R.drawable.test);
+        nodes.put("neko",R.drawable.test2);
+        nodes.put("nyanko",R.drawable.test2);
 
-        Banemodel.with(this).setnodes(nodes);
+        Banemodel.Properties hoge = Banemodel.with(this);
+        hoge.setnodes(nodes);
+        //hoge.start();
+        //String hodge = "";
+
     }
+
 }

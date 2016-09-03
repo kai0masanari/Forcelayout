@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
         HashMap<String, Integer> nodes = new HashMap<>();
         nodes.put("neko",R.drawable.test2);
         nodes.put("nyanko",R.drawable.test2);
+        nodes.put("hoge",R.drawable.test2);
 
         Banemodel.Properties hoge = Banemodel.with(this);
         hoge.setnodes(nodes);

@@ -85,12 +85,15 @@ public class Banemodel extends ViewGroup{
         //TODO ゆくゆくはばねモデルの表示領域も指定できるようにし、それに対応させたい。
         private static float display_width;
         private static float display_height;
+        private static float nodearea_width;
+        private static float nodearea_height;
         private static float nodes_dis = 100; //default value
         private static int nodeindex = 0;
         private static int screenX = 0;
         private static int screenY = 0;
         private static int targetLocalX = 0;
         private static int targetLocalY = 0;
+        private static boolean dragging = false;
 
 
         public Properties(){}
@@ -136,7 +139,7 @@ public class Banemodel extends ViewGroup{
                         nodeimage.setTranslationY((float) nodes[nodeindex].y);
                         mView.addView(nodeimage, new ViewGroup.LayoutParams(WC, WC));
 
-                        //float[] size = getSize(nodeimage);
+                        float[] size = getSize(nodeimage);
 
                         //TODO TextViewとImageViewのコンテナを作って管理すること
                         TextView nodename = new TextView(mContext);
@@ -157,8 +160,6 @@ public class Banemodel extends ViewGroup{
             });
             start();
         }
-
-
 
         //リンクのセッター
         public static void setlinks(){
@@ -218,8 +219,6 @@ public class Banemodel extends ViewGroup{
             n.y = (display_height)*Math.random();
             n.nodename = lbl;
 
-            Log.i("akio", "guniko_x : "+n.x + " guniko_y : "+n.y);
-
             nodes[index] = n;
 
         }
@@ -277,6 +276,16 @@ public class Banemodel extends ViewGroup{
             Log.i("hamukatu...",""+disp.getWidth());
             Log.i("hamukatu...",""+disp.getHeight());
             return disp;
+        }
+        
+        private static float[] getSize(ImageView img) {
+            Rect rect = img.getDrawable().getBounds();
+            float scaleX = (float) img.getWidth() / (float) rect.width();
+            float scaleY = (float) img.getHeight() / (float) rect.height();
+            float scale = Math.min(scaleX, scaleY);
+            float width = scale * rect.width();
+            float height = scale * rect.height();
+            return new float[] {width, height};
         }
 
         //listener

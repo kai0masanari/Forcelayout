@@ -23,7 +23,7 @@ banemodel.setlinks(links);
 
 
 ## Demo
-![gif](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
+* `Ctrl + f` : toggle search bar - [gif](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
 
 ## VS. 
 

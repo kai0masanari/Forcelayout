@@ -4,6 +4,7 @@ Name
 Overview
 ばねモデル(力学モデル)のライブラリ
 
+[gif](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
 
 ## Example
 ノードの名前(画像名)とリソースファイルが含まれたノードの情報と、ノード間のリンクの情報を読み込んで使用する
@@ -23,7 +24,7 @@ banemodel.setlinks(links);
 
 
 ## Demo
-* `Ctrl + f` : toggle search bar - [gif](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
+
 
 ## VS. 
 

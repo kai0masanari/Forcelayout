@@ -23,7 +23,7 @@ banemodel.setlinks(links);
 
 
 ## Demo
-![alt tag](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
+![gif](https://github.com/kai0masanari/baneVisualizer/blob/master/image.gif)
 
 ## VS. 
 

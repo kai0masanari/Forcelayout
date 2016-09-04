@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         //ノードの定義をする
         //TODO リソースファイルだけではなくインターネット上のリソースも対応できるようにしたい
         HashMap<String, Integer> nodes = new HashMap<>();
-
+        String[] name = {"neko", "nyanko", "hoge", "neko1"};
 
         nodes.put("neko",R.drawable.a);
         nodes.put("nyanko",R.drawable.b);
@@ -41,8 +41,18 @@ public class MainActivity extends Activity {
 
         //リンクの定義をする
         HashMap<String, String> links = new HashMap<>();
-        links.put("neko","nyanko");
-        links.put("nyanko","hoge");
+
+
+        int index = (int)(Math.random()*name.length);
+        int index2 = (int)(Math.random()*name.length);
+
+
+        if(index != index2) {
+            links.put(name[index], name[index2]);
+        }else if(index >0){
+            links.put(name[index-1], name[index2]);
+        }
+        //links.put("nyanko","hoge");
 
         //
         Banemodel.Properties hoge = Banemodel.with(this);

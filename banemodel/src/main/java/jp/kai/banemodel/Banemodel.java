@@ -184,7 +184,7 @@ public class Banemodel extends View{
         //TODO ゆくゆくはばねモデルの表示領域も指定できるようにし、それに対応させたい。
         private static float nodearea_width; //実際のノードの範囲
         private static float nodearea_height;
-        private static int reduction = 8;
+        private static int reduction = 30;
 
         //ノード関連
         private static int screenX = 0;

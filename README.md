@@ -9,7 +9,6 @@ Overview
 ## Example
 ノードの名前(画像名)とリソースファイルが含まれたノードの情報と、ノード間のリンクの情報を読み込んで使用する
 
-
 ノードの定義
 HashMap<String, Integer> nodes = new HashMap<>();
 nodes.put("ラベルネーム",R.drawable.example);

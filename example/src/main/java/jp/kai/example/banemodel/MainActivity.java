@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.kai.example.banemodel.R;
@@ -31,9 +32,12 @@ public class MainActivity extends Activity {
         //ノードの定義をする
         //TODO リソースファイルだけではなくインターネット上のリソースも対応できるようにしたい
         HashMap<String, Integer> nodes = new HashMap<>();
-        nodes.put("neko",R.drawable.test2);
-        nodes.put("nyanko",R.drawable.test2);
-        nodes.put("hoge",R.drawable.test2);
+
+
+        nodes.put("neko",R.drawable.a);
+        nodes.put("nyanko",R.drawable.b);
+        nodes.put("hoge",R.drawable.c);
+        nodes.put("neko1",R.drawable.d);
 
         //リンクの定義をする
         HashMap<String, String> links = new HashMap<>();

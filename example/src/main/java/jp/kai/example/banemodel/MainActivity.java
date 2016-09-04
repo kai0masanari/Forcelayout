@@ -3,6 +3,7 @@ package jp.kai.example.banemodel;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,7 +25,7 @@ public class MainActivity extends Activity {
         setContentView(linearLayout);
         */
         //
-        Banemodel _bane =  new Banemodel(getApplicationContext());
+        final Banemodel _bane =  new Banemodel(getApplicationContext());
         setContentView(_bane);
 
         //ノードの定義をする
@@ -44,6 +45,7 @@ public class MainActivity extends Activity {
         hoge.setnodes(nodes);
         hoge.setlinks(links);
         //String hodge = "";
+
 
     }
 

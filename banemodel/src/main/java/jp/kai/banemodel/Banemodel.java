@@ -4,28 +4,22 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.media.Image;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.view.Display;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 
 /**
@@ -39,6 +33,8 @@ public class Banemodel extends ViewGroup{
     public static Properties.Node[] nodes = new Properties.Node[200];
     public static Properties.Edge[] edges = new Properties.Edge[500];
     static ArrayList<String> nodename_array = new ArrayList<String>();
+    static ArrayList<Bitmap> nodebitmap_array = new ArrayList<>();
+    private static ArrayList<String> convertlist = new ArrayList<>();;
     private static int nedges = 0;
 
     private static boolean isanimated = false;
@@ -48,15 +44,19 @@ public class Banemodel extends ViewGroup{
 
     //private static HashMap<TextView, ImageView> nodeslist = new HashMap<>();
 
-
-    private static NodeResize _resize = new NodeResize();
-
     public Banemodel(Context context) {
         super(context);
         //setWillNotDraw(false);
         mContext = context;
         mView = new LinearLayout(context.getApplicationContext());
-        //mView = vg;
+        nodename_array.clear();
+        nodebitmap_array.clear();
+        convertlist.clear();
+        nedges = 0;
+
+        //定期処理ハンドラの生成と実行
+
+
     }
 
     public static Properties with(Context context){
@@ -93,28 +93,42 @@ public class Banemodel extends ViewGroup{
     protected void dispatchDraw(Canvas canvas) {
         Paint paint = new Paint();
         if(edges.length != 0){
-            for (int i = 0 ; i < nedges ; i++){
-                Properties.Edge e = edges[i];
-                float x1 = (float) nodes[e.from].x;
-                float y1 = (float)nodes[e.from].y;
-                float x2 = (float)nodes[e.to].x;
-                float y2 = (float)nodes[e.to].y;
-                int len = (int)Math.abs(Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)) - e.len);
-                paint.setStrokeWidth(5);
-                float[] pts = {x1, y1, x2, y2};
-                canvas.drawLines(pts, paint);
+            for (int i = 0 ; i < nedges-1 ; i++) {
+                if (edges[i].group) {
+                    Properties.Edge e = edges[i];
+                    Log.i(e.from+"width",""+nodes[e.from].width/2 );
+                    float x1 = (float) (nodes[e.from].x + nodes[e.from].width/2);
+                    float y1 = (float) (nodes[e.from].y + nodes[e.from].height/2);
+                    float x2 = (float) (nodes[e.to].x + nodes[e.to].width/2);
+                    float y2 = (float) (nodes[e.to].y + nodes[e.to].height/2);
+                    //int len = (int) Math.abs(Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) - e.len);
+                    paint.setStrokeWidth(5);
+                    float[] pts = {x1, y1, x2, y2};
+                    canvas.drawLines(pts, paint);
+
+
+                    Log.i("dispatchDraw", "test");
+                }
             }
         }
 
-        /*
-        final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
-
         for (final String str : nodeslist.keySet()) {
-            this.addView(nodeslist.get(str), new ViewGroup.LayoutParams(WC, WC));
+            if(convertlist.indexOf(str) == -1) {
+                nodebitmap_array.add(((BitmapDrawable) nodeslist.get(str).getDrawable()).getBitmap());
+                convertlist.add(str);
+            }
         }
-        //.invalidate();
-        super.dispatchDraw(canvas);
-        */
+        for(int i=0; i<convertlist.size(); i++){
+            Log.i("Image","index is "+i);
+            Log.i("Image","converted num is "+convertlist.size());
+            canvas.drawBitmap(nodebitmap_array.get(i), (int)nodes[i].x, (int)nodes[i].y, paint);
+
+        }
+
+        if(nedges != 0) {
+
+            properties.relax();
+        }
 
     }
 
@@ -140,7 +154,6 @@ public class Banemodel extends ViewGroup{
         private static boolean dragging = false; //ドラッグ中かの判定
 
         //ばねモデルのパラメータ
-        private static float nodes_dis = 100; //default value
         private static double bounce = 0.1; //ばね定数
         private static double attenuation = 0.8; //減衰定数
         private static double coulomb = 600; //クーロン
@@ -152,6 +165,8 @@ public class Banemodel extends ViewGroup{
             Display mDisplay = getDisplayMetrics(context);
             display_width = mDisplay.getWidth();
             display_height = mDisplay.getHeight();
+
+            nodeindex = 0;
             return this;
         }
 
@@ -165,10 +180,8 @@ public class Banemodel extends ViewGroup{
                         // ビットマップ作成オブジェクトの設定
                         BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
-                        // 画像の元サイズ 取得
-                        //TODO 元サイズに応じて縮小サイズを動的に変えること
-                        final int imgheight = bmfOptions.outHeight;
-                        final int imgwidth = bmfOptions.outWidth;
+
+
                         // 画像を1/？サイズに縮小する
                         bmfOptions.inSampleSize = reduction;
                         // メモリの解放
@@ -176,21 +189,27 @@ public class Banemodel extends ViewGroup{
 
                         final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
                         Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), nodemaps.get(str), bmfOptions);
+                        // 画像の元サイズ 取得
+                        //TODO 元サイズに応じて縮小サイズを動的に変えること
+                        final int imgheight = bmfOptions.outHeight;
+                        final int imgwidth = bmfOptions.outWidth;
+
 
                         //ノード
                         ImageView nodeimage = new ImageView(mContext);
                         nodeimage.setImageBitmap(bitmap);
 
-                        nodearea_width = display_width - (int)(imgwidth/reduction);
-                        nodearea_height = display_height - (int)(imgheight/reduction);
+                        nodearea_width = display_width - (int)(imgwidth);
+                        nodearea_height = display_height - (int)(imgheight);
 
                         /*
                         Log.i("nodearea_width",""+nodearea_width);
                         Log.i("nodearea_height",""+nodearea_height);
                         Log.i("size?w",""+display_width);
                         */
+                        double imgwidth_d = (double)(imgwidth/reduction);
 
-                        addNode(str, nodeindex, imgwidth/reduction, imgheight/reduction);
+                        addNode(str, nodeindex, imgwidth, imgheight);
 
                         nodeimage.setTranslationX((float) nodes[nodeindex].x);
                         nodeimage.setTranslationY((float) nodes[nodeindex].y);
@@ -225,10 +244,24 @@ public class Banemodel extends ViewGroup{
         public static void setlinks(final HashMap<String, String> linkmaps){
             Handler handler = new Handler();
             handler.post(new Runnable() {
+
                 @Override
                 public void run() {
+                    for(int i=0; i < nodename_array.size();i++){
+                        for(int j=0; j<nodename_array.size(); j++){
+                            if(i != j) {
+                                addEdge(i, j);
+                            }
+                        }
+                    }
+
                     for (final String str : linkmaps.keySet()) {
-                        addEdge(nodename_array.indexOf(str),nodename_array.indexOf(linkmaps.get(str)));
+                        for(int i=0; i<nedges-1; i++){
+                            if (edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str))){
+                                edges[i].group = true;
+                            }
+                                //addEdge(nodename_array.indexOf(str), nodename_array.indexOf(linkmaps.get(str)));
+                        }
                     }
                 }
             });
@@ -266,7 +299,6 @@ public class Banemodel extends ViewGroup{
                     for (final String textView : nodeslist.keySet()) {
 
                         //ImageView nodeimage = new ImageView(mContext);
-                        Log.i("akio", "guniko : "+textView);
 
 
                         /*
@@ -308,34 +340,55 @@ public class Banemodel extends ViewGroup{
             e.len = 0;
             e.group = true;
             edges[nedges++] = e;
+
         }
 
 
         //ばねの動作
-        private void relax(){
-            if(edges.length != 0){
+        public void relax(){
+            if(nedges != 0){
                 for(int i=0; i<nodeindex; i++){
                     double fx = 0,fy = 0;
 
-                    for(int j=0; j<nodeindex; j++){
-                        double distX = (nodes[i].x + nodes[i].width/2) - (nodes[j].x + nodes[j].width/2);
-                        double distY = (nodes[i].y + nodes[i].height/2) - (nodes[j].y + nodes[j].height/2);
-                        double rsq = distX * distX + distY *distY;
 
-                        fx += coulomb * distX / rsq;
-                        fy += coulomb * distY / rsq;
+                    for(int j=0; j<nodeindex; j++){
+
+                        double distX = (int)((nodes[i].x + nodes[i].width/2) - (nodes[j].x + nodes[j].width/2));
+                        double distY = (int)((nodes[i].y + nodes[i].height/2) - (nodes[j].y + nodes[j].height/2));
+                        double rsq = distX * distX + distY *distY;
+                        Log.v("distX",""+distX);
+                        int rsq_round = (int)rsq*100;
+                        rsq = rsq_round/100;
+                        //Log.v("jtransforms2",""+rsq);
+                        //Log.v("coulomb",""+coulomb * distX);
+
+                        double coulombdist_x = coulomb * distX;
+                        double coulombdist_y = coulomb * distY;
+                        int coulombdist_round_x = (int)coulombdist_x*100;
+                        int coulombdist_round_y = (int)coulombdist_y*100;
+                        coulombdist_x = coulombdist_round_x/100;
+                        coulombdist_y = coulombdist_round_y/100;
+
+                        if(rsq != 0) {
+                            //fx += (coulomb * distX) / rsq;
+                            fx += coulombdist_x / rsq;
+                            //fy += (coulomb * distY) / rsq;
+                            fy += coulombdist_y / rsq;
+                        }
+                        Log.i("round_coulombdist_x",""+ coulombdist_x);
+                        Log.i("round_rsq",""+ rsq);
                     }
 
                     //target node
-                    for(int j=0; j<nedges; j++){
+                    for(int j=0; j<nedges-1; j++){
                         double distX=0,distY=0;
-                        if(i == edges[i].from ){
-                            distX = nodes[edges[i].to].x - nodes[i].x;
-                            distY = nodes[edges[i].to].y - nodes[i].y;
+                        if(i == edges[j].from ){
+                            distX = nodes[edges[j].to].x - nodes[i].x;
+                            distY = nodes[edges[j].to].y - nodes[i].y;
 
-                        } else if( i== edges[i].to){
-                            distX = nodes[edges[i].from].x - nodes[i].x;
-                            distY = nodes[edges[i].from].y - nodes[i].y;
+                        } else if( i== edges[j].to){
+                            distX = nodes[edges[j].from].x - nodes[i].x;
+                            distY = nodes[edges[j].from].y - nodes[i].y;
                         }
                         fx += bounce *distX;
                         fy += bounce *distY;
@@ -348,11 +401,10 @@ public class Banemodel extends ViewGroup{
                     //速度をもとに収束させてく
                     nodes[i].x += nodes[i].dx;
                     nodes[i].y += nodes[i].dy;
+                    Log.i("relax", ""+fx);
 
                 }
-
             }
-
         }
 
         //2点から距離を求める

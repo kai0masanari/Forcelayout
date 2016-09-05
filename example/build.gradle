@@ -19,6 +19,6 @@ android {
 }
 
 dependencies {
-  compile project(':banemodel')
+  compile project(':forcelayout')
   compile "com.android.support:appcompat-v7:${SUPPORT_PACKAGE_VERSION}"
 }

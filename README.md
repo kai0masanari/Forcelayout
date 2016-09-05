@@ -4,7 +4,7 @@ Name
 Overview
 ばねモデル(力学モデル)のライブラリ
 
-![image](https://raw.githubusercontent.com/kai0masanari/baneVisualizer/master/art/image.gif)
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image.gif)
 
 ## Example
 ノードの名前(画像名)とリソースファイルが含まれたノードの情報と、ノード間のリンクの情報を読み込んで使用する

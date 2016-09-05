@@ -1,18 +1,11 @@
-package jp.kai.example.banemodel;
+package jp.kai.example.forcelayout;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import jp.kai.example.banemodel.R;
-import jp.kai.banemodel.Banemodel;
+import jp.kai.forcelayout.Forcelayout;
 /**
  * Created by kai on 2016/09/03.
  */
@@ -26,7 +19,7 @@ public class MainActivity extends Activity {
         setContentView(linearLayout);
         */
         //
-        final Banemodel _bane =  new Banemodel(getApplicationContext());
+        final Forcelayout _bane =  new Forcelayout(getApplicationContext());
         setContentView(_bane);
 
         //ノードの定義をする
@@ -55,7 +48,7 @@ public class MainActivity extends Activity {
         //links.put("nyanko","hoge");
 
         //
-        Banemodel.Properties hoge = Banemodel.with(this);
+        Forcelayout.Properties hoge = Forcelayout.with(this);
         hoge.setnodes(nodes);
         hoge.setlinks(links);
         //String hodge = "";

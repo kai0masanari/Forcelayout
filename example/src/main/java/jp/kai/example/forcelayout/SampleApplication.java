@@ -1,4 +1,4 @@
-package jp.kai.example.banemodel;
+package jp.kai.example.forcelayout;
 
 import android.app.Application;
 

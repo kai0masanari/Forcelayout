@@ -1,1 +1,1 @@
-include ':example', ':banemodel'
+include ':example', ':forcelayout'

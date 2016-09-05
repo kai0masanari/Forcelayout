@@ -1,4 +1,4 @@
-package jp.kai.banemodel;
+package jp.kai.forcelayout;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

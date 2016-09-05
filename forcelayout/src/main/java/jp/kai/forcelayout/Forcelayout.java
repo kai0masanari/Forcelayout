@@ -1,4 +1,4 @@
-package jp.kai.banemodel;
+package jp.kai.forcelayout;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 /**
  * Created by kai on 2016/09/03.
  */
-public class Banemodel extends View{
+public class Forcelayout extends View{
     private final static Properties properties = new Properties();
     private static Context mContext = null;
     private static ViewGroup mView;
@@ -48,7 +48,7 @@ public class Banemodel extends View{
     private static float display_height;
     private static int nodeindex = 0; //実際のノードの数
 
-    public Banemodel(Context context) {
+    public Forcelayout(Context context) {
         super(context);
         //setWillNotDraw(false);
         mContext = context;

@@ -48,17 +48,16 @@ public class Forcelayout extends View{
     private static float display_height;
     private static int nodeindex = 0; //実際のノードの数
 
+    private int targetnode = -1;
+
     public Forcelayout(Context context) {
         super(context);
-        //setWillNotDraw(false);
         mContext = context;
         mView = new LinearLayout(context.getApplicationContext());
         nodename_array.clear();
         nodebitmap_array.clear();
         convertlist.clear();
         nedges = 0;
-
-
     }
 
     public static Properties with(Context context){
@@ -71,7 +70,6 @@ public class Forcelayout extends View{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        int targetnode = -1;
         int touch_x = (int)event.getX();
         int touch_y = (int)event.getY();
 
@@ -80,17 +78,16 @@ public class Forcelayout extends View{
         switch ( event.getAction() ) {
 
             case MotionEvent.ACTION_DOWN:
-
-
-                break;
-
-            case MotionEvent.ACTION_MOVE:
                 for(int i=0; i< nodeindex; i++){
                     if((nodes[i].x + nodes[i].width >= touch_x && nodes[i].x <= touch_x)
                             && (nodes[i].y + nodes[i].height >= touch_y && nodes[i].y <= touch_y)){
                         targetnode = i;
                     }
                 }
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+
                 if(targetnode != -1){
                     nodes[targetnode].x = touch_x-nodes[targetnode].width/2;
                     nodes[targetnode].y = touch_y-nodes[targetnode].height/2;
@@ -406,12 +403,12 @@ public class Forcelayout extends View{
 
 
                     //速度をもとに収束させてく
-                    if(nodes[i].x < display_width && nodes[i].x > 0) {
+                    if(nodes[i].x < display_width - nodes[i].width && nodes[i].x > 0) {
                         nodes[i].x += nodes[i].dx;
                     }
 
                     //速度をもとに収束させてく
-                    if(nodes[i].y < display_height && nodes[i].x > 0) {
+                    if(nodes[i].y < display_height - nodes[i].height && nodes[i].y > 0) {
                         nodes[i].y += nodes[i].dy;
                     }
 

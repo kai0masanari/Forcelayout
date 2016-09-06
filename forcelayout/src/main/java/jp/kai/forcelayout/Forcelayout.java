@@ -34,7 +34,7 @@ import java.util.HashMap;
  * Created by kai on 2016/09/03.
  */
 public class Forcelayout extends View{
-    private final static Properties properties = new Properties();
+    private static Properties properties = null;
     private static Context mContext = null;
     private static ViewGroup mView;
     private static HashMap<String, ImageView> nodeslist = new HashMap<>();
@@ -63,14 +63,10 @@ public class Forcelayout extends View{
 
     public static Properties with(Context context){
         mContext = context;
-        return properties.prepare(context);
+        properties = new Properties(context);
+        return properties.prepare();
 
     }
-
-    public static void start(){
-
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -180,6 +176,8 @@ public class Forcelayout extends View{
 
 
     public static class Properties{
+        private static Context mContext;
+
         //画面関連
         //TODO ゆくゆくはばねモデルの表示領域も指定できるようにし、それに対応させたい。
         private static float nodearea_width; //実際のノードの範囲
@@ -202,17 +200,19 @@ public class Forcelayout extends View{
         private static double coulomb = 680; //クーロン
 
 
-        public Properties(){}
+        public Properties(Context context){
+            mContext = context;
+        }
 
-        private Properties prepare(Context context){
-            Display mDisplay = getDisplayMetrics(context);
+        private Properties prepare(){
+            Display mDisplay = getDisplayMetrics(mContext);
             display_width = mDisplay.getWidth();
             display_height = mDisplay.getHeight();
             return this;
         }
 
         //ノードのセッター
-        public static void setnodes(final HashMap<String, Integer> nodemaps){
+        public Properties setnodes(final HashMap<String, Integer> nodemaps){
             Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
@@ -260,11 +260,12 @@ public class Forcelayout extends View{
                     }
                 }
             });
-            start();
+
+            return this;
         }
 
         //リンクのセッター
-        public static void setlinks(final HashMap<String, String> linkmaps){
+        public Properties setlinks(final HashMap<String, String> linkmaps){
             Handler handler = new Handler();
             handler.post(new Runnable() {
 
@@ -289,6 +290,8 @@ public class Forcelayout extends View{
                     }
                 }
             });
+
+            return this;
         }
 
         //ノードクラス
@@ -310,17 +313,6 @@ public class Forcelayout extends View{
             int to;
             double len;
             boolean group;
-        }
-
-        //描画の開始
-        public static void start() {
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
         }
 
 

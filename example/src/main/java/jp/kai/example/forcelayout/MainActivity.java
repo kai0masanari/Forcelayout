@@ -48,9 +48,7 @@ public class MainActivity extends Activity {
         //links.put("nyanko","hoge");
 
         //
-        Forcelayout.Properties hoge = Forcelayout.with(this);
-        hoge.setnodes(nodes);
-        hoge.setlinks(links);
+        Forcelayout.Properties hoge = Forcelayout.with(this).setnodes(nodes).setlinks(links);
         //String hodge = "";
 
 

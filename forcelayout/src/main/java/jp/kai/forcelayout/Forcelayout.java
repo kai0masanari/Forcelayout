@@ -1,6 +1,7 @@
 package jp.kai.forcelayout;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -37,7 +38,7 @@ public class Forcelayout extends View{
     private static Properties properties = null;
     private static Context mContext = null;
     private static ViewGroup mView;
-    private static HashMap<String, ImageView> nodeslist = new HashMap<>();
+    private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
     public static Properties.Node[] nodes = new Properties.Node[200];
     public static Properties.Edge[] edges = new Properties.Edge[500];
     static ArrayList<String> nodename_array = new ArrayList<String>();
@@ -130,9 +131,11 @@ public class Forcelayout extends View{
 
         for (final String str : nodeslist.keySet()) {
             if(convertlist.indexOf(str) == -1) {
-                Bitmap _bitmap = ((BitmapDrawable) nodeslist.get(str).getDrawable()).getBitmap();
+                //Bitmap _bitmap = ((BitmapDrawable) nodeslist.get(str).getDrawable()).getBitmap();
+                Bitmap _bitmap = nodeslist.get(str);
 
-                nodebitmap_array.add(getCroppedBitmap(_bitmap, 5));
+//                nodebitmap_array.add(getCroppedBitmap(_bitmap, 5));
+                nodebitmap_array.add(getCroppedBitmap(nodeslist.get(str), 5));
                 convertlist.add(str);
             }
         }
@@ -176,22 +179,13 @@ public class Forcelayout extends View{
         private static Context mContext;
 
         //画面関連
-        //TODO ゆくゆくはばねモデルの表示領域も指定できるようにし、それに対応させたい。
-        private static float nodearea_width; //実際のノードの範囲
+        //TODO Forcelayoutの表示領域、ノードのサイズ、ばね定数や減衰定数などのパラメータを指定できりゅおうにすること
+        private static float nodearea_width; //ノードを描画する範囲　現状は画面いっぱいとる
         private static float nodearea_height;
         private static int reduction = 30;
+        private static int nodeswidth = 150; //描画するノードの幅 ユーザに指定できるようにしたい
 
-        //ノード関連
-        private static int screenX = 0;
-        private static int screenY = 0;
-
-
-        private static int targetLocalX = 0; //ドラッグ時の座標保存
-        private static int targetLocalY = 0;
-        //TODO Nodeクラスにドラッグ判定も追加すること
-        private static boolean dragging = false; //ドラッグ中かの判定
-
-        //ばねモデルのパラメータ
+        //ばねモデルのパラメータ ユーザに指定できるようにする
         private static double bounce = 0.008; //ばね定数
         private static double attenuation = 0.8;//0.9; //減衰定数
         private static double coulomb = 680; //クーロン
@@ -210,53 +204,47 @@ public class Forcelayout extends View{
 
         //ノードのセッター
         public Properties setnodes(final HashMap<String, Integer> nodemaps){
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    for (final String str : nodemaps.keySet()) {
-                        // ビットマップ作成オブジェクトの設定
-                        BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
-
-                        // 画像を1/？サイズに縮小する
-                        bmfOptions.inSampleSize = reduction;
-                        // メモリの解放
-                        bmfOptions.inPurgeable = true;
-
-                        final int WC = ViewGroup.LayoutParams.WRAP_CONTENT;
-                        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), nodemaps.get(str), bmfOptions);
-                        // 画像の元サイズ 取得
-                        //TODO 元サイズに応じて縮小サイズを動的に変えること
-                        final int imgheight = bmfOptions.outHeight;
-                        final int imgwidth = bmfOptions.outWidth;
+            Resources resource = mContext.getResources();
+            for (final String str : nodemaps.keySet()) {
 
 
-                        //ノード
-                        ImageView nodeimage = new ImageView(mContext);
-                        nodeimage.setImageBitmap(bitmap);
+                Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str));
+                // 画像サイズ取得
+                int bitmapwidth  = bitmap.getWidth();
+                int bitmapheight = bitmap.getHeight();
 
-                        nodearea_width = display_width - (int)(imgwidth);
-                        nodearea_height = display_height - (int)(imgheight);
-                        double imgwidth_d = (double)(imgwidth/reduction);
+                bitmap.recycle();
+                bitmap = null;
 
-                        addNode(str, nodeindex, imgwidth, imgheight);
+                // ビットマップ作成オブジェクトの設定
+                BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
-                        nodeimage.setTranslationX((float) nodes[nodeindex].x);
-                        nodeimage.setTranslationY((float) nodes[nodeindex].y);
-                        mView.addView(nodeimage, new ViewGroup.LayoutParams(WC, WC));
+                // 画像を1/？サイズに縮小する
+                reduction = bitmapwidth / nodeswidth;
+                bmfOptions.inSampleSize = reduction;
+                // メモリの解放
+                bmfOptions.inPurgeable = true;
+                bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), bmfOptions);
 
-                        nodename_array.add(str);
+                final int imgheight = bmfOptions.outHeight;
+                final int imgwidth = bmfOptions.outWidth;
 
+                nodearea_width = display_width - (int) (imgwidth);
+                nodearea_height = display_height - (int) (imgheight);
+                double imgwidth_d = (double) (imgwidth / reduction);
 
-                        //TODO TextViewとImageViewのコンテナを作って管理すること
+                addNode(str, nodeindex, imgwidth, imgheight);
 
-                        nodeslist.put(str,nodeimage);
-                        nodeslist.get(str).setOnTouchListener(Touchlistener);
+                nodename_array.add(str);
 
-                        nodeindex++;
-                    }
-                }
-            });
+                //TODO TextViewとImageViewのコンテナを作って管理すること
+
+                nodeslist.put(str, bitmap);
+                //bitmap.recycle();
+                //bitmap = null;
+
+                nodeindex++;
+            }
 
             return this;
         }
@@ -416,12 +404,6 @@ public class Forcelayout extends View{
             }
         }
 
-        //2点から距離を求める
-        private double get_distance(double c_position_x, double c_position_y, double b_position_x, double b_position_y){
-            double distance = Math.sqrt(Math.pow(c_position_x - b_position_x, 2)+Math.pow(c_position_y - b_position_y, 2));
-            return distance;
-        }
-
         //display size
         public static final Display getDisplayMetrics(Context context) {
             WindowManager winMan = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -431,6 +413,7 @@ public class Forcelayout extends View{
             return disp;
         }
 
+        /*
         private static float[] getSize(ImageView img) {
             Rect rect = img.getDrawable().getBounds();
             float scaleX = (float) img.getWidth() / (float) rect.width();
@@ -440,49 +423,6 @@ public class Forcelayout extends View{
             float height = scale * rect.height();
             return new float[] {width, height};
         }
-
-        //listener
-        private static OnTouchListener Touchlistener = new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int x = (int)event.getRawX();
-                int y = (int)event.getRawY();
-
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        targetLocalX = v.getLeft();
-                        targetLocalY = v.getTop();
-
-                        screenX = x;
-                        screenY = y;
-
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-
-                        int diffX = screenX - x;
-                        int diffY = screenY - y;
-
-                        targetLocalX -= diffX;
-                        targetLocalY -= diffY;
-
-                        v.layout(targetLocalX,
-                                targetLocalY,
-                                targetLocalX + v.getWidth(),
-                                targetLocalY + v.getHeight());
-
-                        screenX = x;
-                        screenY = y;
-
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        break;
-                }
-                return true;
-            }
-        };
+        */
     }
-
 }

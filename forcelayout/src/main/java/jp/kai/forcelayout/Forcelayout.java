@@ -186,7 +186,7 @@ public class Forcelayout extends View{
         private static int nodeswidth = 150; //描画するノードの幅 ユーザに指定できるようにしたい
 
         //ばねモデルのパラメータ ユーザに指定できるようにする
-        private static double bounce = 0.008; //ばね定数
+        private static double bounce = 0.01; //ばね定数
         private static double attenuation = 0.8;//0.9; //減衰定数
         private static double coulomb = 680; //クーロン
 
@@ -413,16 +413,5 @@ public class Forcelayout extends View{
             return disp;
         }
 
-        /*
-        private static float[] getSize(ImageView img) {
-            Rect rect = img.getDrawable().getBounds();
-            float scaleX = (float) img.getWidth() / (float) rect.width();
-            float scaleY = (float) img.getHeight() / (float) rect.height();
-            float scale = Math.min(scaleX, scaleY);
-            float width = scale * rect.width();
-            float height = scale * rect.height();
-            return new float[] {width, height};
-        }
-        */
     }
 }

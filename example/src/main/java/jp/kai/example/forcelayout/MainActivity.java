@@ -31,23 +31,13 @@ public class MainActivity extends Activity {
         nodes.put("nyanko",R.drawable.b);
         nodes.put("hoge",R.drawable.c);
         nodes.put("neko1",R.drawable.d);
+        nodes.put("neko2",R.drawable.d);
 
         //リンクの定義をする
         HashMap<String, String> links = new HashMap<>();
+//        links.put("neko", "nyanko");
+        links.put("nyanko", "neko");
 
-
-        int index = (int)(Math.random()*name.length);
-        int index2 = (int)(Math.random()*name.length);
-
-
-        if(index != index2) {
-            links.put(name[index], name[index2]);
-        }else if(index >0){
-            links.put(name[index-1], name[index2]);
-        }
-        //links.put("nyanko","hoge");
-
-        //
         Forcelayout.Properties hoge = Forcelayout.with(this).setnodes(nodes).setlinks(links);
         //String hodge = "";
 

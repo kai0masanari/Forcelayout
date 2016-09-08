@@ -131,10 +131,7 @@ public class Forcelayout extends View{
 
         for (final String str : nodeslist.keySet()) {
             if(convertlist.indexOf(str) == -1) {
-                //Bitmap _bitmap = ((BitmapDrawable) nodeslist.get(str).getDrawable()).getBitmap();
                 Bitmap _bitmap = nodeslist.get(str);
-
-//                nodebitmap_array.add(getCroppedBitmap(_bitmap, 5));
                 nodebitmap_array.add(getCroppedBitmap(nodeslist.get(str), 5));
                 convertlist.add(str);
             }
@@ -186,8 +183,8 @@ public class Forcelayout extends View{
         private static int nodeswidth = 150; //描画するノードの幅 ユーザに指定できるようにしたい
 
         //ばねモデルのパラメータ ユーザに指定できるようにする
-        private static double bounce = 0.01; //ばね定数
-        private static double attenuation = 0.8;//0.9; //減衰定数
+        private static double bounce = 0.08; //ばね定数
+        private static double attenuation = 0.7;//0.9; //減衰定数
         private static double coulomb = 680; //クーロン
 
 
@@ -237,12 +234,7 @@ public class Forcelayout extends View{
 
                 nodename_array.add(str);
 
-                //TODO TextViewとImageViewのコンテナを作って管理すること
-
                 nodeslist.put(str, bitmap);
-                //bitmap.recycle();
-                //bitmap = null;
-
                 nodeindex++;
             }
 
@@ -315,7 +307,6 @@ public class Forcelayout extends View{
             n.dy = 0;
 
             nodes[index] = n;
-
         }
 
         //リンクの追加
@@ -326,16 +317,19 @@ public class Forcelayout extends View{
             e.len = 0;
             e.group = false;
             edges[nedges++] = e;
-
         }
 
+        //2点から距離を求める
+//        private double get_distance(double c_position_x, double c_position_y, double b_position_x, double b_position_y){
+//            double distance = Math.sqrt(Math.pow(c_position_x - b_position_x, 2)+Math.pow(c_position_y - b_position_y, 2));
+//            return distance;
+//        }
 
         //ばねの動作
         public void relax(){
             if(nedges != 0){
                 for(int i=0; i<nodeindex; i++){
                     double fx = 0,fy = 0;
-
 
                     for(int j=0; j<nodeindex; j++){
 
@@ -353,17 +347,8 @@ public class Forcelayout extends View{
                         coulombdist_y = coulombdist_round_y/100;
 
 
-                        boolean isgroup = false;
-                        for(int k=0; k<nedges;k++){
-                            if(edges[k].to == nodename_array.indexOf(nodes[i])){
-                                isgroup = edges[k].group;
-                                break;
-                            }
 
-                        }
-
-
-                        if(rsq != 0 && !isgroup) {
+                        if(rsq != 0 && Math.sqrt(rsq) <300) {
                             fx += (coulombdist_x / rsq) ;
                             fy += coulombdist_y / rsq ;
                         }
@@ -372,19 +357,20 @@ public class Forcelayout extends View{
                     //target node
                     for(int j=0; j<nedges-1; j++){
                         double distX=0,distY=0;
-                        if(i == edges[j].from ){
-                            distX = nodes[edges[j].to].x - nodes[i].x;
-                            distY = nodes[edges[j].to].y - nodes[i].y;
+                        if(edges[j].group) {
+                            if (i == edges[j].from) {
+                                distX = nodes[edges[j].to].x - nodes[i].x;
+                                distY = nodes[edges[j].to].y - nodes[i].y;
 
-                        } else if( i== edges[j].to){
-                            distX = nodes[edges[j].from].x - nodes[i].x;
-                            distY = nodes[edges[j].from].y - nodes[i].y;
+                            } else if (i == edges[j].to) {
+                                distX = nodes[edges[j].from].x - nodes[i].x;
+                                distY = nodes[edges[j].from].y - nodes[i].y;
+                            }
                         }
-
                         fx += bounce *distX*1.1;
                         fy += bounce *distY*1.1;
-
                     }
+
                     //速度の算出
                     nodes[i].dx = (nodes[i].dx + fx) * attenuation;
                     nodes[i].dy = (nodes[i].dy + fy) * attenuation;

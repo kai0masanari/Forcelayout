@@ -241,6 +241,16 @@ public class Forcelayout extends View{
             return this;
         }
 
+        public Properties nodesize(int nodeswidth){
+            this.nodeswidth = nodeswidth;
+            return this;
+        }
+
+//        public Properties extended(int nodeswidth){
+//            this.nodeswidth = nodeswidth;
+//            return this;
+//        }
+
         //リンクのセッター
         public Properties setlinks(final HashMap<String, String> linkmaps){
             Handler handler = new Handler();

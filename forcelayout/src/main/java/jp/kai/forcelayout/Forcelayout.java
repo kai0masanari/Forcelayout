@@ -180,7 +180,8 @@ public class Forcelayout extends View{
         private static float nodearea_width; //ノードを描画する範囲　現状は画面いっぱいとる
         private static float nodearea_height;
         private static int reduction = 30;
-        private static int nodeswidth = 150; //描画するノードの幅 ユーザに指定できるようにしたい
+        private static int nodeswidth = 150; //描画するノードの幅
+        private static int distance = 300; //描画するノード間の幅
 
         //ばねモデルのパラメータ ユーザに指定できるようにする
         private static double bounce = 0.08; //ばね定数
@@ -199,16 +200,35 @@ public class Forcelayout extends View{
             return this;
         }
 
+        //ノードサイズのセッター
+        public Properties nodesize(int nodeswidth){
+            this.nodeswidth = nodeswidth;
+            return this;
+        }
+
+        //リンクのばね定数のセッター
+        public Properties linkStrength(double bounce){
+            this.bounce = bounce;
+            return this;
+        }
+
+        //リンクのばね定数のセッター
+        public Properties distance(int distance){
+            this.distance = distance;
+            return this;
+        }
+
         //ノードのセッター
-        public Properties setnodes(final HashMap<String, Integer> nodemaps){
+        public Properties nodes(final HashMap<String, Integer> nodemaps){
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
-
-
-                Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str));
+                BitmapFactory.Options imageOptions = new BitmapFactory.Options();
+                imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                imageOptions.inSampleSize = 2;
+                Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), imageOptions);
                 // 画像サイズ取得
                 int bitmapwidth  = bitmap.getWidth();
-                int bitmapheight = bitmap.getHeight();
+                //int bitmapheight = bitmap.getHeight();
 
                 bitmap.recycle();
                 bitmap = null;
@@ -217,7 +237,7 @@ public class Forcelayout extends View{
                 BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
                 // 画像を1/？サイズに縮小する
-                reduction = bitmapwidth / nodeswidth;
+                reduction = bitmapwidth / nodeswidth * 2;
                 bmfOptions.inSampleSize = reduction;
                 // メモリの解放
                 bmfOptions.inPurgeable = true;
@@ -228,7 +248,6 @@ public class Forcelayout extends View{
 
                 nodearea_width = display_width - (int) (imgwidth);
                 nodearea_height = display_height - (int) (imgheight);
-                double imgwidth_d = (double) (imgwidth / reduction);
 
                 addNode(str, nodeindex, imgwidth, imgheight);
 
@@ -241,18 +260,8 @@ public class Forcelayout extends View{
             return this;
         }
 
-        public Properties nodesize(int nodeswidth){
-            this.nodeswidth = nodeswidth;
-            return this;
-        }
-
-//        public Properties extended(int nodeswidth){
-//            this.nodeswidth = nodeswidth;
-//            return this;
-//        }
-
         //リンクのセッター
-        public Properties setlinks(final HashMap<String, String> linkmaps){
+        public Properties links(final HashMap<String, String> linkmaps){
             Handler handler = new Handler();
             handler.post(new Runnable() {
 
@@ -358,7 +367,7 @@ public class Forcelayout extends View{
 
 
 
-                        if(rsq != 0 && Math.sqrt(rsq) <300) {
+                        if(rsq != 0 && Math.sqrt(rsq) < distance) {
                             fx += (coulombdist_x / rsq) ;
                             fy += coulombdist_y / rsq ;
                         }

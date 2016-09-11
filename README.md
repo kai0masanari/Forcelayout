@@ -11,7 +11,6 @@ Forcelayout is an Android library for visualizing data.
 ![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
 
 ## Usage
-ノードの名前(画像名)とリソースファイルが含まれたノードの情報と、ノード間のリンクの情報を読み込んで使用する
 
 ### 1. Gradle
 ```java

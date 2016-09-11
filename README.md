@@ -4,9 +4,11 @@ Force layout
 Overview
 Force layout
 
-## Example
+## Demo
 
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image.gif)
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image1.gif)
+
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
 
 ## Usage
 ノードの名前(画像名)とリソースファイルが含まれたノードの情報と、ノード間のリンクの情報を読み込んで使用する
@@ -18,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.0'
+    compile 'jp.kai:forcelayout:1.0.1'
 }
 ```
 
@@ -33,9 +35,9 @@ nodes.put("ラベルネーム2",R.drawable.example2);
 
 ### 3. Definitions of links
 ```java
-HashMap<String, String> links = new HashMap<>();
+List<String> links = new ArrayList<String>();
 
-links.put("ラベルネーム1","ラベルネーム2");
+links.put("ラベルネーム1-ラベルネーム2");
 ```
 
 ### 4. Set nodes and links

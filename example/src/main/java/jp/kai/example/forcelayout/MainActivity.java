@@ -30,18 +30,20 @@ public class MainActivity extends Activity {
         nodes.put("neko1",R.drawable.d);
         nodes.put("neko2",R.drawable.d);
         nodes.put("neko3",R.drawable.d);
+        nodes.put("neko4",R.drawable.d);
+        nodes.put("neko5",R.drawable.d);
+        nodes.put("neko6",R.drawable.d);
+        nodes.put("neko7",R.drawable.d);
+        nodes.put("neko8",R.drawable.d);
+        nodes.put("neko9",R.drawable.d);
+        nodes.put("neko10",R.drawable.d);
+        nodes.put("neko11",R.drawable.d);
+        nodes.put("neko12",R.drawable.d);
 
         //リンクの定義をする
-//        HashMap<String, String> links = new HashMap<>();
-//        links.put("neko", "nyanko");
-//        links.put("neko", "hoge");
-//        links.put("neko1", "neko2");
-//        links.put("neko2", "neko3");
-//        links.put("neko3", "neko1");
+        List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");
 
-        List<String> links = Arrays.asList("neko-nyanko","neko-hoge","neko1-neko2","neko2-neko3","neko3-neko1");
-
-        Forcelayout.with(this).nodesize(100).linkStrength(0.08).distance(250).nodes(nodes).links(links);
+        Forcelayout.with(this).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
 
 
     }

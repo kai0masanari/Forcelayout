@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -229,10 +230,11 @@ public class Forcelayout extends View{
 
         //setter of nodes
         public Properties nodes(final HashMap<String, Integer> nodemaps){
-            Log.d("links","size of nodemaps"+nodemaps.size());
 
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
+
+
                 BitmapFactory.Options imageOptions = new BitmapFactory.Options();
                 imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 imageOptions.inSampleSize = 2;
@@ -254,6 +256,8 @@ public class Forcelayout extends View{
                 final int imgheight = bmfOptions.outHeight;
                 final int imgwidth = bmfOptions.outWidth;
 
+
+
                 nodearea_width = display_width - (int) (imgwidth);
                 nodearea_height = display_height - (int) (imgheight);
 
@@ -269,46 +273,39 @@ public class Forcelayout extends View{
         }
 
         //setter of links
-//        public Properties links(final HashMap<String, String> linkmaps){
-//
-//            for(int i=0; i < nodename_array.size();i++){
-//                for(int j=0; j < nodename_array.size(); j++){
-//                    if(i != j) {
-//                        Log.d("setlinks_addEdge", "i="+i+" : j="+j);
-//                        addEdge(i, j);
-//                    }
-//                }
-//            }
-//
-//            for (final String str : linkmaps.keySet()) {
-//                Log.d("links","size of linkmaps"+linkmaps.get(str));
-//
-//                for(int i=0; i<nedges; i++){
-//                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
-//                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
-//                        edges[i].group = true;
-//                        Log.d("setLinks_setbool","from:"+str+" to:"+linkmaps.get(str));
-//                    }
-//                }
-//            }
-//
-//            return this;
-//        }
+        public Properties links(final HashMap<String, String> linkmaps){
+
+            for(int i=0; i < nodename_array.size();i++){
+                for(int j=0; j < nodename_array.size(); j++){
+                    if(i != j) {
+                        addEdge(i, j);
+                    }
+                }
+            }
+
+            for (final String str : linkmaps.keySet()) {
+                for(int i=0; i<nedges; i++){
+                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
+                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
+                        edges[i].group = true;
+                    }
+                }
+            }
+
+            return this;
+        }
 
         public Properties links(final List<String> linkmaps){
             for(int i=0; i < nodename_array.size();i++){
                 for(int j=0; j < nodename_array.size(); j++){
                     if(i != j) {
-                        Log.d("setlinks_addEdge", "i="+i+" : j="+j);
                         addEdge(i, j);
                     }
                 }
             }
 
             for (int k=0; k<linkmaps.size(); k++) {
-
                 String[] pair = linkmaps.get(k).split("-");
-                Log.d("pair", "s : "+pair[0]+ " t : "+pair[1]);
 
                 if(pair.length == 2) {
                     for (int i = 0; i < nedges; i++) {
@@ -442,6 +439,22 @@ public class Forcelayout extends View{
             //DisplayMetrics dispMet = new DisplayMetrics();
             //disp.getMetrics(dispMet);
             return disp;
+        }
+
+        public static Bitmap resizeBitmap(Bitmap src, int width){
+            int srcWidth = src.getWidth();
+            int srcHeight = src.getHeight();
+
+            // get Screen size
+            Matrix matrix = new Matrix();
+
+            float widthScale = width / srcWidth;
+            matrix.postScale(widthScale, widthScale);
+            // resize
+            Bitmap dst = Bitmap.createBitmap(src, 0, 0, srcWidth, srcHeight, matrix, true);
+            src.recycle();
+            src = null;
+            return dst;
         }
 
     }

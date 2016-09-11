@@ -2,8 +2,11 @@ package jp.kai.example.forcelayout;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import jp.kai.forcelayout.Forcelayout;
 /**
@@ -16,6 +19,8 @@ public class MainActivity extends Activity {
         final Forcelayout _bane =  new Forcelayout(getApplicationContext());
         setContentView(_bane);
 
+
+
         //ノードの定義をする
         HashMap<String, Integer> nodes = new HashMap<>();
 
@@ -27,12 +32,14 @@ public class MainActivity extends Activity {
         nodes.put("neko3",R.drawable.d);
 
         //リンクの定義をする
-        HashMap<String, String> links = new HashMap<>();
-        links.put("neko", "nyanko");
-        links.put("neko", "hoge");
-        links.put("neko1", "neko2");
-        links.put("neko2", "neko3");
-        links.put("neko3", "neko1");
+//        HashMap<String, String> links = new HashMap<>();
+//        links.put("neko", "nyanko");
+//        links.put("neko", "hoge");
+//        links.put("neko1", "neko2");
+//        links.put("neko2", "neko3");
+//        links.put("neko3", "neko1");
+
+        List<String> links = Arrays.asList("neko-nyanko","neko-hoge","neko1-neko2","neko2-neko3","neko3-neko1");
 
         Forcelayout.with(this).nodesize(100).linkStrength(0.08).distance(250).nodes(nodes).links(links);
 

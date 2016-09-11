@@ -29,6 +29,7 @@ import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -38,6 +39,7 @@ public class Forcelayout extends View{
     private static Properties properties = null;
     private static Context mContext = null;
     private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
+//    private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
     public static Properties.Node[] nodes = new Properties.Node[200];
     public static Properties.Edge[] edges = new Properties.Edge[500];
     static ArrayList<String> nodename_array = new ArrayList<String>();
@@ -56,7 +58,7 @@ public class Forcelayout extends View{
 
     }
 
-    private void init(){
+    private static void init(){
         Properties.Node[] nodes = new Properties.Node[200];
         Properties.Edge[] edges = new Properties.Edge[500];
         nodename_array.clear();
@@ -69,6 +71,7 @@ public class Forcelayout extends View{
     public static Properties with(Context context){
         mContext = context;
         properties = new Properties(context);
+        init();
         return properties.prepare();
 
     }
@@ -78,8 +81,6 @@ public class Forcelayout extends View{
 
         int touch_x = (int)event.getX();
         int touch_y = (int)event.getY();
-
-        Log.d("TouchEvent","X:"+touch_x+" Y:"+touch_y);
 
         switch ( event.getAction() ) {
 
@@ -228,6 +229,8 @@ public class Forcelayout extends View{
 
         //setter of nodes
         public Properties nodes(final HashMap<String, Integer> nodemaps){
+            Log.d("links","size of nodemaps"+nodemaps.size());
+
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
                 BitmapFactory.Options imageOptions = new BitmapFactory.Options();
@@ -266,29 +269,61 @@ public class Forcelayout extends View{
         }
 
         //setter of links
-        public Properties links(final HashMap<String, String> linkmaps){
-            for(int i=0; i < nodename_array.size()-1;i++){
-                for(int j=i+1; j<nodename_array.size(); j++){
+//        public Properties links(final HashMap<String, String> linkmaps){
+//
+//            for(int i=0; i < nodename_array.size();i++){
+//                for(int j=0; j < nodename_array.size(); j++){
+//                    if(i != j) {
+//                        Log.d("setlinks_addEdge", "i="+i+" : j="+j);
+//                        addEdge(i, j);
+//                    }
+//                }
+//            }
+//
+//            for (final String str : linkmaps.keySet()) {
+//                Log.d("links","size of linkmaps"+linkmaps.get(str));
+//
+//                for(int i=0; i<nedges; i++){
+//                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
+//                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
+//                        edges[i].group = true;
+//                        Log.d("setLinks_setbool","from:"+str+" to:"+linkmaps.get(str));
+//                    }
+//                }
+//            }
+//
+//            return this;
+//        }
+
+        public Properties links(final List<String> linkmaps){
+            for(int i=0; i < nodename_array.size();i++){
+                for(int j=0; j < nodename_array.size(); j++){
                     if(i != j) {
-                        Log.d("setlinks", "i="+i+" : j="+j);
+                        Log.d("setlinks_addEdge", "i="+i+" : j="+j);
                         addEdge(i, j);
                     }
                 }
             }
 
-            for (final String str : linkmaps.keySet()) {
-                for(int i=0; i<nedges; i++){
-                    Log.d("setlinks", "i="+i);
-                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
-                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
-                        edges[i].group = true;
-                        Log.d("setLinks","from:"+str+" to:"+linkmaps.get(str));
+            for (int k=0; k<linkmaps.size(); k++) {
+
+                String[] pair = linkmaps.get(k).split("-");
+                Log.d("pair", "s : "+pair[0]+ " t : "+pair[1]);
+
+                if(pair.length == 2) {
+                    for (int i = 0; i < nedges; i++) {
+                        if ((edges[i].from == nodename_array.indexOf(pair[0]) && edges[i].to == nodename_array.indexOf(pair[1]) ||
+                                (edges[i].to == nodename_array.indexOf(pair[0]) && edges[i].from == nodename_array.indexOf(pair[1])))) {
+                            edges[i].group = true;
+                        }
                     }
                 }
             }
 
-            return this;
+            return  this;
         }
+
+
 
         //class of node
         public static class Node{
@@ -311,6 +346,11 @@ public class Forcelayout extends View{
             boolean group;
         }
 
+        public static class links {
+            String source;
+            String target;
+        }
+
         public static void addNode(String lbl, int index, int width, int height){
             Node n = new Node();
 
@@ -329,7 +369,6 @@ public class Forcelayout extends View{
             Edge e = new Edge();
             e.from = from;
             e.to = to;
-            e.len = 0;
             e.group = false;
             edges[nedges++] = e;
         }

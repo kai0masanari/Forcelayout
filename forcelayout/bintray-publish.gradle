@@ -1,64 +1,30 @@
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.novoda.bintray-release'
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      groupId GROUP
-      version VERSION_NAME
-      artifactId ARTIFACT_ID
-      //            artifact androidJar
-      artifact "build/outputs/aar/takt-release.aar"
-      artifact androidJavadocsJar
-      artifact androidSourcesJar
-      pom.withXml {
-        Node root = asNode()
-        root.appendNode('name', ARTIFACT_ID)
-        root.appendNode('description', POM_DESCRIPTION)
-        root.appendNode('url', POM_URL)
-
-        def issues = root.appendNode('issueManagement')
-        issues.appendNode('system', 'github')
-        issues.appendNode('url', ISSUE_URL)
-
-        def scm = root.appendNode('scm')
-        scm.appendNode('url', POM_SCM_URL)
-        scm.appendNode('connection', POM_SCM_CONNECTION)
-        scm.appendNode('developerConnection', POM_SCM_DEV_CONNECTION)
-
-        def license = root.appendNode('licenses').appendNode('license')
-        license.appendNode('name', POM_LICENCE_NAME)
-        license.appendNode('url', POM_LICENCE_URL)
-        license.appendNode('distribution', POM_LICENCE_DIST)
-      }
-    }
-  }
+task androidJavadocs(type: Javadoc) {
+  source = android.sourceSets.main.java.srcDirs
+  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
-def getBintrayUserProperty() {
-  return hasProperty('bintrayUser') ? bintrayUser : ""
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+  classifier = 'javadoc'
+  from androidJavadocs.destinationDir
 }
 
-def getBintrayApiKeyProperty() {
-  return hasProperty('bintrayApiKey') ? bintrayApiKey : ""
+task androidSourcesJar(type: Jar) {
+  classifier = 'sources'
+  from android.sourceSets.main.java.srcDirs
 }
 
-bintray {
-  user = bintrayUserProperty
-  key = bintrayApiKeyProperty
-  publications = ['mavenJava']
+artifacts {
+  archives androidSourcesJar
+  archives androidJavadocsJar
+}
 
-  dryRun = false
-  publish = false
-  pkg {
-    repo = 'maven'
-    name = ARTIFACT_ID
-    licenses = ['Apache-2.0']
-    labels = ['android']
-
-    version {
-      name = VERSION_NAME
-      vcsTag = VERSION_NAME
-    }
-  }
+publish {
+  userOrg = POM_DEVELOPER_ID
+  groupId = GROUP
+  artifactId = ARTIFACT_ID
+  publishVersion = VERSION_NAME
+  desc = POM_DESCRIPTION
+  website = POM_URL
 }

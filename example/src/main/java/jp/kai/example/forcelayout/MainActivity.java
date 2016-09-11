@@ -12,18 +12,11 @@ import jp.kai.forcelayout.Forcelayout;
 public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        /*
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        setContentView(linearLayout);
-        */
-        //
+		
         final Forcelayout _bane =  new Forcelayout(getApplicationContext());
         setContentView(_bane);
 
         //ノードの定義をする
-        //TODO リソースファイルだけではなくインターネット上のリソースも対応できるようにしたい
         HashMap<String, Integer> nodes = new HashMap<>();
 
         nodes.put("neko",R.drawable.a);
@@ -36,11 +29,12 @@ public class MainActivity extends Activity {
         //リンクの定義をする
         HashMap<String, String> links = new HashMap<>();
         links.put("neko", "nyanko");
+        links.put("neko", "hoge");
         links.put("neko1", "neko2");
         links.put("neko2", "neko3");
         links.put("neko3", "neko1");
 
-        Forcelayout.with(this).nodesize(300).linkStrength(0.08).distance(300).nodes(nodes).links(links);
+        Forcelayout.with(this).nodesize(100).linkStrength(0.08).distance(250).nodes(nodes).links(links);
 
 
     }

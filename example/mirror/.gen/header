@@ -1,0 +1,9 @@
+#Automatically generated header file. Editing this file may cause problems.
+#Fri Sep 09 16:09:44 JST 2016
+serverVersion=2.5.9
+dexState=NO_CHANGE
+package=jp.kai.example.forcelayout
+version=2
+serverVersionCode=70
+dexManagerName=ExtractFromApkDexManager
+appTheme=@style/AppTheme

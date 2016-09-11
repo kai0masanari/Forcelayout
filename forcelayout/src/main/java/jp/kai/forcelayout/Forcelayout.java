@@ -46,7 +46,7 @@ public class Forcelayout extends View{
     private static int nedges = 0;
     private static float display_width;
     private static float display_height;
-    private static int nodeindex = 0; //実際のノードの数
+    private static int nodeindex = 0; //number of nodes
 
     private int targetnode = -1;
 
@@ -114,7 +114,7 @@ public class Forcelayout extends View{
     }
 
 
-    // 描画処理を記述
+    // draw function
     @Override
     protected void dispatchDraw(Canvas canvas) {
         Paint paint = new Paint();
@@ -185,17 +185,16 @@ public class Forcelayout extends View{
         private static Context mContext;
 
         //画面関連
-        //TODO Forcelayoutの表示領域、ノードのサイズ、ばね定数や減衰定数などのパラメータを指定できりゅおうにすること
-        private static float nodearea_width; //ノードを描画する範囲　現状は画面いっぱいとる
+        private static float nodearea_width; //draw area = screen size
         private static float nodearea_height;
         private static int reduction = 30;
-        private static int nodeswidth = 150; //描画するノードの幅
-        private static int distance = 300; //描画するノード間の幅
+        private static int nodeswidth = 150; //node's width
+        private static int distance = 300; //distance between nodes
 
-        //ばねモデルのパラメータ ユーザに指定できるようにする
-        private static double bounce = 0.08; //ばね定数
-        private static double attenuation = 0.7;//0.9; //減衰定数
-        private static double coulomb = 680; //クーロン
+
+        private static double bounce = 0.08; //
+        private static double attenuation = 0.7;//0.9; //
+        private static double coulomb = 680; //
 
 
         public Properties(Context context){
@@ -209,25 +208,25 @@ public class Forcelayout extends View{
             return this;
         }
 
-        //ノードサイズのセッター
+        //setter of node's size
         public Properties nodesize(int nodeswidth){
             this.nodeswidth = nodeswidth;
             return this;
         }
 
-        //リンクのばね定数のセッター
+        //setter of
         public Properties linkStrength(double bounce){
             this.bounce = bounce;
             return this;
         }
 
-        //リンクのばね定数のセッター
+        //setter of linkStrength
         public Properties distance(int distance){
             this.distance = distance;
             return this;
         }
 
-        //ノードのセッター
+        //setter of nodes
         public Properties nodes(final HashMap<String, Integer> nodemaps){
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
@@ -235,20 +234,17 @@ public class Forcelayout extends View{
                 imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 imageOptions.inSampleSize = 2;
                 Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), imageOptions);
-                // 画像サイズ取得
+                // get image width/2
                 int bitmapwidth  = bitmap.getWidth();
-                //int bitmapheight = bitmap.getHeight();
 
                 bitmap.recycle();
                 bitmap = null;
 
-                // ビットマップ作成オブジェクトの設定
                 BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
-                // 画像を1/？サイズに縮小する
+                //resize
                 reduction = bitmapwidth / nodeswidth * 2;
                 bmfOptions.inSampleSize = reduction;
-                // メモリの解放
                 bmfOptions.inPurgeable = true;
                 bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), bmfOptions);
 
@@ -269,7 +265,7 @@ public class Forcelayout extends View{
             return this;
         }
 
-        //リンクのセッター
+        //setter of links
         public Properties links(final HashMap<String, String> linkmaps){
             for(int i=0; i < nodename_array.size()-1;i++){
                 for(int j=i+1; j<nodename_array.size(); j++){
@@ -294,7 +290,7 @@ public class Forcelayout extends View{
             return this;
         }
 
-        //ノードクラス
+        //class of node
         public static class Node{
             String nodename;
 
@@ -307,7 +303,7 @@ public class Forcelayout extends View{
             double dy;
         }
 
-        //リンククラス
+        //class of link
         public static class Edge {
             int from;
             int to;
@@ -315,10 +311,7 @@ public class Forcelayout extends View{
             boolean group;
         }
 
-
-        //ノードの追加
         public static void addNode(String lbl, int index, int width, int height){
-            //System.out.println(lbl);
             Node n = new Node();
 
             n.x = (nodearea_width)*Math.random();
@@ -332,7 +325,6 @@ public class Forcelayout extends View{
             nodes[index] = n;
         }
 
-        //リンクの追加
         public static void addEdge(int from, int to){
             Edge e = new Edge();
             e.from = from;
@@ -342,13 +334,7 @@ public class Forcelayout extends View{
             edges[nedges++] = e;
         }
 
-        //2点から距離を求める
-//        private double get_distance(double c_position_x, double c_position_y, double b_position_x, double b_position_y){
-//            double distance = Math.sqrt(Math.pow(c_position_x - b_position_x, 2)+Math.pow(c_position_y - b_position_y, 2));
-//            return distance;
-//        }
 
-        //ばねの動作
         public void relax(){
             if(nedges != 0){
                 for(int i=0; i<nodeindex; i++){
@@ -394,17 +380,14 @@ public class Forcelayout extends View{
                         fy += bounce *distY*1.1;
                     }
 
-                    //速度の算出
                     nodes[i].dx = (nodes[i].dx + fx) * attenuation;
                     nodes[i].dy = (nodes[i].dy + fy) * attenuation;
 
 
-                    //速度をもとに収束させてく
                     if(nodes[i].x < display_width - nodes[i].width && nodes[i].x > 0) {
                         nodes[i].x += nodes[i].dx;
                     }
 
-                    //速度をもとに収束させてく
                     if(nodes[i].y < display_height - nodes[i].height && nodes[i].y > 0) {
                         nodes[i].y += nodes[i].dy;
                     }

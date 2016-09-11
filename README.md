@@ -1,8 +1,8 @@
 Force layout
 ====
 
-Overview
-Force layout
+
+Forcelayout is an Android library for visualizing data.
 
 ## Demo
 
@@ -28,19 +28,22 @@ dependencies {
 ```java
 HashMap<String, Integer> nodes = new HashMap<>();
 
-nodes.put("ラベルネーム1",R.drawable.example1);
-nodes.put("ラベルネーム2",R.drawable.example2);
+nodes.put("labelname_1",R.drawable.example1);
+nodes.put("labelname_2",R.drawable.example2);
 ```
-
 
 ### 3. Definitions of links
 ```java
 List<String> links = new ArrayList<String>();
 
-links.put("ラベルネーム1-ラベルネーム2");
+links.put("labelname_1-labelname_2");
 ```
 
 ### 4. Set nodes and links
+You can set node's size and linkstrength, and so on.
 ```java
 Forcelayout.with(this).nodesize(150).setnodes(nodes).setlinks(links).linkStrength(0.1).distance(300);
 ```
+
+## Thanks
+Inspired by D3.js.

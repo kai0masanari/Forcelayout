@@ -41,7 +41,12 @@ links.put("labelname_1-labelname_2");
 ### 4. Set nodes and links
 You can set node's size and linkstrength, and so on.
 ```java
-Forcelayout.with(this).nodesize(150).setnodes(nodes).setlinks(links).linkStrength(0.1).distance(300);
+Forcelayout.with(this)
+		.nodesize(150)
+		.setnodes(nodes)
+		.setlinks(links)
+		.linkStrength(0.1)
+		.distance(300);
 ```
 
 ## Thanks

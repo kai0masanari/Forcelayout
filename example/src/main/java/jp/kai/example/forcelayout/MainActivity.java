@@ -15,11 +15,8 @@ import jp.kai.forcelayout.Forcelayout;
 public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		
         final Forcelayout _bane =  new Forcelayout(getApplicationContext());
         setContentView(_bane);
-
-
 
         //ノードの定義をする
         HashMap<String, Integer> nodes = new HashMap<>();
@@ -37,13 +34,20 @@ public class MainActivity extends Activity {
         nodes.put("neko8",R.drawable.d);
         nodes.put("neko9",R.drawable.d);
         nodes.put("neko10",R.drawable.d);
-        nodes.put("neko11",R.drawable.d);
-        nodes.put("neko12",R.drawable.d);
+        nodes.put("neko11",R.drawable.f);
+        nodes.put("neko12",R.drawable.e);
 
         //リンクの定義をする
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");
 
         Forcelayout.with(this).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
+
+
+    }
+
+
+    @Override protected void onStart() {
+        super.onStart();
 
 
     }

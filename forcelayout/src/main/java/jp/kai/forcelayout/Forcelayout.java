@@ -233,30 +233,35 @@ public class Forcelayout extends View{
 
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
-
-
                 BitmapFactory.Options imageOptions = new BitmapFactory.Options();
                 imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                imageOptions.inSampleSize = 2;
-                Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), imageOptions);
-                // get image width/2
-                int bitmapwidth  = bitmap.getWidth();
+                imageOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeResource(resource, nodemaps.get(str), imageOptions);
+                // get image width
+                int bitmapwidth  = imageOptions.outWidth;
+                Log.d("bitmapwidth", ""+bitmapwidth);
 
-                bitmap.recycle();
-                bitmap = null;
 
                 BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
                 //resize
-                reduction = bitmapwidth / nodeswidth * 2;
-                bmfOptions.inSampleSize = reduction;
-                bmfOptions.inPurgeable = true;
-                bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), bmfOptions);
+                reduction = bitmapwidth / nodeswidth;
+                if(reduction != 0) {
+                    bmfOptions.inSampleSize = reduction;
+                }
 
-                final int imgheight = bmfOptions.outHeight;
-                final int imgwidth = bmfOptions.outWidth;
+                Bitmap bitmap = BitmapFactory.decodeResource(resource, nodemaps.get(str), bmfOptions);
+
+                int imgheight = bmfOptions.outHeight;
+                int imgwidth = bmfOptions.outWidth;
 
 
+                if(imgwidth != nodeswidth){
+                    bitmap = resizeBitmap(bitmap, nodeswidth);
+
+                    imgheight = bitmap.getHeight();
+                    imgwidth = bitmap.getWidth();
+                }
 
                 nodearea_width = display_width - (int) (imgwidth);
                 nodearea_height = display_height - (int) (imgheight);
@@ -448,12 +453,15 @@ public class Forcelayout extends View{
             // get Screen size
             Matrix matrix = new Matrix();
 
-            float widthScale = width / srcWidth;
+            float widthScale = (float)width / (float)srcWidth;
             matrix.postScale(widthScale, widthScale);
+
+
             // resize
             Bitmap dst = Bitmap.createBitmap(src, 0, 0, srcWidth, srcHeight, matrix, true);
             src.recycle();
             src = null;
+
             return dst;
         }
 

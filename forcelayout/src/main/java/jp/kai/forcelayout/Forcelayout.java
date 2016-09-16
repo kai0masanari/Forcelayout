@@ -161,6 +161,7 @@ public class Forcelayout extends View{
         invalidate();
     }
 
+    //
     public Bitmap getCroppedBitmap(Bitmap bitmap, int round) {
 
         int width  = bitmap.getWidth();
@@ -186,7 +187,6 @@ public class Forcelayout extends View{
     public static class Properties{
         private static Context mContext;
 
-        //画面関連
         private static float nodearea_width; //draw area = screen size
         private static float nodearea_height;
         private static int reduction = 30;
@@ -324,8 +324,6 @@ public class Forcelayout extends View{
 
             return  this;
         }
-
-
 
         //class of node
         public static class Node{

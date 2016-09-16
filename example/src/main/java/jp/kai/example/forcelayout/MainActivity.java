@@ -3,6 +3,9 @@ package jp.kai.example.forcelayout;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,10 +18,30 @@ import jp.kai.forcelayout.Forcelayout;
 public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Forcelayout _bane =  new Forcelayout(getApplicationContext());
-        setContentView(_bane);
 
-        //ノードの定義をする
+//        setContentView(R.layout.activity_main);
+//        Forcelayout _bane = (Forcelayout) findViewById(R.id.sample_logview);
+
+        final Forcelayout _bane =  new Forcelayout(getApplicationContext());
+        Button button = new Button(this);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        button.setText("Push");
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(button);
+        layout.addView(_bane);
+        setContentView(layout);
+
+
+
+        //set nodes
         HashMap<String, Integer> nodes = new HashMap<>();
 
         nodes.put("neko",R.drawable.a);
@@ -37,10 +60,10 @@ public class MainActivity extends Activity {
         nodes.put("neko11",R.drawable.f);
         nodes.put("neko12",R.drawable.e);
 
-        //リンクの定義をする
+        //set links
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");
 
-        Forcelayout.with(this).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
+        _bane.with(this).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
 
 
     }
@@ -48,8 +71,6 @@ public class MainActivity extends Activity {
 
     @Override protected void onStart() {
         super.onStart();
-
-
     }
 
 }

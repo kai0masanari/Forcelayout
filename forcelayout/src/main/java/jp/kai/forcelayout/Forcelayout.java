@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,6 @@ public class Forcelayout extends View{
     private static Properties properties = null;
     private static Context mContext = null;
     private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
-//    private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
     public static Properties.Node[] nodes = new Properties.Node[200];
     public static Properties.Edge[] edges = new Properties.Edge[500];
     static ArrayList<String> nodename_array = new ArrayList<String>();
@@ -63,6 +63,7 @@ public class Forcelayout extends View{
     public static Properties with(Context context){
         mContext = context;
         properties = new Properties(context);
+
 
         return properties.prepare();
 
@@ -226,6 +227,9 @@ public class Forcelayout extends View{
             Display mDisplay = getDisplayMetrics(mContext);
             display_width = mDisplay.getWidth();
             display_height = mDisplay.getHeight();
+
+            Log.d("Properties","display_width ; "+display_width+" display_height : "+display_height);
+
             return this;
         }
 
@@ -252,7 +256,8 @@ public class Forcelayout extends View{
             this.gravity = gravity;
             return this;
         }
-
+        
+        
         //setter of nodes : drawable
         public Properties nodes(final HashMap<String, Integer> nodemaps){
 
@@ -302,29 +307,35 @@ public class Forcelayout extends View{
 
 
         //setter of links
-        public Properties links(final HashMap<String, String> linkmaps){
+//        public Properties links(final HashMap<String, String> linkmaps){
+//
+//
+//            for(int i=0; i < nodename_array.size();i++){
+//                for(int j=0; j < nodename_array.size(); j++){
+//                    if(i != j) {
+//                        addEdge(i, j);
+//                    }
+//                }
+//            }
+//
+//            for (final String str : linkmaps.keySet()) {
+//                for(int i=0; i<nedges; i++){
+//                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
+//                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
+//                        edges[i].group = true;
+//                    }
+//                }
+//            }
+//
+//            return this;
+//        }
 
-            for(int i=0; i < nodename_array.size();i++){
-                for(int j=0; j < nodename_array.size(); j++){
-                    if(i != j) {
-                        addEdge(i, j);
-                    }
-                }
-            }
 
-            for (final String str : linkmaps.keySet()) {
-                for(int i=0; i<nedges; i++){
-                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
-                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
-                        edges[i].group = true;
-                    }
-                }
-            }
-
-            return this;
-        }
-
+        //setter of links
         public Properties links(final List<String> linkmaps){
+//            Properties.Edge[] edges = new Properties.Edge[500];
+            nedges = 0;
+
             for(int i=0; i < nodename_array.size();i++){
                 for(int j=0; j < nodename_array.size(); j++){
                     if(i != j) {
@@ -332,6 +343,9 @@ public class Forcelayout extends View{
                     }
                 }
             }
+
+            Log.d("Not brown valley",""+nodename_array.size());
+            Log.d("Not brown valley","nedges : "+nedges);
 
             for (int k=0; k<linkmaps.size(); k++) {
                 String[] pair = linkmaps.get(k).split("-");
@@ -390,7 +404,6 @@ public class Forcelayout extends View{
             e.from = from;
             e.to = to;
             e.group = false;
-            Log.i("nedges",""+nedges);
             edges[nedges++] = e;
         }
 
@@ -425,8 +438,8 @@ public class Forcelayout extends View{
 
                     //gravity : node - central
                     double distX_c=0,distY_c=0;
-                    distX_c = display_width/2 - nodes[i].x;
-                    distY_c = display_height/2 - nodes[i].y;
+                    distX_c = display_width/2 - (nodes[i].x + nodes[i].width/2);
+                    distY_c = display_height/2 - (nodes[i].y + nodes[i].height/2);
 
                     fx += gravity *distX_c;
                     fy += gravity *distY_c;
@@ -458,14 +471,6 @@ public class Forcelayout extends View{
 
                     nodes[i].x += nodes[i].dx;
                     nodes[i].y += nodes[i].dy;
-
-//                    if(nodes[i].x < display_width - nodes[i].width && nodes[i].x > 0) {
-//                        nodes[i].x += nodes[i].dx;
-//                    }
-//
-//                    if(nodes[i].y < display_height - nodes[i].height && nodes[i].y > 0) {
-//                        nodes[i].y += nodes[i].dy;
-//                    }
 
                 }
             }

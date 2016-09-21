@@ -4,27 +4,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -56,6 +46,7 @@ public class Forcelayout extends View{
     public Forcelayout(Context context) {
         super(context);
         mContext = context;
+        init();
 
     }
 
@@ -72,7 +63,7 @@ public class Forcelayout extends View{
     public static Properties with(Context context){
         mContext = context;
         properties = new Properties(context);
-        init();
+
         return properties.prepare();
 
     }
@@ -161,6 +152,33 @@ public class Forcelayout extends View{
         invalidate();
     }
 
+    public class Link{
+        String from;
+        String to;
+
+        public void put(String from, String to){
+
+        }
+    }
+
+//    public static class Link<F, T> extends HashMap<F, T> {
+//        private final String from;
+//        private final String to;
+//
+//        //transient HashMapEntry<F, T>[] table;
+//
+//
+//
+//        public static <F, T> Pair<String, String> create(String from, String to){
+//            return new Pair<>(from, to);
+//        }
+//
+//        @Override public F put(F key, T value) {
+//
+//        }
+//    }
+
+
     //
     public Bitmap getCroppedBitmap(Bitmap bitmap, int round) {
 
@@ -194,6 +212,7 @@ public class Forcelayout extends View{
         private static int distance = 300; //distance between nodes
 
 
+        private static double gravity = 0.04;
         private static double bounce = 0.08; //
         private static double attenuation = 0.7;//0.9; //
         private static double coulomb = 680; //
@@ -228,7 +247,13 @@ public class Forcelayout extends View{
             return this;
         }
 
-        //setter of nodes
+        //setter of linkStrength
+        public Properties gravity(double gravity){
+            this.gravity = gravity;
+            return this;
+        }
+
+        //setter of nodes : drawable
         public Properties nodes(final HashMap<String, Integer> nodemaps){
 
             Resources resource = mContext.getResources();
@@ -239,8 +264,6 @@ public class Forcelayout extends View{
                 BitmapFactory.decodeResource(resource, nodemaps.get(str), imageOptions);
                 // get image width
                 int bitmapwidth  = imageOptions.outWidth;
-                Log.d("bitmapwidth", ""+bitmapwidth);
-
 
                 BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
 
@@ -276,6 +299,7 @@ public class Forcelayout extends View{
 
             return this;
         }
+
 
         //setter of links
         public Properties links(final HashMap<String, String> linkmaps){
@@ -346,10 +370,6 @@ public class Forcelayout extends View{
             boolean group;
         }
 
-        public static class links {
-            String source;
-            String target;
-        }
 
         public static void addNode(String lbl, int index, int width, int height){
             Node n = new Node();
@@ -370,6 +390,7 @@ public class Forcelayout extends View{
             e.from = from;
             e.to = to;
             e.group = false;
+            Log.i("nedges",""+nedges);
             edges[nedges++] = e;
         }
 
@@ -397,12 +418,21 @@ public class Forcelayout extends View{
 
 
                         if(rsq != 0 && Math.sqrt(rsq) < distance) {
-                            fx += (coulombdist_x / rsq) ;
+                            fx += coulombdist_x / rsq ;
                             fy += coulombdist_y / rsq ;
                         }
                     }
 
-                    //target node
+                    //gravity : node - central
+                    double distX_c=0,distY_c=0;
+                    distX_c = display_width/2 - nodes[i].x;
+                    distY_c = display_height/2 - nodes[i].y;
+
+                    fx += gravity *distX_c;
+                    fy += gravity *distY_c;
+
+
+                    //node in group : from - to
                     for(int j=0; j<nedges-1; j++){
                         double distX=0,distY=0;
                         if(edges[j].group) {
@@ -415,21 +445,27 @@ public class Forcelayout extends View{
                                 distY = nodes[edges[j].from].y - nodes[i].y;
                             }
                         }
-                        fx += bounce *distX*1.1;
-                        fy += bounce *distY*1.1;
+
+
+
+                        fx += bounce *distX;
+                        fy += bounce *distY;
                     }
 
                     nodes[i].dx = (nodes[i].dx + fx) * attenuation;
                     nodes[i].dy = (nodes[i].dy + fy) * attenuation;
 
 
-                    if(nodes[i].x < display_width - nodes[i].width && nodes[i].x > 0) {
-                        nodes[i].x += nodes[i].dx;
-                    }
+                    nodes[i].x += nodes[i].dx;
+                    nodes[i].y += nodes[i].dy;
 
-                    if(nodes[i].y < display_height - nodes[i].height && nodes[i].y > 0) {
-                        nodes[i].y += nodes[i].dy;
-                    }
+//                    if(nodes[i].x < display_width - nodes[i].width && nodes[i].x > 0) {
+//                        nodes[i].x += nodes[i].dx;
+//                    }
+//
+//                    if(nodes[i].y < display_height - nodes[i].height && nodes[i].y > 0) {
+//                        nodes[i].y += nodes[i].dy;
+//                    }
 
                 }
             }
@@ -439,8 +475,6 @@ public class Forcelayout extends View{
         public static final Display getDisplayMetrics(Context context) {
             WindowManager winMan = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
             Display disp = winMan.getDefaultDisplay();
-            //DisplayMetrics dispMet = new DisplayMetrics();
-            //disp.getMetrics(dispMet);
             return disp;
         }
 

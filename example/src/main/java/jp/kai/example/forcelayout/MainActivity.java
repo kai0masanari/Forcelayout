@@ -28,7 +28,19 @@ public class MainActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //set nodes
+                HashMap<String, Integer> nodes = new HashMap<>();
 
+                nodes.put("neko",R.drawable.a);
+                nodes.put("nyanko",R.drawable.b);
+                nodes.put("hoge",R.drawable.c);
+                nodes.put("neko1",R.drawable.d);
+                nodes.put("neko2",R.drawable.d);
+
+                //set links
+                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2");
+
+                _bane.with(getApplicationContext()).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
             }
         });
 
@@ -63,7 +75,13 @@ public class MainActivity extends Activity {
         //set links
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");
 
-        _bane.with(this).nodesize(120).linkStrength(0.09).distance(200).nodes(nodes).links(links);
+        _bane.with(this)
+                .nodesize(120)
+                .linkStrength(0.09)
+                .distance(200)
+                .gravity(0.04)
+                .nodes(nodes)
+                .links(links);
 
 
     }

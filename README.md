@@ -6,9 +6,9 @@ Forcelayout is an Android library for visualizing data.
 
 ## Demo
 
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image1.gif)
-
 ![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
+
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image3.gif)
 
 ## Usage
 
@@ -42,11 +42,12 @@ links.put("labelname_1-labelname_2");
 You can set node's size and linkstrength, and so on.
 ```java
 Forcelayout.with(this)
-		.nodesize(150)
-		.setnodes(nodes)
-		.setlinks(links)
-		.linkStrength(0.1)
-		.distance(300);
+	.nodesize(200)
+	.linkStrength(0.1)
+	.distance(200)
+	.gravity(0.04)
+	.nodes(nodes)
+	.links(links);
 ```
 
 ## Thanks

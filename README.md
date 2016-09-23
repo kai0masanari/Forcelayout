@@ -1,8 +1,9 @@
 Force layout
 ====
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Download](https://api.bintray.com/packages/kai0masanari/maven/forcelayout/images/download.svg)](https://bintray.com/kai0masanari/maven/forcelayout/_latestVersion)
 
-
-Forcelayout is an Android library for visualizing data.
+Forcelayout is an Android library for visualizing data. You can drawing graph with spring-like attractive forces.
 
 ## Demo
 
@@ -51,4 +52,22 @@ Forcelayout.with(this)
 ```
 
 ## Thanks
-Inspired by D3.js.
+Inspired by `force layout` in [D3.js](https://d3js.org/).
+
+
+##License
+-------
+
+    Copyright 2016 kai0masanari
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

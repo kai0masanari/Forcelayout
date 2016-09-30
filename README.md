@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.3'
+    compile 'jp.kai:forcelayout:1.0.4'
 }
 ```
 
@@ -51,6 +51,20 @@ Forcelayout.with(this)
 	.nodes(nodes)
 	.links(links);
 ```
+
+or
+
+```java
+Forcelayout.node().nodesize(150).nodes(nodes).drawLable(true);
+Forcelayout.link().links(links).style(10, Color.RED).drawStroke(true);
+
+Forcelayout.with(this)
+	.linkStrength(0.1)
+	.distance(200)
+	.gravity(0.04);
+
+```
+
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).

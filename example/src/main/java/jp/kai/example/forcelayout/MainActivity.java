@@ -1,11 +1,13 @@
 package jp.kai.example.forcelayout;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,7 +53,7 @@ public class MainActivity extends Activity {
                 //set links
                 List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
 
-                _bane.with(getApplicationContext()).linkStrength(0.09).gravity(0.04).distance(200).links(links).drawLable(false);
+                _bane.with(getApplicationContext()).linkStrength(0.09).gravity(0.04).distance(200).links(links).drawLable(false).drawStroke(false);
             }
         });
         button1.setText("change links and hide labels");
@@ -63,28 +65,40 @@ public class MainActivity extends Activity {
                 //set links
                 List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
 
+                _bane.node().nodesize(150).nodes(nodes).drawLable(true);
+                _bane.link().links(links).style(10, Color.RED).drawStroke(true);
+
                 _bane.with(getApplicationContext()).linkStrength(0.1).gravity(0.3).distance(500);
             }
         });
-        button2.setText("change linkStrength and gravity");
+        button2.setText("change Node size");
 
-        Button button3 = new Button(this);
-        button2.setOnClickListener(new View.OnClickListener() {
+        SeekBar seek1 = new SeekBar(this);
+        seek1.setMax(100);
+        seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View v) {
-                //set links
-                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                _bane.with(getApplicationContext()).gravity((float)progress/1000);
 
-                _bane.with(getApplicationContext()).nodesize(100).nodes(nodes).linkStrength(0.1).gravity(0.3).distance(500).drawLable(true);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
-        button3.setText("change Node size");
 
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.addView(button1);
         layout.addView(button2);
+        layout.addView(seek1);
         layout.addView(_bane);
         setContentView(layout);
 

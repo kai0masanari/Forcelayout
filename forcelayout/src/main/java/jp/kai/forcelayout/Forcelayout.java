@@ -6,25 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.media.Image;
-import android.util.Log;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Display;
 import android.view.WindowManager;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import jp.kai.forcelayout.ImageEditor;
+import static jp.kai.forcelayout.ImageEditor.*;
 
 
 /**
@@ -54,15 +45,18 @@ public class Forcelayout extends View{
 
     //styles of node and link
     private static int roundsize = 5;
-    private static int fontsize = 30;
-    private static boolean drawline = true;
-    private static boolean drawlabel = true;
-    private static float nodearea_width; //draw area = screen size
-    private static float nodearea_height;
     private static int reduction = 30;
     private static int nodeswidth = 150; //node's width
+    private static float nodearea_width; //draw area = screen size
+    private static float nodearea_height;
+    //value of stroke
+    private static boolean drawstroke = true;
     private static int strokewidth = 5;
     private static int strokecolor = Color.BLACK;
+    //value of label
+    private static boolean drawlabel = true;
+    private static int fontsize = 30;
+    private static int fontcolor = Color.BLACK;
 
 
     public Forcelayout(Context context) {
@@ -111,12 +105,15 @@ public class Forcelayout extends View{
         switch ( event.getAction() ) {
 
             case MotionEvent.ACTION_DOWN:
-                for(int i=0; i< nodeindex; i++){
-                    if((nodes[i].x + nodes[i].width >= touch_x && nodes[i].x <= touch_x)
-                            && (nodes[i].y + nodes[i].height >= touch_y && nodes[i].y <= touch_y)){
-                        targetnode = i;
+                if(targetnode == -1) {
+                    for (int i = 0; i < nodeindex; i++) {
+                        if ((nodes[i].x + nodes[i].width >= touch_x && nodes[i].x <= touch_x)
+                                && (nodes[i].y + nodes[i].height >= touch_y && nodes[i].y <= touch_y)) {
+                            targetnode = i;
+                        }
                     }
                 }
+
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -147,7 +144,7 @@ public class Forcelayout extends View{
         Paint paint = new Paint();
 
         //draw link's line
-        if(edges.length != 0){
+//        if(edges.length != 0){
             for (int i = 0 ; i < nedges-1 ; i++) {
                 if (edges[i].group) {
                     Edge e = edges[i];
@@ -156,7 +153,7 @@ public class Forcelayout extends View{
                     float x2 = (float) (nodes[e.to].x + nodes[e.to].width/2);
                     float y2 = (float) (nodes[e.to].y + nodes[e.to].height/2);
 
-                    if(drawline) {
+                    if(drawstroke) {
                         paint.setStrokeWidth(strokewidth);
                         paint.setColor(strokecolor);
                         float[] pts = {x1, y1, x2, y2};
@@ -164,13 +161,13 @@ public class Forcelayout extends View{
                     }
                 }
             }
-        }
+//        }
 
         //draw node's image
         for (final String str : nodeslist.keySet()) {
             if(convertlist.indexOf(str) == -1) {
                 Bitmap _bitmap = nodeslist.get(str);
-                nodebitmap_array.add(ImageEditor.getCroppedBitmap(nodeslist.get(str), roundsize));
+                nodebitmap_array.add(getCroppedBitmap(nodeslist.get(str), roundsize));
                 convertlist.add(str);
             }
         }
@@ -181,7 +178,8 @@ public class Forcelayout extends View{
             canvas.drawBitmap(nodebitmap_array.get(i), (int) nodes[i].x, (int) nodes[i].y, paint);
 
             if(drawlabel) {
-                paint.setTextSize(30);
+                paint.setTextSize(fontsize);
+                paint.setColor(fontcolor);
                 canvas.drawText(nodes[i].nodename, (int) (nodes[i].x + nodes[i].width), (int) (nodes[i].y + nodes[i].height + 30), paint);
             }
         }
@@ -290,7 +288,7 @@ public class Forcelayout extends View{
 
 
                 if(imgwidth != nodeswidth){
-                    bitmap = ImageEditor.resizeBitmap(bitmap, nodeswidth);
+                    bitmap = resizeBitmap(bitmap, nodeswidth);
 
                     imgheight = bitmap.getHeight();
                     imgwidth = bitmap.getWidth();
@@ -323,8 +321,9 @@ public class Forcelayout extends View{
         }
 
         //set fontSize
-        public Nodestyle setFontSize(int fontsize){
+        public Nodestyle style(int fontsize, int color){
             Forcelayout.fontsize = fontsize;
+            Forcelayout.fontcolor = color;
             return this;
         }
 
@@ -368,8 +367,14 @@ public class Forcelayout extends View{
         }
 
         //draw line
-        public Linkstyle drawLine(boolean drawline){
-            Forcelayout.drawline = drawline;
+        public Linkstyle drawStroke(boolean drawstroke){
+            Forcelayout.drawstroke = drawstroke;
+            return this;
+        }
+
+        public Linkstyle style(int strokewidth, int color){
+            strokewidth = strokewidth;
+            strokecolor = color;
             return this;
         }
 
@@ -426,7 +431,7 @@ public class Forcelayout extends View{
 
 
                 if(imgwidth != nodeswidth){
-                    bitmap = ImageEditor.resizeBitmap(bitmap, nodeswidth);
+                    bitmap = resizeBitmap(bitmap, nodeswidth);
 
                     imgheight = bitmap.getHeight();
                     imgwidth = bitmap.getWidth();
@@ -500,8 +505,8 @@ public class Forcelayout extends View{
         }
 
         //draw line
-        public Properties drawLine(boolean drawline){
-            Forcelayout.drawline = drawline;
+        public Properties drawStroke(boolean drawstroke){
+            Forcelayout.drawstroke = drawstroke;
             return this;
         }
 
@@ -511,11 +516,6 @@ public class Forcelayout extends View{
             return this;
         }
 
-        //set fontSize
-        public Properties setFontSize(int fontsize){
-            Forcelayout.fontsize = fontsize;
-            return this;
-        }
 
 
         public void relax(){

@@ -24,42 +24,8 @@ public class MainActivity extends Activity {
 
         final Forcelayout _bane =  new Forcelayout(getApplicationContext());
 
-        Button button1 = new Button(this);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //set links
-                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
-
-                _bane.with(getApplicationContext()).linkStrength(0.09).gravity(0.04).distance(200).links(links);
-            }
-        });
-        button1.setText("change links");
-
-        Button button2 = new Button(this);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //set links
-                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
-
-                _bane.with(getApplicationContext()).linkStrength(0.1).gravity(0.3).distance(500);
-            }
-        });
-        button2.setText("change linkStrength and gravity");
-
-
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(button1);
-        layout.addView(button2);
-        layout.addView(_bane);
-        setContentView(layout);
-
-
-
         //set nodes
-        HashMap<String, Integer> nodes = new HashMap<>();
+        final HashMap<String, Integer> nodes = new HashMap<>();
 
         nodes.put("neko",R.drawable.a);
         nodes.put("nyanko",R.drawable.b);
@@ -76,6 +42,55 @@ public class MainActivity extends Activity {
         nodes.put("neko10",R.drawable.f);
         nodes.put("neko11",R.drawable.g);
         nodes.put("neko12",R.drawable.g);
+
+
+        Button button1 = new Button(this);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set links
+                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
+
+                _bane.with(getApplicationContext()).linkStrength(0.09).gravity(0.04).distance(200).links(links).drawLable(false);
+            }
+        });
+        button1.setText("change links and hide labels");
+
+        Button button2 = new Button(this);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set links
+                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
+
+                _bane.with(getApplicationContext()).linkStrength(0.1).gravity(0.3).distance(500);
+            }
+        });
+        button2.setText("change linkStrength and gravity");
+
+        Button button3 = new Button(this);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set links
+                List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
+
+                _bane.with(getApplicationContext()).nodesize(100).nodes(nodes).linkStrength(0.1).gravity(0.3).distance(500).drawLable(true);
+            }
+        });
+        button3.setText("change Node size");
+
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(button1);
+        layout.addView(button2);
+        layout.addView(_bane);
+        setContentView(layout);
+
+
+
+
 
         //set links
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");

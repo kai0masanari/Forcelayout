@@ -29,6 +29,8 @@ import java.util.List;
  */
 public class Forcelayout extends View{
     private static Properties properties = null;
+//    private static Nodestyle nodestyle = null;
+//    private static Nodestyle nodestyle = null;
     private static Context mContext = null;
     private static HashMap<String, Bitmap> nodeslist = new HashMap<>();
     public static Properties.Node[] nodes = new Properties.Node[200];
@@ -43,11 +45,15 @@ public class Forcelayout extends View{
 
     private int targetnode = -1;
 
+    private static int roundsize = 5;
+    private static int fontsize = 30;
+    private static boolean drawline = true;
+    private static boolean drawlabel = true;
+
     public Forcelayout(Context context) {
         super(context);
         mContext = context;
         init();
-
     }
 
     private static void init(){
@@ -64,14 +70,24 @@ public class Forcelayout extends View{
         mContext = context;
         properties = new Properties(context);
 
-
         return properties.prepare();
-
     }
+
+//    public static Nodestyle node(Context context){
+//        mContext = context;
+//        nodestyle = new Nodestyle(context);
+//        return nodestyle.prepare();
+//    }
+//
+//    public static Linkstyle link(Context context){
+//        mContext = context;
+//        linkstyle = new Linkstyle(context);
+//        return linkstyle.prepare();
+//    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         int touch_x = (int)event.getX();
         int touch_y = (int)event.getY();
 
@@ -122,9 +138,12 @@ public class Forcelayout extends View{
                     float y1 = (float) (nodes[e.from].y + nodes[e.from].height/2);
                     float x2 = (float) (nodes[e.to].x + nodes[e.to].width/2);
                     float y2 = (float) (nodes[e.to].y + nodes[e.to].height/2);
-                    paint.setStrokeWidth(5);
-                    float[] pts = {x1, y1, x2, y2};
-                    canvas.drawLines(pts, paint);
+
+                    if(drawline) {
+                        paint.setStrokeWidth(5);
+                        float[] pts = {x1, y1, x2, y2};
+                        canvas.drawLines(pts, paint);
+                    }
                 }
             }
         }
@@ -133,16 +152,19 @@ public class Forcelayout extends View{
         for (final String str : nodeslist.keySet()) {
             if(convertlist.indexOf(str) == -1) {
                 Bitmap _bitmap = nodeslist.get(str);
-                nodebitmap_array.add(getCroppedBitmap(nodeslist.get(str), 5));
+                nodebitmap_array.add(getCroppedBitmap(nodeslist.get(str), roundsize));
                 convertlist.add(str);
             }
         }
 
         //draw label
-        for(int i=0; i<convertlist.size(); i++){
-            canvas.drawBitmap(nodebitmap_array.get(i), (int)nodes[i].x, (int)nodes[i].y, paint);
-            paint.setTextSize (30);
-            canvas.drawText(nodes[i].nodename, (int)(nodes[i].x+nodes[i].width), (int)(nodes[i].y+nodes[i].height+30), paint);
+        for (int i = 0; i < convertlist.size(); i++) {
+            canvas.drawBitmap(nodebitmap_array.get(i), (int) nodes[i].x, (int) nodes[i].y, paint);
+
+            if(drawlabel) {
+                paint.setTextSize(30);
+                canvas.drawText(nodes[i].nodename, (int) (nodes[i].x + nodes[i].width), (int) (nodes[i].y + nodes[i].height + 30), paint);
+            }
         }
 
         if(nedges != 0) {
@@ -153,29 +175,19 @@ public class Forcelayout extends View{
         invalidate();
     }
 
-    public class Link{
-        String from;
-        String to;
 
-        public void put(String from, String to){
-
-        }
-    }
-
-//    public static class Link<F, T> extends HashMap<F, T> {
-//        private final String from;
-//        private final String to;
+//    public static class Test <L, I> {
+//        private final L label;
+//        private final I image;
 //
-//        //transient HashMapEntry<F, T>[] table;
+//        private Test(L label, I image){
+//            this.label = label;
+//            this.image = image;
 //
-//
-//
-//        public static <F, T> Pair<String, String> create(String from, String to){
-//            return new Pair<>(from, to);
 //        }
 //
-//        @Override public F put(F key, T value) {
-//
+//        public static <L, I> Test<L, I> create(L label, I image) {
+//            return new Test<>(label, image);
 //        }
 //    }
 
@@ -203,6 +215,32 @@ public class Forcelayout extends View{
     }
 
 
+//    public static class Nodestyle{
+//        private Context mContext;
+//
+//        public Nodestyle(Context context){
+//            mContext = context;
+//        }
+//
+//        private Nodestyle prepare(){
+//            return this;
+//        }
+//
+//        //setter of node's size
+//        public Nodestyle nodesize(int nodeswidth){
+//            this.nodeswidth = nodeswidth;
+//            return this;
+//        }
+//
+//        private Nodestyle nodes(){
+//            return this;
+//        }
+//
+//
+//    }
+
+
+
     public static class Properties{
         private static Context mContext;
 
@@ -228,18 +266,10 @@ public class Forcelayout extends View{
             display_width = mDisplay.getWidth();
             display_height = mDisplay.getHeight();
 
-            Log.d("Properties","display_width ; "+display_width+" display_height : "+display_height);
-
             return this;
         }
 
-        //setter of node's size
-        public Properties nodesize(int nodeswidth){
-            this.nodeswidth = nodeswidth;
-            return this;
-        }
-
-        //setter of
+        //setter of linkStrength
         public Properties linkStrength(double bounce){
             this.bounce = bounce;
             return this;
@@ -256,10 +286,35 @@ public class Forcelayout extends View{
             this.gravity = gravity;
             return this;
         }
-        
-        
+
+        //setter of node's size
+        public Properties nodesize(int nodeswidth){
+            this.nodeswidth = nodeswidth;
+            return this;
+        }
+
+        //draw line
+        public Properties drawLine(boolean drawline){
+            Forcelayout.drawline = drawline;
+            return this;
+        }
+
+        //draw label
+        public Properties drawLable(boolean drawlabel){
+            Forcelayout.drawlabel = drawlabel;
+            return this;
+        }
+
+        //set fontSize
+        public Properties setFontSize(int fontsize){
+            Forcelayout.fontsize = fontsize;
+            return this;
+        }
+
+
         //setter of nodes : drawable
         public Properties nodes(final HashMap<String, Integer> nodemaps){
+            init_nodes();
 
             Resources resource = mContext.getResources();
             for (final String str : nodemaps.keySet()) {
@@ -307,34 +362,8 @@ public class Forcelayout extends View{
 
 
         //setter of links
-//        public Properties links(final HashMap<String, String> linkmaps){
-//
-//
-//            for(int i=0; i < nodename_array.size();i++){
-//                for(int j=0; j < nodename_array.size(); j++){
-//                    if(i != j) {
-//                        addEdge(i, j);
-//                    }
-//                }
-//            }
-//
-//            for (final String str : linkmaps.keySet()) {
-//                for(int i=0; i<nedges; i++){
-//                    if ((edges[i].from == nodename_array.indexOf(str) && edges[i].to == nodename_array.indexOf(linkmaps.get(str)))  ||
-//                            (edges[i].to == nodename_array.indexOf(str) && edges[i].from == nodename_array.indexOf(linkmaps.get(str)))){
-//                        edges[i].group = true;
-//                    }
-//                }
-//            }
-//
-//            return this;
-//        }
-
-
-        //setter of links
         public Properties links(final List<String> linkmaps){
-//            Properties.Edge[] edges = new Properties.Edge[500];
-            nedges = 0;
+            init_links();
 
             for(int i=0; i < nodename_array.size();i++){
                 for(int j=0; j < nodename_array.size(); j++){
@@ -343,9 +372,6 @@ public class Forcelayout extends View{
                     }
                 }
             }
-
-            Log.d("Not brown valley",""+nodename_array.size());
-            Log.d("Not brown valley","nedges : "+nedges);
 
             for (int k=0; k<linkmaps.size(); k++) {
                 String[] pair = linkmaps.get(k).split("-");
@@ -458,9 +484,6 @@ public class Forcelayout extends View{
                                 distY = nodes[edges[j].from].y - nodes[i].y;
                             }
                         }
-
-
-
                         fx += bounce *distX;
                         fy += bounce *distY;
                     }
@@ -475,6 +498,20 @@ public class Forcelayout extends View{
                 }
             }
         }
+
+        private static void init_nodes(){
+            Properties.Node[] nodes = new Properties.Node[200];
+            nodename_array.clear();
+            nodebitmap_array.clear();
+            convertlist.clear();
+            nodeindex = 0;
+        }
+
+        private static void init_links(){
+            Properties.Edge[] edges = new Properties.Edge[500];
+            nedges = 0;
+        }
+
 
         //display size
         public static final Display getDisplayMetrics(Context context) {

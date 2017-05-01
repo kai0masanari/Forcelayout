@@ -386,6 +386,8 @@ public class Forcelayout extends View{
         //spring like attractive forces
         private static int distance = 300; //distance between nodes
         private static double gravity = 0.04;
+
+        //TODO Constに移す
         private static double bounce = 0.08; //
         private static double attenuation = 0.7;//0.9; //
         private static double coulomb = 680; //

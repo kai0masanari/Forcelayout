@@ -208,6 +208,7 @@ public class Forcelayout extends View{
 //        }
 //    }
 
+    //TODO NodeとEdgeを別のクラスに分割すること
     //class of node
     public static class Node{
         String nodename;
@@ -506,6 +507,7 @@ public class Forcelayout extends View{
             return this;
         }
 
+        //TODO 今回はここは実装しない
         //draw line
         public Properties drawStroke(boolean drawstroke){
             Forcelayout.drawstroke = drawstroke;

@@ -22,8 +22,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     //TODO ちょっと冗長な気がする
     //TODO Propertiesに移行させたい
 //    private val nodeslist = HashMap<String, Bitmap>()
-    internal var nodename_array = ArrayList<String>()
-    internal var nodebitmap_array = ArrayList<Bitmap>()
+
     private val convertlist = ArrayList<String>()
 
 

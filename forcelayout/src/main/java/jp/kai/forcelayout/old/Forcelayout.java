@@ -192,22 +192,6 @@ public class Forcelayout extends View{
         invalidate();
     }
 
-
-//    public static class Test <L, I> {
-//        private final L label;
-//        private final I image;
-//
-//        private Test(L label, I image){
-//            this.label = label;
-//            this.image = image;
-//
-//        }
-//
-//        public static <L, I> Test<L, I> create(L label, I image) {
-//            return new Test<>(label, image);
-//        }
-//    }
-
     //TODO NodeとEdgeを別のクラスに分割すること
     //class of node
     public static class Node{
@@ -387,8 +371,8 @@ public class Forcelayout extends View{
         //spring like attractive forces
         private static int distance = 300; //distance between nodes
         private static double gravity = 0.04;
-
         private static double bounce = 0.08; //
+
         private static double attenuation = 0.7;//0.9; //
         private static double coulomb = 680; //
 

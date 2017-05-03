@@ -46,6 +46,7 @@ class Properties(private val mContext: Context){
     //TODO ここで初期化処理を行う
     init {
         initNodes()
+        initEdges()
     }
 
     fun prepare(): Properties{
@@ -234,7 +235,11 @@ class Properties(private val mContext: Context){
         nodeindex = 0
         nodes = arrayOfNulls<Node>(200)
         nodenameArray.clear()
-        //        nodebitmap_array.clear()
-//        convertlist.clear()
+        nodeslist.clear()
+    }
+
+    private fun initEdges(){
+        nedges = 0
+        edges = arrayOfNulls<Edge>(500)
     }
 }

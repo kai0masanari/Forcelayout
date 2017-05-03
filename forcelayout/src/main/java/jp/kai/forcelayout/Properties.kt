@@ -8,7 +8,7 @@ import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
-import java.util.*
+import java.util.ArrayList
 
 
 /**

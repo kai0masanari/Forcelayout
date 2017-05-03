@@ -3,7 +3,6 @@ package jp.kai.example.forcelayout;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import jp.kai.forcelayout.Forcelayout;
+import jp.kai.forcelayout.old.Forcelayout;
 /**
  * Created by kai on 2016/09/03.
  */

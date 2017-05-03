@@ -1,4 +1,4 @@
-package jp.kai.forcelayout;
+package jp.kai.forcelayout.old;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import static jp.kai.forcelayout.ImageEditor.*;
+import static jp.kai.forcelayout.old.ImageEditor.*;
 
 
 /**

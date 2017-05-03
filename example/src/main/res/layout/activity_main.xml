@@ -4,7 +4,7 @@
   android:layout_height="match_parent"
   tools:context=".MainActivity"
   >
-  <jp.kai.forcelayout.Forcelayout
+  <jp.kai.forcelayout.old.Forcelayout
       android:id="@+id/sample_logview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

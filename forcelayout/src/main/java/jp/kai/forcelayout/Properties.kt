@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Pair
-import android.view.Display
-import android.view.WindowManager
+import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
+import jp.kai.forcelayout.Util.Companion.resizeBitmap
 
 /**
  * Created by kai on 2017/05/01.
@@ -34,8 +34,6 @@ class Properties(private val mContext: Context){
     //TODO ノードの大きさなどは別のBuilderで設定するように変えたい
     private var reduction: Int = 30
     private var nodeswidth: Int = 150 //node's width
-
-    var editImage: EditImage = EditImage()
 
     //TODO ここで初期化処理を行う
     init {
@@ -78,7 +76,7 @@ class Properties(private val mContext: Context){
             var imgwidth = bmfOptions.outWidth
 
             if (imgwidth != nodeswidth) {
-                bitmap = editImage.resizeBitmap(bitmap, nodeswidth)
+                bitmap = resizeBitmap(bitmap, nodeswidth)
 
                 imgheight = bitmap.height
                 imgwidth = bitmap.width

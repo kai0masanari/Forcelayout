@@ -141,10 +141,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         invalidate()
     }
 
-    private fun getDisplayMetrics(context: Context): Display {
-        val winMan = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val disp = winMan.defaultDisplay
-        return disp
-    }
+
 
 }

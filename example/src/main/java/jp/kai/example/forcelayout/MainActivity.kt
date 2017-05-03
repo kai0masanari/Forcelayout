@@ -17,7 +17,7 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val _bane = Forcelayout(applicationContext)
+        val bane = Forcelayout(applicationContext)
 
         //set nodes
         val nodes = ArrayList <Pair<String,Int>>()
@@ -38,13 +38,22 @@ class MainActivity : Activity() {
         nodes.add(Pair("neko11", R.drawable.g))
         nodes.add(Pair("neko12", R.drawable.g))
 
+        //set links
+        val links = Arrays.asList("neko5-neko8", "neko-neko4", "neko1-neko2", "neko2-neko3", "neko3-neko1", "neko5-neko10", "neko3-neko11", "neko3-neko12", "neko3-nyanko", "hoge-neko7")
+
+        bane.with(this)
+                .linkStrength(0.09)
+                .distance(200)
+                .gravity(0.04)
+                .nodes(nodes)
+                .links(links)
 
         val button1 = Button(this)
         button1.setOnClickListener {
             //set links
             val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
 
-            _bane.with(applicationContext).linkStrength(0.09).gravity(0.04).distance(200).links(links)
+            bane.with(applicationContext).linkStrength(0.09).gravity(0.04).distance(200).links(links)
         }
         button1.text = "change links"
 
@@ -53,7 +62,7 @@ class MainActivity : Activity() {
         seek1.max = 100
         seek1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                _bane.with(applicationContext).gravity((progress.toFloat() / 1000).toDouble())
+                bane.with(applicationContext).gravity((progress.toFloat() / 1000).toDouble())
 
             }
 
@@ -71,20 +80,8 @@ class MainActivity : Activity() {
         layout.orientation = LinearLayout.VERTICAL
         layout.addView(button1)
         layout.addView(seek1)
-        layout.addView(_bane)
+        layout.addView(bane)
         setContentView(layout)
-
-
-        //set links
-        val links = Arrays.asList("neko5-neko8", "neko-neko4", "neko1-neko2", "neko2-neko3", "neko3-neko1", "neko5-neko10", "neko3-neko11", "neko3-neko12", "neko3-nyanko", "hoge-neko7")
-
-        _bane.with(this)
-                .linkStrength(0.09)
-                .distance(200)
-                .gravity(0.04)
-                .nodes(nodes)
-                .links(links)
-
 
     }
 

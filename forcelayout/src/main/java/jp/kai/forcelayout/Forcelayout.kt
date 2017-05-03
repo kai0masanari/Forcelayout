@@ -42,7 +42,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
 
     init {
         init_nodes()
-        init_links()
     }
 
     private fun init_nodes() {
@@ -50,11 +49,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         nodename_array.clear()
         nodebitmap_array.clear()
         convertlist.clear()
-    }
-
-    private fun init_links() {
-        val edges = arrayOfNulls<Edge>(500)
-        nedges = 0
     }
 
     fun with(context: Context): Properties {

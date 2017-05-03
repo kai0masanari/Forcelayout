@@ -6,8 +6,8 @@ import android.graphics.*
  * Created by kai on 2017/05/03.
  */
 
-open class EditImage{
-    open fun resizeBitmap(src: Bitmap, width: Int): Bitmap {
+class EditImage{
+    fun resizeBitmap(src: Bitmap, width: Int): Bitmap {
         val src = src
         val srcWidth = src.width
         val srcHeight = src.height

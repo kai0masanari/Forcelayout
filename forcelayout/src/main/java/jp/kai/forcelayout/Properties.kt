@@ -25,7 +25,8 @@ class Properties(private val mContext: Context){
     /** draw area */
     private var display_width: Float = 0f
     private var display_height: Float = 0f
-
+    private var drawAreaWidth: Float = 0.toFloat() //draw area = screen size
+    private var drawAreaHeight: Float = 0.toFloat()
 
     /** spring-like force */
     private var distance: Int = 300
@@ -83,8 +84,8 @@ class Properties(private val mContext: Context){
                 imgwidth = bitmap.width
             }
 
-            nodearea_width = display_width - imgwidth
-            nodearea_height = display_height - imgheight
+            drawAreaWidth = display_width - imgwidth
+            drawAreaHeight = display_height - imgheight
 
             addNode(pair.first, nodeindex, imgwidth, imgheight)
 
@@ -120,8 +121,8 @@ class Properties(private val mContext: Context){
     fun addNode(lbl: String, index: Int, width: Int, height: Int) {
         val n = Node()
 
-        n.x = nodearea_width * Math.random()
-        n.y = (nodearea_height - 10) * Math.random() + 10
+        n.x = drawAreaWidth * Math.random()
+        n.y = (drawAreaHeight - 10) * Math.random() + 10
         n.nodename = lbl
         n.width = width.toDouble()
         n.height = height.toDouble()

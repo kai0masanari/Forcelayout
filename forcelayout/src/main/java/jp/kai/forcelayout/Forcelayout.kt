@@ -40,8 +40,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     private var fontsize = 30
     private var fontcolor = Color.BLACK
 
-    private var nodearea_width: Float = 0.toFloat() //draw area = screen size
-    private var nodearea_height: Float = 0.toFloat()
+
 
 
     //TODO ノードやエッジの初期化処理は、Builderが呼ばれるタイミングにしたい

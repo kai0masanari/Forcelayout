@@ -25,8 +25,7 @@ class Properties(private val mContext: Context){
     /** draw area */
     private var display_width: Float = 0f
     private var display_height: Float = 0f
-    private var nodearea_width: Float = 0.toFloat() //draw area = screen size
-    private var nodearea_height: Float = 0.toFloat()
+
 
     /** spring-like force */
     private var distance: Int = 300

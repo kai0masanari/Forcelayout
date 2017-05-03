@@ -8,8 +8,7 @@ import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
 import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
-import jp.kai.forcelayout.model.Node
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Created by kai on 2017/05/01.
@@ -20,8 +19,9 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     //instance
     lateinit private var properties: Properties
 
+    //TODO ちょっと冗長な気がする
+    //TODO Propertiesに移行させたい
 //    private val nodeslist = HashMap<String, Bitmap>()
-
     internal var nodename_array = ArrayList<String>()
     internal var nodebitmap_array = ArrayList<Bitmap>()
     private val convertlist = ArrayList<String>()
@@ -31,8 +31,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
 
     //styles of node and link
     private val roundsize = 5
-    private var nodearea_width: Float = 0.toFloat() //draw area = screen size
-    private var nodearea_height: Float = 0.toFloat()
     //value of stroke
     private var drawstroke = true
     private val strokewidth = 5
@@ -42,18 +40,21 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     private var fontsize = 30
     private var fontcolor = Color.BLACK
 
+    private var nodearea_width: Float = 0.toFloat() //draw area = screen size
+    private var nodearea_height: Float = 0.toFloat()
 
-    init {
-        init_nodes()
-    }
 
-    private fun init_nodes() {
-        val nodes = arrayOfNulls<Node>(200)
-        nodename_array.clear()
-        nodebitmap_array.clear()
-        convertlist.clear()
-    }
+    //TODO ノードやエッジの初期化処理は、Builderが呼ばれるタイミングにしたい
+//    private fun init_nodes() {
+//        val nodes = arrayOfNulls<Node>(200)
+//        nodename_array.clear()
+//        nodebitmap_array.clear()
+//        convertlist.clear()
+//    }
 
+    /**
+     * Create Builder
+     */
     fun with(context: Context): Properties {
         mContext = context
         properties = Properties(context)

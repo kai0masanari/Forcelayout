@@ -1,11 +1,13 @@
 package jp.kai.forcelayout
 
 import android.content.Context
-import android.graphics.*
-import android.view.Display
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowManager
+import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
 import java.util.*
 
 /**

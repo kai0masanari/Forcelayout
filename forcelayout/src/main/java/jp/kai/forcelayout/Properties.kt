@@ -44,12 +44,6 @@ class Properties(private val mContext: Context){
     private var nodeswidth: Int = 150 //node's width
     private val roundsize = 5
 
-    //TODO ここで初期化処理を行う
-    init {
-        initNodes()
-        initEdges()
-    }
-
     fun prepare(): Properties{
         val mDisplay = getDisplayMetrics(mContext)
         display_width = mDisplay.width.toFloat()
@@ -59,6 +53,8 @@ class Properties(private val mContext: Context){
     }
 
     fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties{
+        initNodes()
+
         val resource = mContext.resources
         val iterator :Iterator<Pair<String, Int>> = nodemaps.iterator()
 
@@ -106,6 +102,8 @@ class Properties(private val mContext: Context){
     }
 
     fun links(linkmaps: List<String>): Properties{
+        initEdges()
+
         for (i in 0..nodenameArray.size - 1) {
             for (j in 0..nodenameArray.size - 1) {
                 if (i != j) {

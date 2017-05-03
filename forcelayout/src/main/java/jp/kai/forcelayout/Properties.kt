@@ -6,8 +6,7 @@ import android.view.WindowManager
 
 /**
  * Created by kai on 2017/05/01.
- * ForcelayoutのBuilder
- * ノード、リンク情報の保持と、バネ力のパラメータを指定できる
+ * Builder Class
  */
 
 //FIX-ME relax()を別のクラスに切り分けたい

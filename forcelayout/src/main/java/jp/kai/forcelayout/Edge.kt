@@ -2,6 +2,7 @@ package jp.kai.forcelayout
 
 /**
  * Created by kai on 2017/05/03.
+ * Edge Class
  */
 
 open class Edge{

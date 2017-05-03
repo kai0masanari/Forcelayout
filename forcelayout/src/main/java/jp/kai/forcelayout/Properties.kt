@@ -57,7 +57,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    private fun nodes(nodemaps: List<Pair<String, Int>>): Properties{
+    fun nodes(nodemaps: List<Pair<String, Int>>): Properties{
         val resource = mContext.resources
         val iterator :Iterator<Pair<String, Int>> = nodemaps.iterator()
 
@@ -104,7 +104,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    private fun links(linkmaps: List<String>): Properties{
+    fun links(linkmaps: List<String>): Properties{
         for (i in 0..nodenameArray.size - 1) {
             for (j in 0..nodenameArray.size - 1) {
                 if (i != j) {
@@ -115,7 +115,6 @@ class Properties(private val mContext: Context){
 
         for (k in 0..linkmaps.size - 1) {
             val pair = linkmaps[k].split("-")
-            //val pair: Array<String> = linkmaps[k].split("-")
 
             if (pair.size == 2) {
                 for (i in 0..nedges - 1) {
@@ -128,17 +127,17 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    private fun linkStrength(bounce: Double): Properties{
+    fun linkStrength(bounce: Double): Properties{
         this.bounce = bounce
         return this
     }
 
-    private fun distance(dictance: Int): Properties{
+    fun distance(dictance: Int): Properties{
         this.distance = distance
        return this
     }
 
-    private fun gravity(gravity: Double): Properties{
+    fun gravity(gravity: Double): Properties{
         this.gravity = gravity
         return this
     }

@@ -112,15 +112,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
             index++
         }
 
-//        /** draw nodes and labels */
-//        for (i in convertlist.indices) {
-//            canvas.drawBitmap(nodebitmap_array[i], properties.nodes[i]!!.x.toInt().toFloat(), properties.nodes[i]!!.y.toInt().toFloat(), paint)
-//
-//            paint.textSize = fontsize.toFloat()
-//            paint.color = fontcolor
-//            canvas.drawText(properties.nodes[i]!!.nodename, (properties.nodes[i]!!.x + properties.nodes[i]!!.width).toInt().toFloat(), (properties.nodes[i]!!.y + properties.nodes[i]!!.height + 30.0).toInt().toFloat(), paint)
-//        }
-
         /** calculate spring-like forces */
         if (properties.nedges != 0) {
             properties.relax()

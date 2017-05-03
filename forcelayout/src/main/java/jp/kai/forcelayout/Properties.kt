@@ -164,6 +164,7 @@ class Properties(private val mContext: Context){
         e.to = to
         e.group = false
         edges.add(e)
+        nedges++
         //edges[nedges++] = e
     }
 

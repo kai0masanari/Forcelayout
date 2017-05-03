@@ -112,9 +112,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
             }
 
             /** calculate spring-like forces */
-            if (properties.nedges != 0) {
-                properties.relax()
-            }
+            properties.relax()
         }
 
         invalidate()

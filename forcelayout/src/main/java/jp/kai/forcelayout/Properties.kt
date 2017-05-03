@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Pair
+import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
 import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
@@ -19,12 +20,12 @@ import java.util.ArrayList
 //FIX-ME relax()を別のクラスに切り分けたい
 class Properties(private val mContext: Context){
     /** node's and link's */
-    private var nodes = arrayOfNulls<Node>(200)
-    private var edges = arrayOfNulls<Edge>(500)
-    private var nodeindex: Int = 0
-    private var nedges: Int = 0
-    private var nodename_array = ArrayList<String>()
-    private var nodeslist = ArrayList<Pair<String, Bitmap>>()
+    var nodes = arrayOfNulls<Node>(200)
+    var edges = arrayOfNulls<Edge>(500)
+    var nodeindex: Int = 0
+    var nedges: Int = 0
+    private var nodenameArray = ArrayList<String>()
+    var nodeslist = ArrayList<Pair<String, Bitmap>>()
 
     /** draw area */
     private var display_width: Float = 0f
@@ -40,11 +41,11 @@ class Properties(private val mContext: Context){
     //TODO ノードの大きさなどは別のBuilderで設定するように変えたい
     private var reduction: Int = 30
     private var nodeswidth: Int = 150 //node's width
+    private val roundsize = 5
 
     //TODO ここで初期化処理を行う
     init {
-        nodeindex = 0
-
+        initNodes()
     }
 
     fun prepare(): Properties{
@@ -93,9 +94,9 @@ class Properties(private val mContext: Context){
 
             addNode(pair.first, nodeindex, imgwidth, imgheight)
 
-            nodename_array.add(pair.first)
+            nodenameArray.add(pair.first)
 
-            nodeslist.add(Pair(pair.first, bitmap))
+            nodeslist.add(Pair(pair.first, getCroppedBitmap(bitmap, roundsize)))
             nodeindex++
         }
 
@@ -103,8 +104,8 @@ class Properties(private val mContext: Context){
     }
 
     private fun links(linkmaps: List<String>): Properties{
-        for (i in 0..nodename_array.size - 1) {
-            for (j in 0..nodename_array.size - 1) {
+        for (i in 0..nodenameArray.size - 1) {
+            for (j in 0..nodenameArray.size - 1) {
                 if (i != j) {
                     addEdge(i, j)
                 }
@@ -117,7 +118,7 @@ class Properties(private val mContext: Context){
 
             if (pair.size == 2) {
                 for (i in 0..nedges - 1) {
-                    if (edges[i]!!.from == nodename_array.indexOf(pair[0]) && edges[i]!!.to == nodename_array.indexOf(pair[1]) || edges[i]!!.to == nodename_array.indexOf(pair[0]) && edges[i]!!.from == nodename_array.indexOf(pair[1])) {
+                    if (edges[i]!!.from == nodenameArray.indexOf(pair[0]) && edges[i]!!.to == nodenameArray.indexOf(pair[1]) || edges[i]!!.to == nodenameArray.indexOf(pair[0]) && edges[i]!!.from == nodenameArray.indexOf(pair[1])) {
                         edges[i]!!.group = true
                     }
                 }
@@ -227,6 +228,13 @@ class Properties(private val mContext: Context){
             nodes[i]!!.y += nodes[i]!!.dy
 
         }
+    }
 
+    private fun initNodes() {
+        nodeindex = 0
+        nodes = arrayOfNulls<Node>(200)
+        nodenameArray.clear()
+        //        nodebitmap_array.clear()
+//        convertlist.clear()
     }
 }

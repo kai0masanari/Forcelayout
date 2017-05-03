@@ -5,9 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
-import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
 import java.util.ArrayList
 
 /**
@@ -19,36 +19,16 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     //instance
     lateinit private var properties: Properties
 
-    //TODO ちょっと冗長な気がする
-    //TODO Propertiesに移行させたい
-//    private val nodeslist = HashMap<String, Bitmap>()
-
-    private val convertlist = ArrayList<String>()
-
-
     private var targetnode = -1
 
     //styles of node and link
-    private val roundsize = 5
-    //value of stroke
+//    private val roundsize = 5
     private var drawstroke = true
     private val strokewidth = 5
     private var strokecolor = Color.BLACK
-    //value of label
-    private var drawlabel = true
+//    private var drawlabel = true
     private var fontsize = 30
     private var fontcolor = Color.BLACK
-
-
-
-
-    //TODO ノードやエッジの初期化処理は、Builderが呼ばれるタイミングにしたい
-//    private fun init_nodes() {
-//        val nodes = arrayOfNulls<Node>(200)
-//        nodename_array.clear()
-//        nodebitmap_array.clear()
-//        convertlist.clear()
-//    }
 
     /**
      * Create Builder
@@ -67,9 +47,15 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> if (targetnode == -1) {
-                for (i in 0..nodeindex - 1) {
-                    if (nodes[i].x + nodes[i].width >= touch_x && nodes[i].x <= touch_x && nodes[i].y + nodes[i].height >= touch_y && nodes[i].y <= touch_y) {
+                for (i in 0..properties.nodeindex - 1) {
+
+                    if (properties.nodes[i]!!.x + properties.nodes[i]!!.width >= touch_x &&
+                        properties.nodes[i]!!.x <= touch_x &&
+                        properties.nodes[i]!!.y + properties.nodes[i]!!.height >= touch_y &&
+                        properties.nodes[i]!!.y <= touch_y) {
+
                         targetnode = i
+
                     }
                 }
             }
@@ -77,8 +63,8 @@ open class Forcelayout(private var mContext: Context): View(mContext){
             MotionEvent.ACTION_MOVE ->
 
                 if (targetnode != -1) {
-                    nodes[targetnode].x = touch_x - nodes[targetnode].width / 2
-                    nodes[targetnode].y = touch_y - nodes[targetnode].height / 2
+                    properties.nodes[targetnode]!!.x = touch_x - properties.nodes[targetnode]!!.width / 2
+                    properties.nodes[targetnode]!!.y = touch_y - properties.nodes[targetnode]!!.height / 2
                 }
 
             MotionEvent.ACTION_UP -> targetnode = -1
@@ -95,14 +81,13 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         val paint = Paint()
 
         //draw link's line
-        //        if(edges.length != 0){
-        for (i in 0..nedges - 1 - 1) {
-            if (edges[i].group) {
-                val e = edges[i]
-                val x1 = (nodes[e.from].x + nodes[e.from].width / 2).toFloat()
-                val y1 = (nodes[e.from].y + nodes[e.from].height / 2).toFloat()
-                val x2 = (nodes[e.to].x + nodes[e.to].width / 2).toFloat()
-                val y2 = (nodes[e.to].y + nodes[e.to].height / 2).toFloat()
+        for (i in 0..properties.nedges - 1 - 1) {
+            if (properties.edges[i]!!.group) {
+                val e = properties.edges[i]!!
+                val x1 = (properties.nodes[e.from]!!.x + properties.nodes[e.from]!!.width / 2).toFloat()
+                val y1 = (properties.nodes[e.from]!!.y + properties.nodes[e.from]!!.height / 2).toFloat()
+                val x2 = (properties.nodes[e.to]!!.x + properties.nodes[e.to]!!.width / 2).toFloat()
+                val y2 = (properties.nodes[e.to]!!.y + properties.nodes[e.to]!!.height / 2).toFloat()
 
                 if (drawstroke) {
                     paint.strokeWidth = strokewidth.toFloat()
@@ -112,31 +97,32 @@ open class Forcelayout(private var mContext: Context): View(mContext){
                 }
             }
         }
-        //        }
 
-        //draw node's image
-        for (str in nodeslist.keys) {
-            if (convertlist.indexOf(str) == -1) {
-                val _bitmap = nodeslist[str]
-                nodebitmap_array.add(getCroppedBitmap(nodeslist[str], roundsize))
-                convertlist.add(str)
-            }
+        /** draw node images and labels */
+        val iterator: Iterator<Pair<String, Bitmap>> = properties.nodeslist.iterator()
+        var index: Int = 0
+        while(iterator.hasNext()){
+            val pair: Pair<String, Bitmap> = iterator.next()
+
+            canvas.drawBitmap(pair.second, properties.nodes[index]!!.x.toInt().toFloat(), properties.nodes[index]!!.y.toInt().toFloat(), paint)
+            paint.textSize = fontsize.toFloat()
+            paint.color = fontcolor
+            canvas.drawText(properties.nodes[index]!!.nodename, (properties.nodes[index]!!.x + properties.nodes[index]!!.width).toInt().toFloat(), (properties.nodes[index]!!.y + properties.nodes[index]!!.height + 30.0).toInt().toFloat(), paint)
+
+            index++
         }
 
+//        /** draw nodes and labels */
+//        for (i in convertlist.indices) {
+//            canvas.drawBitmap(nodebitmap_array[i], properties.nodes[i]!!.x.toInt().toFloat(), properties.nodes[i]!!.y.toInt().toFloat(), paint)
+//
+//            paint.textSize = fontsize.toFloat()
+//            paint.color = fontcolor
+//            canvas.drawText(properties.nodes[i]!!.nodename, (properties.nodes[i]!!.x + properties.nodes[i]!!.width).toInt().toFloat(), (properties.nodes[i]!!.y + properties.nodes[i]!!.height + 30.0).toInt().toFloat(), paint)
+//        }
 
-        //draw label
-        for (i in convertlist.indices) {
-            canvas.drawBitmap(nodebitmap_array[i], nodes[i].x.toInt().toFloat(), nodes[i].y.toInt().toFloat(), paint)
-
-            if (drawlabel) {
-                paint.textSize = fontsize.toFloat()
-                paint.color = fontcolor
-                canvas.drawText(nodes[i].nodename!!, (nodes[i].x + nodes[i].width).toInt().toFloat(), (nodes[i].y + nodes[i].height + 30.0).toInt().toFloat(), paint)
-            }
-        }
-
-        if (nedges != 0) {
-
+        /** calculate spring-like forces */
+        if (properties.nedges != 0) {
             properties.relax()
         }
 

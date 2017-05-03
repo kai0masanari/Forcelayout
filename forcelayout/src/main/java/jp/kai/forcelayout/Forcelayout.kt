@@ -2,8 +2,10 @@ package jp.kai.forcelayout
 
 import android.content.Context
 import android.graphics.*
+import android.view.Display
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import java.util.*
 
 /**
@@ -16,12 +18,11 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     lateinit private var properties: Properties
 
 //    private val nodeslist = HashMap<String, Bitmap>()
-    var nodes = arrayOfNulls<Node>(200)
-    var edges = arrayOfNulls<Edge>(500)
+
     internal var nodename_array = ArrayList<String>()
     internal var nodebitmap_array = ArrayList<Bitmap>()
     private val convertlist = ArrayList<String>()
-    private var nedges = 0
+
 
     private var targetnode = -1
 
@@ -49,7 +50,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         nodename_array.clear()
         nodebitmap_array.clear()
         convertlist.clear()
-        nodeindex = 0
     }
 
     private fun init_links() {
@@ -147,26 +147,10 @@ open class Forcelayout(private var mContext: Context): View(mContext){
         invalidate()
     }
 
-    fun addNode(lbl: String, index: Int, width: Int, height: Int) {
-        val n = Node()
-
-        n.x = nodearea_width * Math.random()
-        n.y = (nodearea_height - 10) * Math.random() + 10
-        n.nodename = lbl
-        n.width = width.toDouble()
-        n.height = height.toDouble()
-        n.dx = 0.0
-        n.dy = 0.0
-
-        nodes[index] = n
-    }
-
-    fun addEdge(from: Int, to: Int) {
-        val e = Edge()
-        e.from = from
-        e.to = to
-        e.group = false
-        edges[nedges++] = e
+    private fun getDisplayMetrics(context: Context): Display {
+        val winMan = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val disp = winMan.defaultDisplay
+        return disp
     }
 
 }

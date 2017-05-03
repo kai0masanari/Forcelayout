@@ -14,6 +14,11 @@ import android.view.WindowManager
 
 //FIX-ME relax()を別のクラスに切り分けたい
 class Properties(private val mContext: Context){
+    /** node's and link's */
+    private var nodes = arrayOfNulls<Node>(200)
+    private var edges = arrayOfNulls<Edge>(500)
+    private var nodeindex: Int = 0
+    private var nedges: Int = 0
 
     /** draw area */
     private var display_width: Float = 0f
@@ -26,16 +31,16 @@ class Properties(private val mContext: Context){
     private var bounce: Double = 0.08
     private var gravity: Double = 0.04
 
-    //Node Size
     //TODO ノードの大きさなどは別のBuilderで設定するように変えたい
     private var reduction: Int = 30
     private var nodeswidth: Int = 150 //node's width
 
-    private var nodeindex: Int = 0
+    var editImage: EditImage = EditImage()
 
     //TODO ここで初期化処理を行う
     init {
         nodeindex = 0
+
     }
 
     fun prepare(): Properties{
@@ -73,7 +78,7 @@ class Properties(private val mContext: Context){
             var imgwidth = bmfOptions.outWidth
 
             if (imgwidth != nodeswidth) {
-                bitmap = resizeBitmap(bitmap, nodeswidth)
+                bitmap = editImage.resizeBitmap(bitmap, nodeswidth)
 
                 imgheight = bitmap.height
                 imgwidth = bitmap.width
@@ -113,15 +118,30 @@ class Properties(private val mContext: Context){
         return this
     }
 
+    fun addNode(lbl: String, index: Int, width: Int, height: Int) {
+        val n = Node()
+
+        n.x = nodearea_width * Math.random()
+        n.y = (nodearea_height - 10) * Math.random() + 10
+        n.nodename = lbl
+        n.width = width.toDouble()
+        n.height = height.toDouble()
+        n.dx = 0.0
+        n.dy = 0.0
+
+        nodes[index] = n
+    }
+
+    fun addEdge(from: Int, to: Int) {
+        val e = Edge()
+        e.from = from
+        e.to = to
+        e.group = false
+        edges[nedges++] = e
+    }
+
     //TODO スタイル等の情報はまた別のBuilderを作るべきかもしれない
 //    private fun nodeSize(): Properties{
 //        return this
 //    }
-
-    private fun getDisplayMetrics(context: Context): Display {
-        val winMan = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val disp = winMan.defaultDisplay
-        return disp
-    }
-
 }

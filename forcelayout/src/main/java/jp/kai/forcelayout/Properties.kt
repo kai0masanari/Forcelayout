@@ -36,7 +36,7 @@ class Properties(mContext: Context){
 
     //TODO ここで初期化処理を行う
     init {
-
+        nodeindex = 0
     }
 
     fun prepare(): Properties{

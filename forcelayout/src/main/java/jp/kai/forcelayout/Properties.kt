@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import android.util.Pair
 import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
+import jp.kai.forcelayout.model.Edge
+import jp.kai.forcelayout.model.Node
 
 /**
  * Created by kai on 2017/05/01.

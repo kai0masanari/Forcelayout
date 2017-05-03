@@ -1,4 +1,4 @@
-package jp.kai.forcelayout
+package jp.kai.forcelayout.model
 
 /**
  * Created by kai on 2017/05/03.

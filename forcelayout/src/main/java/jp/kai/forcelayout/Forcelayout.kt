@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.View
 import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
+import jp.kai.forcelayout.model.Node
 import java.util.*
 
 /**

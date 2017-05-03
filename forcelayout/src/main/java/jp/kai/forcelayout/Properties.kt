@@ -8,6 +8,13 @@ import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
+import android.R.attr.y
+import android.R.attr.x
+import android.R.interpolator.bounce
+import android.R.attr.gravity
+import java.awt.geom.Point2D.distance
+
+
 
 /**
  * Created by kai on 2017/05/01.
@@ -140,8 +147,71 @@ class Properties(private val mContext: Context){
         edges[nedges++] = e
     }
 
-    //TODO スタイル等の情報はまた別のBuilderを作るべきかもしれない
-//    private fun nodeSize(): Properties{
-//        return this
-//    }
+    fun relax() {
+        if (nedges !== 0) {
+            for (i in 0..nodeindex - 1) {
+                var fx = 0.0
+                var fy = 0.0
+
+                for (j in 0..nodeindex - 1) {
+
+                    val distX = ((nodes[i].x + nodes[i].width / 2 - (nodes[j].x + nodes[j].width / 2)) as Int).toDouble()
+                    val distY = ((nodes[i].y + nodes[i].height / 2 - (nodes[j].y + nodes[j].height / 2)) as Int).toDouble()
+                    var rsq = distX * distX + distY * distY
+                    val rsq_round = rsq.toInt() * 100
+                    rsq = (rsq_round / 100).toDouble()
+
+                    var coulombdist_x = COULOMB * distX
+                    var coulombdist_y = COULOMB * distY
+                    val coulombdist_round_x = coulombdist_x.toInt() * 100
+                    val coulombdist_round_y = coulombdist_y.toInt() * 100
+                    coulombdist_x = (coulombdist_round_x / 100).toDouble()
+                    coulombdist_y = (coulombdist_round_y / 100).toDouble()
+
+
+
+                    if (rsq != 0.0 && Math.sqrt(rsq) < distance) {
+                        fx += coulombdist_x / rsq
+                        fy += coulombdist_y / rsq
+                    }
+                }
+
+                //gravity : node - central
+                var distX_c = 0.0
+                var distY_c = 0.0
+                distX_c = display_width / 2 - (nodes[i].x + nodes[i].width / 2)
+                distY_c = display_height / 2 - (nodes[i].y + nodes[i].height / 2)
+
+                fx += gravity * distX_c
+                fy += gravity * distY_c
+
+
+                //node in group : from - to
+                for (j in 0..nedges - 1 - 1) {
+                    var distX = 0.0
+                    var distY = 0.0
+                    if (edges[j].group) {
+                        if (i == edges[j].from) {
+                            distX = nodes[edges[j].to].x - nodes[i].x
+                            distY = nodes[edges[j].to].y - nodes[i].y
+
+                        } else if (i == edges[j].to) {
+                            distX = nodes[edges[j].from].x - nodes[i].x
+                            distY = nodes[edges[j].from].y - nodes[i].y
+                        }
+                    }
+                    fx += bounce * distX
+                    fy += bounce * distY
+                }
+
+                nodes[i].dx = (nodes[i].dx + fx) * ATTENUATION
+                nodes[i].dy = (nodes[i].dy + fy) * ATTENUATION
+
+
+                nodes[i].x += nodes[i].dx
+                nodes[i].y += nodes[i].dy
+
+            }
+        }
+    }
 }

@@ -2,11 +2,16 @@ package jp.kai.example.forcelayout
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import jp.kai.forcelayout.Forcelayout
 import android.util.Pair
+import org.jetbrains.anko.button
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.seekBar
+import org.jetbrains.anko.verticalLayout
 import java.util.ArrayList
 import java.util.Arrays
 
@@ -19,7 +24,7 @@ class MainActivity : Activity() {
 
         val bane = Forcelayout(applicationContext)
 
-        //set nodes
+        /** set nodes */
         val nodes = ArrayList <Pair<String,Int>>()
 
         nodes.add(Pair("neko", R.drawable.a))
@@ -48,46 +53,37 @@ class MainActivity : Activity() {
                 .nodes(nodes)
                 .links(links)
 
-        val button1 = Button(this)
-        button1.setOnClickListener {
-            //set links
-            val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
+        verticalLayout {
 
-            bane.with(applicationContext).linkStrength(0.09).gravity(0.04).distance(200).links(links)
+            button {
+                text = "change links"
+                setOnClickListener {
+                    //set links
+                    val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
+
+                    bane.with(applicationContext).linkStrength(0.09).gravity(0.04).distance(200).links(links)
+                }
+            }
+
+            seekBar {
+                max = 100
+                setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                        bane.with(applicationContext).gravity((progress.toFloat() / 1000).toDouble())
+
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+                    }
+                })
+            }
+
+            addView(bane)
         }
-        button1.text = "change links"
-
-
-        val seek1 = SeekBar(this)
-        seek1.max = 100
-        seek1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                bane.with(applicationContext).gravity((progress.toFloat() / 1000).toDouble())
-
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-            }
-        })
-
-
-        val layout = LinearLayout(this)
-        layout.orientation = LinearLayout.VERTICAL
-        layout.addView(button1)
-        layout.addView(seek1)
-        layout.addView(bane)
-        setContentView(layout)
-
     }
-
-
-    override fun onStart() {
-        super.onStart()
-    }
-
 }

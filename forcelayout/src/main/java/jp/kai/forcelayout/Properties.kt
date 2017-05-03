@@ -18,9 +18,11 @@ import java.util.ArrayList
 
 //FIX-ME relax()を別のクラスに切り分けたい
 class Properties(private val mContext: Context){
+    var isReady: Boolean = false
+
     /** node's and link's */
-    var nodes = arrayOfNulls<Node>(200)
-    var edges = arrayOfNulls<Edge>(500)
+    var nodes = ArrayList<Node>(200)
+    var edges = ArrayList<Edge>(500)
     var nodeindex: Int = 0
     var nedges: Int = 0
     private var nodenameArray = ArrayList<String>()
@@ -123,6 +125,8 @@ class Properties(private val mContext: Context){
                 }
             }
         }
+        //TODO builderの終わりを追加し、そこに記述する
+        isReady = true
         return this
     }
 
@@ -131,9 +135,9 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun distance(dictance: Int): Properties{
+    fun distance(distance: Int): Properties{
         this.distance = distance
-       return this
+        return this
     }
 
     fun gravity(gravity: Double): Properties{
@@ -152,7 +156,8 @@ class Properties(private val mContext: Context){
         n.dx = 0.0
         n.dy = 0.0
 
-        nodes[index] = n
+        nodes.add(n)
+//        nodes[index] = n
     }
 
     fun addEdge(from: Int, to: Int) {
@@ -160,7 +165,8 @@ class Properties(private val mContext: Context){
         e.from = from
         e.to = to
         e.group = false
-        edges[nedges++] = e
+        edges.add(e)
+        //edges[nedges++] = e
     }
 
     fun relax() {
@@ -231,13 +237,13 @@ class Properties(private val mContext: Context){
 
     private fun initNodes() {
         nodeindex = 0
-        nodes = arrayOfNulls<Node>(200)
+        nodes = ArrayList<Node>()
         nodenameArray.clear()
         nodeslist.clear()
     }
 
     private fun initEdges(){
         nedges = 0
-        edges = arrayOfNulls<Edge>(500)
+        edges = ArrayList<Edge>()
     }
 }

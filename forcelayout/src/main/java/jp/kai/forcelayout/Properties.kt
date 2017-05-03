@@ -11,7 +11,6 @@ import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
 import java.util.ArrayList
 
-
 /**
  * Created by kai on 2017/05/01.
  * Builder Class
@@ -57,7 +56,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodes(nodemaps: List<Pair<String, Int>>): Properties{
+    fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties{
         val resource = mContext.resources
         val iterator :Iterator<Pair<String, Int>> = nodemaps.iterator()
 

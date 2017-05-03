@@ -8,7 +8,6 @@ import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
-import java.util.ArrayList
 
 /**
  * Created by kai on 2017/05/01.

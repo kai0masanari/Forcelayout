@@ -13,8 +13,7 @@ import android.view.WindowManager
  */
 
 //FIX-ME relax()を別のクラスに切り分けたい
-class Properties(mContext: Context){
-    private val mContext: Context = mContext
+class Properties(private val mContext: Context){
 
     /** draw area */
     private var display_width: Float = 0f
@@ -41,8 +40,8 @@ class Properties(mContext: Context){
 
     fun prepare(): Properties{
         val mDisplay = getDisplayMetrics(mContext)
-        display_width = mDisplay.getWidth().toFloat()
-        display_height = mDisplay.getHeight().toFloat()
+        display_width = mDisplay.width.toFloat()
+        display_height = mDisplay.height.toFloat()
 
         return this
     }

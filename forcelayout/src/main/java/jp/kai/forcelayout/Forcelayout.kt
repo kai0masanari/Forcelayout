@@ -20,12 +20,8 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     var edges = arrayOfNulls<Edge>(500)
     internal var nodename_array = ArrayList<String>()
     internal var nodebitmap_array = ArrayList<Bitmap>()
-    private val convertlist = ArrayList<String>();
+    private val convertlist = ArrayList<String>()
     private var nedges = 0
-    private var nodeindex = 0 //number of nodes
-
-    private var display_width: Float = 0.toFloat()
-    private var display_height: Float = 0.toFloat()
 
     private var targetnode = -1
 

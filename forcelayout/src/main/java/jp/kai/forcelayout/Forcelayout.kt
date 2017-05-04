@@ -95,7 +95,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
             }
 
             /** draw node images and labels */
-            val iterator: Iterator<Pair<String, Bitmap>> = properties.nodeslist.iterator()
+            val iterator: Iterator<Pair<String, Bitmap>> = properties.nodesList.iterator()
             var index: Int = 0
             while (iterator.hasNext()) {
                 val pair: Pair<String, Bitmap> = iterator.next()

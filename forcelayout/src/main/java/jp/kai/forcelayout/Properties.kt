@@ -25,12 +25,12 @@ class Properties(private val mContext: Context){
     var edges = ArrayList<Edge>(500)
     var nodeindex: Int = 0
     var nedges: Int = 0
-    private var nodenameArray = ArrayList<String>()
-    var nodeslist = ArrayList<Pair<String, Bitmap>>()
+    private var nodeNameArray = ArrayList<String>()
+    var nodesList = ArrayList<Pair<String, Bitmap>>()
 
     /** draw area */
-    private var display_width: Float = 0f
-    private var display_height: Float = 0f
+    private var displayWidth: Float = 0f
+    private var displayHeight: Float = 0f
     private var drawAreaWidth: Float = 0.toFloat() //draw area = screen size
     private var drawAreaHeight: Float = 0.toFloat()
 
@@ -42,12 +42,12 @@ class Properties(private val mContext: Context){
     //TODO ノードの大きさなどは別のBuilderで設定するように変えたい
     private var reduction: Int = 30
     private var nodeswidth: Int = 150 //node's width
-    private val roundsize = 5
+    private val roundSize = 5
 
     fun prepare(): Properties{
         val mDisplay = getDisplayMetrics(mContext)
-        display_width = mDisplay.width.toFloat()
-        display_height = mDisplay.height.toFloat()
+        displayWidth = mDisplay.width.toFloat()
+        displayHeight = mDisplay.height.toFloat()
 
         return this
     }
@@ -67,11 +67,11 @@ class Properties(private val mContext: Context){
             imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888
             imageOptions.inJustDecodeBounds = true
             BitmapFactory.decodeResource(resource, pair.second, imageOptions)
-            val bitmapwidth = imageOptions.outWidth
+            val bitmapWidth = imageOptions.outWidth
             val bmfOptions = BitmapFactory.Options()
 
             /** resize image */
-            reduction = bitmapwidth / nodeswidth
+            reduction = bitmapWidth / nodeswidth
             if (reduction != 0) {
                 bmfOptions.inSampleSize = reduction
             }
@@ -87,38 +87,37 @@ class Properties(private val mContext: Context){
                 imgwidth = bitmap.width
             }
 
-            drawAreaWidth = display_width - imgwidth
-            drawAreaHeight = display_height - imgheight
+            drawAreaWidth = displayWidth - imgwidth
+            drawAreaHeight = displayHeight - imgheight
 
-            addNode(pair.first, nodeindex, imgwidth, imgheight)
+            addNode(pair.first, imgwidth, imgheight)
 
-            nodenameArray.add(pair.first)
+            nodeNameArray.add(pair.first)
 
-            nodeslist.add(Pair(pair.first, getCroppedBitmap(bitmap, roundsize)))
-            nodeindex++
+            nodesList.add(Pair(pair.first, getCroppedBitmap(bitmap, roundSize)))
         }
 
         return this
     }
 
-    fun links(linkmaps: List<String>): Properties{
+    fun links(linkMaps: List<String>): Properties{
         initEdges()
 
-        for (i in 0..nodenameArray.size - 1) {
-            for (j in 0..nodenameArray.size - 1) {
+        for (i in 0..nodeNameArray.size - 1) {
+            for (j in 0..nodeNameArray.size - 1) {
                 if (i != j) {
                     addEdge(i, j)
                 }
             }
         }
 
-        for (k in 0..linkmaps.size - 1) {
-            val pair = linkmaps[k].split("-")
+        for (k in 0..linkMaps.size - 1) {
+            val pair = linkMaps[k].split("-")
 
             if (pair.size == 2) {
                 for (i in 0..nedges - 1) {
-                    if (edges[i]!!.from == nodenameArray.indexOf(pair[0]) && edges[i]!!.to == nodenameArray.indexOf(pair[1]) || edges[i]!!.to == nodenameArray.indexOf(pair[0]) && edges[i]!!.from == nodenameArray.indexOf(pair[1])) {
-                        edges[i]!!.group = true
+                    if (edges[i].from == nodeNameArray.indexOf(pair[0]) && edges[i].to == nodeNameArray.indexOf(pair[1]) || edges[i].to == nodeNameArray.indexOf(pair[0]) && edges[i].from == nodeNameArray.indexOf(pair[1])) {
+                        edges[i].group = true
                     }
                 }
             }
@@ -143,9 +142,8 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun addNode(lbl: String, index: Int, width: Int, height: Int) {
+    fun addNode(lbl: String, width: Int, height: Int) {
         val n = Node()
-
         n.x = drawAreaWidth * Math.random()
         n.y = (drawAreaHeight - 10) * Math.random() + 10
         n.nodename = lbl
@@ -153,9 +151,8 @@ class Properties(private val mContext: Context){
         n.height = height.toDouble()
         n.dx = 0.0
         n.dy = 0.0
-
         nodes.add(n)
-//        nodes[index] = n
+        nodeindex++
     }
 
     fun addEdge(from: Int, to: Int) {
@@ -165,7 +162,6 @@ class Properties(private val mContext: Context){
         e.group = false
         edges.add(e)
         nedges++
-        //edges[nedges++] = e
     }
 
     fun relax() {
@@ -175,61 +171,59 @@ class Properties(private val mContext: Context){
 
             for (j in 0..nodeindex - 1) {
 
-                val distX = ((nodes[i]!!.x + nodes[i]!!.width / 2 - (nodes[j]!!.x + nodes[j]!!.width / 2)).toInt()).toDouble()
-                val distY = ((nodes[i]!!.y + nodes[i]!!.height / 2 - (nodes[j]!!.y + nodes[j]!!.height / 2)).toInt()).toDouble()
+                val distX = ((nodes[i].x + nodes[i].width / 2 - (nodes[j].x + nodes[j].width / 2)).toInt()).toDouble()
+                val distY = ((nodes[i].y + nodes[i].height / 2 - (nodes[j].y + nodes[j].height / 2)).toInt()).toDouble()
                 var rsq = distX * distX + distY * distY
                 val rsq_round = rsq.toInt() * 100
                 rsq = (rsq_round / 100).toDouble()
 
-                var coulombdist_x = COULOMB * distX
-                var coulombdist_y = COULOMB * distY
-                val coulombdist_round_x = coulombdist_x.toInt() * 100
-                val coulombdist_round_y = coulombdist_y.toInt() * 100
-                coulombdist_x = (coulombdist_round_x / 100).toDouble()
-                coulombdist_y = (coulombdist_round_y / 100).toDouble()
-
-
+                var coulombDistX = COULOMB * distX
+                var coulombDistY = COULOMB * distY
+                val coulombDistRoundX = coulombDistX.toInt() * 100
+                val coulombDistRoundY = coulombDistY.toInt() * 100
+                coulombDistX = (coulombDistRoundX / 100).toDouble()
+                coulombDistY = (coulombDistRoundY / 100).toDouble()
 
                 if (rsq != 0.0 && Math.sqrt(rsq) < distance) {
-                    fx += coulombdist_x / rsq
-                    fy += coulombdist_y / rsq
+                    fx += coulombDistX / rsq
+                    fy += coulombDistY / rsq
                 }
             }
 
             //gravity : node - central
-            var distX_c = 0.0
-            var distY_c = 0.0
-            distX_c = display_width / 2 - (nodes[i]!!.x + nodes[i]!!.width / 2)
-            distY_c = display_height / 2 - (nodes[i]!!.y + nodes[i]!!.height / 2)
+            var distXC = 0.0
+            var distYC = 0.0
+            distXC = displayWidth / 2 - (nodes[i].x + nodes[i].width / 2)
+            distYC = displayHeight / 2 - (nodes[i].y + nodes[i].height / 2)
 
-            fx += gravity * distX_c
-            fy += gravity * distY_c
+            fx += gravity * distXC
+            fy += gravity * distYC
 
 
             //node in group : from - to
             for (j in 0..nedges - 1 - 1) {
                 var distX = 0.0
                 var distY = 0.0
-                if (edges[j]!!.group) {
-                    if (i == edges[j]!!.from) {
-                        distX = nodes[edges[j]!!.to]!!.x - nodes[i]!!.x
-                        distY = nodes[edges[j]!!.to]!!.y - nodes[i]!!.y
+                if (edges[j].group) {
+                    if (i == edges[j].from) {
+                        distX = nodes[edges[j].to].x - nodes[i].x
+                        distY = nodes[edges[j].to].y - nodes[i].y
 
-                    } else if (i == edges[j]!!.to) {
-                        distX = nodes[edges[j]!!.from]!!.x - nodes[i]!!.x
-                        distY = nodes[edges[j]!!.from]!!.y - nodes[i]!!.y
+                    } else if (i == edges[j].to) {
+                        distX = nodes[edges[j].from].x - nodes[i].x
+                        distY = nodes[edges[j].from].y - nodes[i].y
                     }
                 }
                 fx += bounce * distX
                 fy += bounce * distY
             }
 
-            nodes[i]!!.dx = (nodes[i]!!.dx + fx) * ATTENUATION
-            nodes[i]!!.dy = (nodes[i]!!.dy + fy) * ATTENUATION
+            nodes[i].dx = (nodes[i].dx + fx) * ATTENUATION
+            nodes[i].dy = (nodes[i].dy + fy) * ATTENUATION
 
 
-            nodes[i]!!.x += nodes[i]!!.dx
-            nodes[i]!!.y += nodes[i]!!.dy
+            nodes[i].x += nodes[i].dx
+            nodes[i].y += nodes[i].dy
 
         }
     }
@@ -237,8 +231,8 @@ class Properties(private val mContext: Context){
     private fun initNodes() {
         nodeindex = 0
         nodes = ArrayList<Node>()
-        nodenameArray.clear()
-        nodeslist.clear()
+        nodeNameArray.clear()
+        nodesList.clear()
     }
 
     private fun initEdges(){

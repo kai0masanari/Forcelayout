@@ -18,7 +18,7 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var bane = Forcelayout(applicationContext)
+        val bane = Forcelayout(applicationContext)
 
         /** set nodes */
         val nodes = ArrayList <Pair<String,Int>>()

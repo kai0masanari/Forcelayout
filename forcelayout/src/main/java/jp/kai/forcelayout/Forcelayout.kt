@@ -14,19 +14,10 @@ import android.view.View
  * Main Class
  */
 
-open class Forcelayout(private var mContext: Context): View(mContext){
+open class Forcelayout(private val mContext: Context): View(mContext){
     //instance
-    private var properties: Properties = Properties(context)
+    private val properties: Properties = Properties(mContext)
     private var targetnode = -1
-
-    //styles of node and link
-//    private val roundsize = 5
-    private var drawstroke = true
-    private val strokewidth = 5
-    private var strokecolor = Color.BLACK
-//    private var drawlabel = true
-    private var fontsize = 30
-    private var fontcolor = Color.BLACK
 
     /**
      * Create Builder
@@ -43,20 +34,17 @@ open class Forcelayout(private var mContext: Context): View(mContext){
 
             MotionEvent.ACTION_DOWN -> if (targetnode == -1) {
                 for (i in 0..properties.nodeindex - 1) {
-
                     if (properties.nodes[i].x + properties.nodes[i].width >= touch_x &&
                         properties.nodes[i].x <= touch_x &&
                         properties.nodes[i].y + properties.nodes[i].height >= touch_y &&
                         properties.nodes[i].y <= touch_y) {
 
                         targetnode = i
-
                     }
                 }
             }
 
             MotionEvent.ACTION_MOVE ->
-
                 if (targetnode != -1) {
                     properties.nodes[targetnode].x = touch_x - properties.nodes[targetnode].width / 2
                     properties.nodes[targetnode].y = touch_y - properties.nodes[targetnode].height / 2
@@ -66,7 +54,6 @@ open class Forcelayout(private var mContext: Context): View(mContext){
 
             MotionEvent.ACTION_CANCEL -> targetnode = -1
         }
-
         return true
     }
 
@@ -77,7 +64,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
 
         if(properties.isReady) {
             //draw link's line
-            for (i in 0..properties.nedges - 1 - 1) {
+            for (i in 0..properties.nedges - 1 ) {
                 if (properties.edges[i].group) {
                     val e = properties.edges[i]
                     val x1 = (properties.nodes[e.from].x + properties.nodes[e.from].width / 2).toFloat()
@@ -85,12 +72,9 @@ open class Forcelayout(private var mContext: Context): View(mContext){
                     val x2 = (properties.nodes[e.to].x + properties.nodes[e.to].width / 2).toFloat()
                     val y2 = (properties.nodes[e.to].y + properties.nodes[e.to].height / 2).toFloat()
 
-                    if (drawstroke) {
-                        paint.strokeWidth = strokewidth.toFloat()
-                        paint.color = strokecolor
-                        val pts = floatArrayOf(x1, y1, x2, y2)
-                        canvas.drawLines(pts, paint)
-                    }
+                    paint.strokeWidth = STROKE_WIDTH
+                    paint.color = COLOR_BLACK
+                    canvas.drawLines(floatArrayOf(x1, y1, x2, y2), paint)
                 }
             }
 
@@ -100,10 +84,10 @@ open class Forcelayout(private var mContext: Context): View(mContext){
             while (iterator.hasNext()) {
                 val pair: Pair<String, Bitmap> = iterator.next()
 
-                canvas.drawBitmap(pair.second, properties.nodes[index].x.toInt().toFloat(), properties.nodes[index].y.toInt().toFloat(), paint)
-                paint.textSize = fontsize.toFloat()
-                paint.color = fontcolor
-                canvas.drawText(properties.nodes[index].nodename, (properties.nodes[index].x + properties.nodes[index].width).toInt().toFloat(), (properties.nodes[index].y + properties.nodes[index].height + 30.0).toInt().toFloat(), paint)
+                canvas.drawBitmap(pair.second, properties.nodes[index].x.toFloat(), properties.nodes[index].y.toFloat(), paint)
+                paint.textSize = FONT_SIZE
+                paint.color = COLOR_BLACK
+                canvas.drawText(properties.nodes[index].nodename, (properties.nodes[index].x + properties.nodes[index].width).toFloat(), (properties.nodes[index].y + properties.nodes[index].height + 30.0).toFloat(), paint)
 
                 index++
             }

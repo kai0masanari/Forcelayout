@@ -3,7 +3,6 @@ package jp.kai.forcelayout
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
@@ -14,7 +13,7 @@ import android.view.View
  * Main Class
  */
 
-open class Forcelayout(private val mContext: Context): View(mContext){
+open class Forcelayout(mContext: Context): View(mContext){
     //instance
     private val properties: Properties = Properties(mContext)
     private var targetnode = -1
@@ -57,7 +56,6 @@ open class Forcelayout(private val mContext: Context): View(mContext){
         return true
     }
 
-
     // draw function
     override fun dispatchDraw(canvas: Canvas) {
         val paint = Paint()
@@ -74,7 +72,7 @@ open class Forcelayout(private val mContext: Context): View(mContext){
 
                     paint.strokeWidth = STROKE_WIDTH
                     paint.color = COLOR_BLACK
-                    canvas.drawLines(floatArrayOf(x1, y1, x2, y2), paint)
+                    canvas.drawLine(x1, y1, x2, y2, paint)
                 }
             }
 

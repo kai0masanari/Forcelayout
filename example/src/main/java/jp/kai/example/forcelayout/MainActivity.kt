@@ -8,7 +8,8 @@ import jp.kai.forcelayout.Forcelayout
 import org.jetbrains.anko.button
 import org.jetbrains.anko.seekBar
 import org.jetbrains.anko.verticalLayout
-import java.util.*
+import java.util.ArrayList
+import java.util.Arrays
 
 /**
  * Created by kai on 2016/09/03.

@@ -2,18 +2,13 @@ package jp.kai.example.forcelayout
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.LinearLayout
+import android.util.Pair
 import android.widget.SeekBar
 import jp.kai.forcelayout.Forcelayout
-import android.util.Pair
 import org.jetbrains.anko.button
-import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.seekBar
 import org.jetbrains.anko.verticalLayout
-import java.util.ArrayList
-import java.util.Arrays
+import java.util.*
 
 /**
  * Created by kai on 2016/09/03.
@@ -22,7 +17,7 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val bane = Forcelayout(applicationContext)
+        var bane = Forcelayout(applicationContext)
 
         /** set nodes */
         val nodes = ArrayList <Pair<String,Int>>()
@@ -46,7 +41,7 @@ class MainActivity : Activity() {
         //set links
         val links = Arrays.asList("neko5-neko8", "neko-neko4", "neko1-neko2", "neko2-neko3", "neko3-neko1", "neko5-neko10", "neko3-neko11", "neko3-neko12", "neko3-nyanko", "hoge-neko7")
 
-        bane.with(this)
+        bane.with()
                 .linkStrength(0.09)
                 .distance(200)
                 .gravity(0.04)
@@ -61,7 +56,7 @@ class MainActivity : Activity() {
                     //set links
                     val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
 
-                    bane.with(applicationContext).linkStrength(0.09).gravity(0.04).distance(200).links(links)
+                    bane.with().linkStrength(0.09).gravity(0.04).distance(200).links(links)
                 }
             }
 
@@ -69,7 +64,7 @@ class MainActivity : Activity() {
                 max = 100
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        bane.with(applicationContext).gravity((progress.toFloat() / 1000).toDouble())
+                        bane.with().gravity((progress.toFloat() / 1000).toDouble())
 
                     }
 

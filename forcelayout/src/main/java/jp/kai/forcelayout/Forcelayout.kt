@@ -16,7 +16,7 @@ import android.view.View
 
 open class Forcelayout(private var mContext: Context): View(mContext){
     //instance
-    lateinit private var properties: Properties
+    private var properties: Properties = Properties(context)
     private var targetnode = -1
 
     //styles of node and link
@@ -31,10 +31,7 @@ open class Forcelayout(private var mContext: Context): View(mContext){
     /**
      * Create Builder
      */
-    fun with(context: Context): Properties {
-        mContext = context
-        properties = Properties(context)
-
+    fun with(): Properties {
         return properties.prepare()
     }
 

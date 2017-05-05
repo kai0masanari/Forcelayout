@@ -13,6 +13,7 @@ import java.util.Arrays
 
 /**
  * Created by kai on 2016/09/03.
+ * Usage for Kotlin
  */
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

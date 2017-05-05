@@ -103,7 +103,7 @@ class Properties(private val mContext: Context){
     fun links(linkMaps: List<String>): Properties{
         initEdges()
 
-        for (i in 0..nodeNameArray.size - 1) {
+        for (i in 0..nodeNameArray.size -1) {
             for (j in 0..nodeNameArray.size - 1) {
                 if (i != j) {
                     addEdge(i, j)

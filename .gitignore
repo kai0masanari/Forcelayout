@@ -16,6 +16,7 @@ obj/
 apk/
 target/
 build/
+captures/
 
 # Local configuration file (sdk path, etc)
 local.properties

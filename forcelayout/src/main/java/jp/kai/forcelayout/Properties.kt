@@ -52,6 +52,11 @@ class Properties(private val mContext: Context){
         return this
     }
 
+    fun nodeSize(nodeswidth: Int): Properties{
+        this.nodeswidth = nodeswidth
+        return this
+    }
+
     fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties{
         initNodes()
 

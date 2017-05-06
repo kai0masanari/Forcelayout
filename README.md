@@ -21,16 +21,16 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.4'
+    compile 'jp.kai:forcelayout:1.0.5'
 }
 ```
 
 ### 2. Definitions of  nodes
 ```java
-HashMap<String, Integer> nodes = new HashMap<>();
+ArrayList<Pair<String, Integer>> nodes = new ArrayList<>();
 
-nodes.put("labelname_1",R.drawable.example1);
-nodes.put("labelname_2",R.drawable.example2);
+nodes.add(new Pair<>("labelname_1",R.drawable.example1));
+nodes.add(new Pair<>("labelname_2",R.drawable.example2));
 ```
 
 ### 3. Definitions of links
@@ -51,20 +51,6 @@ Forcelayout.with(this)
 	.nodes(nodes)
 	.links(links);
 ```
-
-or
-
-```java
-Forcelayout.node().nodesize(150).nodes(nodes).drawLable(true);
-Forcelayout.link().links(links).style(10, Color.RED).drawStroke(true);
-
-Forcelayout.with(this)
-	.linkStrength(0.1)
-	.distance(200)
-	.gravity(0.04);
-
-```
-
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).

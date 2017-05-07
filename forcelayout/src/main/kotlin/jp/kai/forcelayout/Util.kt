@@ -13,10 +13,11 @@ class Util {
     companion object{
         fun getDisplayMetrics(context: Context): Display {
             val winMan = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
             return winMan.defaultDisplay
         }
+
         fun resizeBitmap(src: Bitmap, width: Int): Bitmap {
-            val src = src
             val srcWidth = src.width
             val srcHeight = src.height
 
@@ -26,7 +27,6 @@ class Util {
             val widthScale = width.toFloat() / srcWidth.toFloat()
             matrix.postScale(widthScale, widthScale)
 
-
             // resize
             val dst = Bitmap.createBitmap(src, 0, 0, srcWidth, srcHeight, matrix, true)
             src.recycle()
@@ -35,7 +35,6 @@ class Util {
         }
 
         fun getCroppedBitmap(bitmap: Bitmap, round: Int): Bitmap {
-
             val width = bitmap.width
             val height = bitmap.height
 
@@ -51,8 +50,8 @@ class Util {
             canvas.drawRoundRect(rectf, (width / round).toFloat(), (height / round).toFloat(), paint)
             paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
             canvas.drawBitmap(bitmap, rect, rect, paint)
+
             return output
         }
     }
-
 }

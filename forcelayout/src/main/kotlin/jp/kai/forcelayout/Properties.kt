@@ -16,13 +16,12 @@ import java.util.ArrayList
  * Builder Class
  */
 
-//FIX-ME relax()を別のクラスに切り分けたい
 class Properties(private val mContext: Context){
     var isReady: Boolean = false
 
     /** node's and link's */
-    var nodes = ArrayList<Node>(200)
-    var edges = ArrayList<Edge>(500)
+    var nodes = ArrayList<Node>()
+    var edges = ArrayList<Edge>()
     var nodeindex: Int = 0
     var nedges: Int = 0
     private var nodeNameArray = ArrayList<String>()
@@ -38,8 +37,6 @@ class Properties(private val mContext: Context){
     private var distance: Int = 300
     private var bounce: Double = 0.08
     private var gravity: Double = 0.04
-
-    //TODO ノードの大きさなどは別のBuilderで設定するように変えたい
     private var reduction: Int = 30
     private var nodeswidth: Int = 150 //node's width
     private val roundSize = 5
@@ -54,6 +51,7 @@ class Properties(private val mContext: Context){
 
     fun nodeSize(nodeswidth: Int): Properties{
         this.nodeswidth = nodeswidth
+
         return this
     }
 
@@ -127,23 +125,27 @@ class Properties(private val mContext: Context){
                 }
             }
         }
-        //TODO builderの終わりを追加し、そこに記述する
+
         isReady = true
+
         return this
     }
 
     fun linkStrength(bounce: Double): Properties{
         this.bounce = bounce
+
         return this
     }
 
     fun distance(distance: Int): Properties{
         this.distance = distance
+
         return this
     }
 
     fun gravity(gravity: Double): Properties{
         this.gravity = gravity
+
         return this
     }
 
@@ -175,7 +177,6 @@ class Properties(private val mContext: Context){
             var fy = 0.0
 
             for (j in 0..nodeindex - 1) {
-
                 val distX = ((nodes[i].x + nodes[i].width / 2 - (nodes[j].x + nodes[j].width / 2)).toInt()).toDouble()
                 val distY = ((nodes[i].y + nodes[i].height / 2 - (nodes[j].y + nodes[j].height / 2)).toInt()).toDouble()
                 var rsq = distX * distX + distY * distY
@@ -195,17 +196,14 @@ class Properties(private val mContext: Context){
                 }
             }
 
-            //gravity : node - central
-            var distXC = 0.0
-            var distYC = 0.0
-            distXC = displayWidth / 2 - (nodes[i].x + nodes[i].width / 2)
-            distYC = displayHeight / 2 - (nodes[i].y + nodes[i].height / 2)
+            /** calculate gravity */
+            var distXC = displayWidth / 2 - (nodes[i].x + nodes[i].width / 2)
+            var distYC = displayHeight / 2 - (nodes[i].y + nodes[i].height / 2)
 
             fx += gravity * distXC
             fy += gravity * distYC
 
-
-            //node in group : from - to
+            /** calculate spring like force between from and to */
             for (j in 0..nedges - 1 - 1) {
                 var distX = 0.0
                 var distY = 0.0
@@ -225,7 +223,6 @@ class Properties(private val mContext: Context){
 
             nodes[i].dx = (nodes[i].dx + fx) * ATTENUATION
             nodes[i].dy = (nodes[i].dy + fy) * ATTENUATION
-
 
             nodes[i].x += nodes[i].dx
             nodes[i].y += nodes[i].dy

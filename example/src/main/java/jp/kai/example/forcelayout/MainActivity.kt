@@ -54,8 +54,10 @@ class MainActivity : Activity() {
                 .linkStrength(0.09)
                 .distance(200)
                 .gravity(0.04)
+                .linkStrength(0.04)
                 .nodes(nodes)
                 .links(links)
+                .start()
 
         verticalLayout {
             button {
@@ -64,7 +66,12 @@ class MainActivity : Activity() {
                     /** set links */
                     val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
 
-                    bane.with().linkStrength(0.09).gravity(0.04).distance(200).links(links)
+                    bane.with()
+                            .linkStrength(0.09)
+                            .gravity(0.04)
+                            .distance(300)
+                            .links(links)
+                            .start()
                 }
             }
 

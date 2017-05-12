@@ -7,8 +7,8 @@ import android.graphics.Color
  * Const Object
  */
 
-const val ATTENUATION: Double = 0.7
-const val COULOMB: Double = 680.0
+const val ATTENUATION: Double = 0.5
+const val COULOMB: Double = 1680.0
 const val FONT_SIZE: Float = 30.0f
 const val COLOR_BLACK: Int = Color.BLACK
 const val STROKE_WIDTH: Float = 5.0f

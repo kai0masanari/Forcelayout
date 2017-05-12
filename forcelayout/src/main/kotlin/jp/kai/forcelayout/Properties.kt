@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Pair
+import jp.kai.forcelayout.Nodes.NodePair
 import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
 import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
-import jp.kai.forcelayout.Nodes.NodePair
-import jp.kai.forcelayout.Links.LinkPair
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by kai on 2017/05/01.
@@ -26,7 +25,7 @@ class Properties(private val mContext: Context){
     var edges = ArrayList<Edge>()
     var nodeindex: Int = 0
     var nedges: Int = 0
-    private var nodeNameArray = ArrayList<String>()
+    private var nodeNameArray: Array<String?> = arrayOfNulls(0)
     var nodesList = ArrayList<Pair<String, Bitmap>>()
 
     /** draw area */
@@ -63,6 +62,8 @@ class Properties(private val mContext: Context){
         val resource = mContext.resources
         val iterator :Iterator<Pair<String, Int>> = nodemaps.iterator()
 
+        nodeNameArray = arrayOfNulls(nodemaps.size)
+
         while (iterator.hasNext()){
             /** Node List */
             val pair: Pair<String, Int> = iterator.next()
@@ -97,10 +98,15 @@ class Properties(private val mContext: Context){
 
             addNode(pair.first, imgwidth, imgheight)
 
-            nodeNameArray.add(pair.first)
+            nodeNameArray[nodeindex-1] = pair.first
 
             nodesList.add(Pair(pair.first, getCroppedBitmap(bitmap, roundSize)))
         }
+
+        for(i in (nodemaps.size - 1)..0){
+            nodemaps.removeAt(i)
+        }
+        nodemaps.clear()
 
         return this
     }
@@ -110,6 +116,8 @@ class Properties(private val mContext: Context){
 
         val resource = mContext.resources
         val iterator :Iterator<NodePair> = nodemaps.iterator()
+
+        nodeNameArray = arrayOfNulls(nodemaps.size)
 
         while (iterator.hasNext()){
             /** Node List */
@@ -145,10 +153,15 @@ class Properties(private val mContext: Context){
 
             addNode(pair.getLabel(), imgwidth, imgheight)
 
-            nodeNameArray.add(pair.getLabel())
+            nodeNameArray[nodeindex-1] = pair.getLabel()
 
             nodesList.add(Pair(pair.getLabel(), getCroppedBitmap(bitmap, roundSize)))
         }
+
+        for(i in (nodemaps.size - 1)..0){
+            nodemaps.removeAt(i)
+        }
+        nodemaps.clear()
 
         return this
     }
@@ -156,8 +169,8 @@ class Properties(private val mContext: Context){
     fun links(linkMaps: List<String>): Properties{
         initEdges()
 
-        for (i in 0..nodeNameArray.size -1) {
-            for (j in 0..nodeNameArray.size - 1) {
+        for (i in 0..nodeindex -1) {
+            for (j in 0..nodeindex - 1) {
                 if (i != j) {
                     addEdge(i, j)
                 }
@@ -175,7 +188,6 @@ class Properties(private val mContext: Context){
                 }
             }
         }
-        isReady = true
 
         return this
     }
@@ -183,8 +195,8 @@ class Properties(private val mContext: Context){
     fun links(linkMaps: Links): Properties{
         initEdges()
 
-        for (i in 0..nodeNameArray.size -1) {
-            for (j in 0..nodeNameArray.size - 1) {
+        for (i in 0..nodeindex -1) {
+            for (j in 0..nodeindex - 1) {
                 if (i != j) {
                     addEdge(i, j)
                 }
@@ -200,7 +212,11 @@ class Properties(private val mContext: Context){
                 }
             }
         }
-        isReady = true
+
+        for(i in (linkMaps.size - 1)..0){
+            linkMaps.removeAt(i)
+        }
+        linkMaps.clear()
 
         return this
     }
@@ -223,7 +239,11 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun addNode(lbl: String, width: Int, height: Int) {
+    fun start(){
+        isReady = true
+    }
+
+    private fun addNode(lbl: String, width: Int, height: Int) {
         val n = Node()
         n.x = drawAreaWidth * Math.random()
         n.y = (drawAreaHeight - 10) * Math.random() + 10
@@ -236,7 +256,7 @@ class Properties(private val mContext: Context){
         nodeindex++
     }
 
-    fun addEdge(from: Int, to: Int) {
+    private fun addEdge(from: Int, to: Int) {
         val e = Edge()
         e.from = from
         e.to = to
@@ -307,7 +327,7 @@ class Properties(private val mContext: Context){
     private fun initNodes() {
         nodeindex = 0
         nodes = ArrayList<Node>()
-        nodeNameArray.clear()
+        nodeNameArray = arrayOfNulls(0)
         nodesList.clear()
     }
 

@@ -8,7 +8,7 @@ import java.util.ArrayList
 
 class Links: ArrayList<Links.LinkPair>(){
 
-    open class LinkPair(private val parent: String, private val child :String){
+    class LinkPair(private val parent: String, private val child :String){
 
         fun parent(): String{
             return parent

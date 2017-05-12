@@ -7,7 +7,7 @@ import java.util.ArrayList
  */
 
 class Nodes: ArrayList<Nodes.NodePair>() {
-    open class NodePair(private val label: String, private val resource :Int){
+    class NodePair(private val label: String, private val resource :Int){
 
         fun getLabel(): String{
             return label

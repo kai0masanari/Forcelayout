@@ -9,6 +9,8 @@ import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
+import jp.kai.forcelayout.Nodes.NodePair
+import jp.kai.forcelayout.Links.LinkPair
 import java.util.ArrayList
 
 /**
@@ -103,6 +105,54 @@ class Properties(private val mContext: Context){
         return this
     }
 
+    fun nodes(nodemaps: Nodes): Properties{
+        initNodes()
+
+        val resource = mContext.resources
+        val iterator :Iterator<NodePair> = nodemaps.iterator()
+
+        while (iterator.hasNext()){
+            /** Node List */
+            val pair: NodePair = iterator.next()
+
+            /** get image properties */
+            val imageOptions = BitmapFactory.Options()
+            imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888
+            imageOptions.inJustDecodeBounds = true
+            BitmapFactory.decodeResource(resource, pair.getResource(), imageOptions)
+            val bitmapWidth = imageOptions.outWidth
+            val bmfOptions = BitmapFactory.Options()
+
+            /** resize image */
+            reduction = bitmapWidth / nodeswidth
+            if (reduction != 0) {
+                bmfOptions.inSampleSize = reduction
+            }
+
+            var bitmap = BitmapFactory.decodeResource(resource, pair.getResource(), bmfOptions)
+            var imgheight = bmfOptions.outHeight
+            var imgwidth = bmfOptions.outWidth
+
+            if (imgwidth != nodeswidth) {
+                bitmap = resizeBitmap(bitmap, nodeswidth)
+
+                imgheight = bitmap.height
+                imgwidth = bitmap.width
+            }
+
+            drawAreaWidth = displayWidth - imgwidth
+            drawAreaHeight = displayHeight - imgheight
+
+            addNode(pair.getLabel(), imgwidth, imgheight)
+
+            nodeNameArray.add(pair.getLabel())
+
+            nodesList.add(Pair(pair.getLabel(), getCroppedBitmap(bitmap, roundSize)))
+        }
+
+        return this
+    }
+
     fun links(linkMaps: List<String>): Properties{
         initEdges()
 
@@ -125,7 +175,31 @@ class Properties(private val mContext: Context){
                 }
             }
         }
+        isReady = true
 
+        return this
+    }
+
+    fun links(linkMaps: Links): Properties{
+        initEdges()
+
+        for (i in 0..nodeNameArray.size -1) {
+            for (j in 0..nodeNameArray.size - 1) {
+                if (i != j) {
+                    addEdge(i, j)
+                }
+            }
+        }
+
+        for (k in 0..linkMaps.size - 1) {
+            val pair = linkMaps[k]
+
+            for (i in 0..nedges - 1) {
+                if (edges[i].from == nodeNameArray.indexOf(pair.child()) && edges[i].to == nodeNameArray.indexOf(pair.parent()) || edges[i].to == nodeNameArray.indexOf(pair.child()) && edges[i].from == nodeNameArray.indexOf(pair.parent())) {
+                    edges[i].group = true
+                }
+            }
+        }
         isReady = true
 
         return this

@@ -14,9 +14,9 @@ import android.view.View
  */
 
 open class Forcelayout(mContext: Context): View(mContext){
-    //instance
+    /** instance */
     private val properties: Properties = Properties(mContext)
-    private var targetnode = -1
+    private var targetNode = -1
 
     /**
      * Create Builder
@@ -31,27 +31,27 @@ open class Forcelayout(mContext: Context): View(mContext){
 
         when (event.action) {
 
-            MotionEvent.ACTION_DOWN -> if (targetnode == -1) {
+            MotionEvent.ACTION_DOWN -> if (targetNode == -1) {
                 for (i in 0..properties.nodeindex - 1) {
                     if (properties.nodes[i].x + properties.nodes[i].width >= touch_x &&
                         properties.nodes[i].x <= touch_x &&
                         properties.nodes[i].y + properties.nodes[i].height >= touch_y &&
                         properties.nodes[i].y <= touch_y) {
 
-                        targetnode = i
+                        targetNode = i
                     }
                 }
             }
 
             MotionEvent.ACTION_MOVE ->
-                if (targetnode != -1) {
-                    properties.nodes[targetnode].x = touch_x - properties.nodes[targetnode].width / 2
-                    properties.nodes[targetnode].y = touch_y - properties.nodes[targetnode].height / 2
+                if (targetNode != -1) {
+                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
+                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
                 }
 
-            MotionEvent.ACTION_UP -> targetnode = -1
+            MotionEvent.ACTION_UP -> targetNode = -1
 
-            MotionEvent.ACTION_CANCEL -> targetnode = -1
+            MotionEvent.ACTION_CANCEL -> targetNode = -1
         }
         return true
     }

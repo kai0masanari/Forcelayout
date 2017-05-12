@@ -69,7 +69,7 @@ Forcelayout.with(this)
 Inspired by `force layout` in [D3.js](https://d3js.org/).
 
 
-##License
+## License
 -------
 
     Copyright 2016 kai0masanari

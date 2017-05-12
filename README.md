@@ -21,23 +21,35 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.5'
+    compile 'jp.kai:forcelayout:1.0.6'
 }
 ```
 
 ### 2. Definitions of  nodes
-```java
-ArrayList<Pair<String, Integer>> nodes = new ArrayList<>();
+```kotlin
+val nodes = ArrayList <Pair<String,Int>>()
+nodes.add(Pair("lableName1", R.drawable.example1))
+nodes.add(Pair("lableName2", R.drawable.example2))
+```
 
-nodes.add(new Pair<>("labelname_1",R.drawable.example1));
-nodes.add(new Pair<>("labelname_2",R.drawable.example2));
+or
+
+```kotlin
+val nodes: Nodes = Nodes()
+nodes.add(NodePair("lableName1", R.drawable.example1))
+nodes.add(NodePair("lableName2", R.drawable.example2))
 ```
 
 ### 3. Definitions of links
-```java
-List<String> links = new ArrayList<String>();
+```kotlin
+val links = Arrays.asList("lableName1-lableName2")
+```
 
-links.put("labelname_1-labelname_2");
+or
+
+```kotlin
+val links: Links = Links()
+links.add(LinkPair("lableName1", "lableName2"))
 ```
 
 ### 4. Set nodes and links
@@ -48,8 +60,9 @@ Forcelayout.with(this)
 	.linkStrength(0.1)
 	.distance(200)
 	.gravity(0.04)
+	.linkStrength(0.04)
 	.nodes(nodes)
-	.links(links);
+	.links(links)
 ```
 
 ## Thanks

@@ -25,30 +25,23 @@ class MainActivity : Activity() {
 
         /** set nodes */
         val nodes: Nodes = Nodes()
-        nodes.add(NodePair("neko", R.drawable.a))
-        nodes.add(NodePair("nyanko", R.drawable.b))
-        nodes.add(NodePair("hoge", R.drawable.c))
-        nodes.add(NodePair("neko1", R.drawable.d))
-        nodes.add(NodePair("neko2", R.drawable.d))
-        nodes.add(NodePair("neko3", R.drawable.d))
-        nodes.add(NodePair("neko4", R.drawable.d))
-        nodes.add(NodePair("neko5", R.drawable.d))
-        nodes.add(NodePair("neko6", R.drawable.d))
-        nodes.add(NodePair("neko7", R.drawable.e))
-        nodes.add(NodePair("neko8", R.drawable.e))
-        nodes.add(NodePair("neko9", R.drawable.f))
-        nodes.add(NodePair("neko10", R.drawable.f))
-        nodes.add(NodePair("neko11", R.drawable.g))
-        nodes.add(NodePair("neko12", R.drawable.g))
+        nodes.add(NodePair("cat_a1", R.drawable.a))
+        nodes.add(NodePair("cat_a2", R.drawable.a))
+        nodes.add(NodePair("cat_a3", R.drawable.a))
+        nodes.add(NodePair("cat_b1", R.drawable.b))
+        nodes.add(NodePair("cat_c1", R.drawable.c))
+        nodes.add(NodePair("cat_d1", R.drawable.d))
+        nodes.add(NodePair("cat_d2", R.drawable.d))
+        nodes.add(NodePair("cat_e1", R.drawable.e))
+        nodes.add(NodePair("cat_f1", R.drawable.f))
+
 
         /** set links */
         val links: Links = Links()
-        links.add(LinkPair("neko5", "neko8"))
-        links.add(LinkPair("neko", "neko4"))
-        links.add(LinkPair("neko1", "neko2"))
-        links.add(LinkPair("neko2", "neko3"))
-        links.add(LinkPair("neko3", "neko1"))
-        links.add(LinkPair("neko5", "neko10"))
+        links.add(LinkPair("cat_a1", "cat_a2"))
+        links.add(LinkPair("cat_a2", "cat_a3"))
+        links.add(LinkPair("cat_a1", "cat_a3"))
+        links.add(LinkPair("cat_d1", "cat_d2"))
 
         bane.with()
                 .distance(350) /** distance between each nodes */
@@ -64,7 +57,7 @@ class MainActivity : Activity() {
                 text = "change links"
                 setOnClickListener {
                     /** set links */
-                    val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
+                    val links = Arrays.asList("cat_a1-cat_a2", "cat_a2-cat_a3", "cat_a3-cat_d1", "cat_d1-cat_d2", "cat_d2-cat_e1")
 
                     bane.with()
                             .friction(0.02)

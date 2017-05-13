@@ -44,8 +44,8 @@ public class MainActivityJava extends Activity{
         nodes.add(new Pair<>("neko8", R.drawable.e));
         nodes.add(new Pair<>("neko9", R.drawable.f));
         nodes.add(new Pair<>("neko10", R.drawable.f));
-        nodes.add(new Pair<>("neko11", R.drawable.g));
-        nodes.add(new Pair<>("neko12", R.drawable.g));
+        nodes.add(new Pair<>("neko11", R.drawable.d));
+        nodes.add(new Pair<>("neko12", R.drawable.d));
 
         //set links
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");

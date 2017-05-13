@@ -74,10 +74,12 @@ forcelayout.with(this)
 
 | Params  | Description |
 | ------------- | ------------- |
-| `nodeSize`  | To set the color of the Angry/Terrible smiley's background color.  |
-| `distance`  | To change the color of all smileys background color except Angry/Terrible smiley.  |
-| `gravity`  | To change the color of all smileys (Smile and eyes).  |
-| `friction`  | To set the color of all placeholder smiley's (Smile and eyes) color.  |
+| `nodeSize`  | To set image width.  |
+| `distance`  | To set distance between each nodes.  |
+| `gravity`  | To set gravitation.  |
+| `friction`  | To set gravitation between pair of nodes.  |
+| `nodes`  | To set nodes that contain labelname and image.  |
+| `links`  | To set pairs that contain labelnames.  |
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).

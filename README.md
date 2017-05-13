@@ -29,31 +29,31 @@ dependencies {
 ### 2. Definitions of  nodes
 ```kotlin
 val nodes = ArrayList <Pair<String,Int>>()
-nodes.add(Pair("lableName1", R.drawable.example1))
-nodes.add(Pair("lableName2", R.drawable.example2))
-nodes.add(Pair("lableName3", R.drawable.example3))
+nodes.add(Pair("nodeName1", R.drawable.example1))
+nodes.add(Pair("nodeName2", R.drawable.example2))
+nodes.add(Pair("nodeName3", R.drawable.example3))
 ```
 
 or
 
 ```kotlin
 val nodes: Nodes = Nodes()
-nodes.add(NodePair("lableName1", R.drawable.example1))
-nodes.add(NodePair("lableName2", R.drawable.example2))
-nodes.add(NodePair("lableName3", R.drawable.example3))
+nodes.add(NodePair("nodeName1", R.drawable.example1))
+nodes.add(NodePair("nodeName2", R.drawable.example2))
+nodes.add(NodePair("nodeName3", R.drawable.example3))
 ```
 
 ### 3. Definitions of links
 ```kotlin
-val links = Arrays.asList("lableName1-lableName2", "lableName1-lableName3")
+val links = Arrays.asList("nodeName1-nodeName2", "nodeName1-nodeName3")
 ```
 
 or
 
 ```kotlin
 val links: Links = Links()
-links.add(LinkPair("lableName1", "lableName2"))
-links.add(LinkPair("lableName1", "lableName3"))
+links.add(LinkPair("nodeName1", "nodeName2"))
+links.add(LinkPair("nodeName1", "nodeName3"))
 ```
 
 ### 4. Set nodes and links
@@ -78,8 +78,8 @@ forcelayout.with(this)
 | `distance`  | To set distance between each nodes.  |
 | `gravity`  | To set gravitation.  |
 | `friction`  | To set gravitation between pair of nodes.  |
-| `nodes`  | To set nodes that contain labelname and image.  |
-| `links`  | To set pairs that contain labelnames.  |
+| `nodes`  | To set nodes that contain node name and image.  |
+| `links`  | To set pairs that contain node names.  |
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).

@@ -57,7 +57,6 @@ You can set node's size and linkstrength, and so on.
 ```java
 Forcelayout.with(this)
 	.nodesize(200)
-	.linkStrength(0.1)
 	.distance(200)
 	.gravity(0.04)
 	.linkStrength(0.04)

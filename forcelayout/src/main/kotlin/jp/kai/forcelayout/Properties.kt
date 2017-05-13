@@ -10,7 +10,7 @@ import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
 import jp.kai.forcelayout.model.Edge
 import jp.kai.forcelayout.model.Node
-import java.util.*
+import java.util.ArrayList
 
 /**
  * Created by kai on 2017/05/01.
@@ -221,7 +221,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun linkStrength(bounce: Double): Properties{
+    fun friction(bounce: Double): Properties{
         this.bounce = bounce
 
         return this

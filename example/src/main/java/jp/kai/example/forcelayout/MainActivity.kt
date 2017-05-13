@@ -51,13 +51,13 @@ class MainActivity : Activity() {
         links.add(LinkPair("neko5", "neko10"))
 
         bane.with()
-                .linkStrength(0.09)
-                .distance(200)
-                .gravity(0.04)
-                .linkStrength(0.04)
-                .nodes(nodes)
-                .links(links)
-                .start()
+                .distance(350) /** distance between each nodes */
+                .gravity(0.04) /** gravitation from center of view */
+                .friction(0.02) /** value of gravitation between each nodes */
+                .nodeSize(130) /** node width */
+                .nodes(nodes) /** set nodes */
+                .links(links) /** set links */
+                .start() /** start animation */
 
         verticalLayout {
             button {
@@ -67,9 +67,8 @@ class MainActivity : Activity() {
                     val links = Arrays.asList("neko-nyanko", "neko1-neko2", "neko5-neko8", "neko-neko4", "neko2-neko5")
 
                     bane.with()
-                            .linkStrength(0.09)
-                            .gravity(0.04)
-                            .distance(300)
+                            .friction(0.02)
+                            .gravity(0.08)
                             .links(links)
                             .start()
                 }

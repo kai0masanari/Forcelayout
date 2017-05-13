@@ -51,7 +51,7 @@ public class MainActivityJava extends Activity{
         List<String> links = Arrays.asList("neko5-neko8","neko-neko4","neko1-neko2","neko2-neko3","neko3-neko1","neko5-neko10","neko3-neko11","neko3-neko12","neko3-nyanko","hoge-neko7");
 
         bane.with()
-                .linkStrength(0.09)
+                .friction(0.09)
                 .distance(200)
                 .gravity(0.04)
                 .nodes(nodes)
@@ -64,7 +64,7 @@ public class MainActivityJava extends Activity{
                 //set links
                 List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
 
-                bane.with().linkStrength(0.09).gravity(0.04).distance(200).links(links);
+                bane.with().friction(0.09).gravity(0.04).distance(200).links(links);
             }
         });
         button1.setText("change links");

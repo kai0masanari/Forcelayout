@@ -3,6 +3,7 @@ package jp.kai.forcelayout
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
@@ -71,7 +72,7 @@ open class Forcelayout(mContext: Context): View(mContext){
                     val y2 = (properties.nodes[e.to].y + properties.nodes[e.to].height / 2).toFloat()
 
                     paint.strokeWidth = STROKE_WIDTH
-                    paint.color = COLOR_BLACK
+                    paint.color = Color.BLACK
                     canvas.drawLine(x1, y1, x2, y2, paint)
                 }
             }
@@ -84,7 +85,7 @@ open class Forcelayout(mContext: Context): View(mContext){
 
                 canvas.drawBitmap(pair.second, properties.nodes[index].x.toFloat(), properties.nodes[index].y.toFloat(), paint)
                 paint.textSize = FONT_SIZE
-                paint.color = COLOR_BLACK
+                paint.color = Color.BLACK
                 canvas.drawText(properties.nodes[index].nodename, (properties.nodes[index].x + properties.nodes[index].width).toFloat(), (properties.nodes[index].y + properties.nodes[index].height + 30.0).toFloat(), paint)
 
                 index++

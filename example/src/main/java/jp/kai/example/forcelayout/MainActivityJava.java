@@ -55,7 +55,8 @@ public class MainActivityJava extends Activity{
                 .distance(200)
                 .gravity(0.04)
                 .nodes(nodes)
-                .links(links);
+                .links(links)
+                .start();
 
         Button button1 = new Button(this);
         button1.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +65,7 @@ public class MainActivityJava extends Activity{
                 //set links
                 List<String> links = Arrays.asList("neko-nyanko","neko1-neko2","neko5-neko8","neko-neko4","neko2-neko5");
 
-                bane.with().friction(0.09).gravity(0.04).distance(200).links(links);
+                bane.with().friction(0.09).gravity(0.04).distance(200).links(links).start();
             }
         });
         button1.setText("change links");

@@ -13,9 +13,10 @@ Forcelayout is an Android library for visualizing data. You can drawing graph wi
 ![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
 
 ## Usage
+Usage in kotlin
 
 ### 1. Gradle
-```java
+```groovy
 repositories {
     jcenter()
 }
@@ -57,15 +58,27 @@ links.add(LinkPair("lableName1", "lableName3"))
 
 ### 4. Set nodes and links
 You can set node's size and linkstrength, and so on.
-```java
-Forcelayout.with(this)
+```kotlin
+val forcelayout = Forcelayout(applicationContext) 
+
+forcelayout.with(this)
 	.nodesize(200)
 	.distance(200)
 	.gravity(0.04)
-	.linkStrength(0.04)
+	.friction(0.04)
 	.nodes(nodes)
 	.links(links)
 ```
+
+| Params  | Description |
+| ------------- | ------------- |
+| `app:angryColor`  | To set the color of the Angry/Terrible smiley's background color.  |
+| `app:normalColor`  | To change the color of all smileys background color except Angry/Terrible smiley.  |
+| `app:drawingColor`  | To change the color of all smileys (Smile and eyes).  |
+| `app:placeHolderSmileColor`  | To set the color of all placeholder smiley's (Smile and eyes) color.  |
+| `app:placeHolderBackgroundColor`  | To set the color of all placeholder smiley's background color.  |
+| `app:textSelectionColor`  | To set the color of the selected smiley's text color.  |
+| `app:textNonSelectionColor`  | To set the color of the non-selected smiley's text color  |
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).
@@ -73,7 +86,6 @@ Inspired by `force layout` in [D3.js](https://d3js.org/).
 
 ## License
 -------
-
     Copyright 2016 kai0masanari
 
     Licensed under the Apache License, Version 2.0 (the "License");

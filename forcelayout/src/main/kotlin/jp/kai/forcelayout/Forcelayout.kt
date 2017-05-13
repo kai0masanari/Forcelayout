@@ -19,6 +19,9 @@ open class Forcelayout(mContext: Context): View(mContext){
     private val properties: Properties = Properties(mContext)
     private var targetNode = -1
 
+    private var touch_x: Int = 0
+    private var touch_y: Int = 0
+
     /**
      * Create Builder
      */
@@ -29,6 +32,9 @@ open class Forcelayout(mContext: Context): View(mContext){
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val touch_x = event.x.toInt()
         val touch_y = event.y.toInt()
+
+        this.touch_x = touch_x
+        this.touch_y = touch_y
 
         when (event.action) {
 
@@ -42,9 +48,26 @@ open class Forcelayout(mContext: Context): View(mContext){
                         targetNode = i
                     }
                 }
+            }else{
+                if (targetNode != -1) {
+                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
+                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                }
             }
 
             MotionEvent.ACTION_MOVE ->
+                if (targetNode != -1) {
+                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
+                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                }
+
+            MotionEvent.ACTION_HOVER_MOVE ->
+                if (targetNode != -1) {
+                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
+                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                }
+
+            MotionEvent.ACTION_HOVER_EXIT ->
                 if (targetNode != -1) {
                     properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
                     properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
@@ -60,6 +83,11 @@ open class Forcelayout(mContext: Context): View(mContext){
     // draw function
     override fun dispatchDraw(canvas: Canvas) {
         val paint = Paint()
+
+        if (targetNode != -1) {
+            properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
+            properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+        }
 
         if(properties.isReady) {
             //draw link's line

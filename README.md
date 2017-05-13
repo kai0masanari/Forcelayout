@@ -8,9 +8,9 @@ Forcelayout is an Android library for visualizing data. You can drawing graph wi
 
 ## Demo
 
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image3.gif)
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image1.gif)
 
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image4.gif)
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
 
 ## Usage
 
@@ -30,6 +30,7 @@ dependencies {
 val nodes = ArrayList <Pair<String,Int>>()
 nodes.add(Pair("lableName1", R.drawable.example1))
 nodes.add(Pair("lableName2", R.drawable.example2))
+nodes.add(Pair("lableName3", R.drawable.example3))
 ```
 
 or
@@ -38,11 +39,12 @@ or
 val nodes: Nodes = Nodes()
 nodes.add(NodePair("lableName1", R.drawable.example1))
 nodes.add(NodePair("lableName2", R.drawable.example2))
+nodes.add(NodePair("lableName3", R.drawable.example3))
 ```
 
 ### 3. Definitions of links
 ```kotlin
-val links = Arrays.asList("lableName1-lableName2")
+val links = Arrays.asList("lableName1-lableName2", "lableName1-lableName3")
 ```
 
 or
@@ -50,6 +52,7 @@ or
 ```kotlin
 val links: Links = Links()
 links.add(LinkPair("lableName1", "lableName2"))
+links.add(LinkPair("lableName1", "lableName3"))
 ```
 
 ### 4. Set nodes and links

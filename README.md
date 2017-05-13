@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.6'
+    compile 'jp.kai:forcelayout:1.0.7'
 }
 ```
 
@@ -57,28 +57,27 @@ links.add(LinkPair("lableName1", "lableName3"))
 ```
 
 ### 4. Set nodes and links
-You can set node's size and linkstrength, and so on.
+You can set node's size and link-strength, and so on. Please use anko if you write in kotlin.
+
 ```kotlin
 val forcelayout = Forcelayout(applicationContext) 
 
 forcelayout.with(this)
-	.nodesize(200)
+	.nodeSize(200)
 	.distance(200)
 	.gravity(0.04)
 	.friction(0.04)
 	.nodes(nodes)
 	.links(links)
+	.start()
 ```
 
 | Params  | Description |
 | ------------- | ------------- |
-| `app:angryColor`  | To set the color of the Angry/Terrible smiley's background color.  |
-| `app:normalColor`  | To change the color of all smileys background color except Angry/Terrible smiley.  |
-| `app:drawingColor`  | To change the color of all smileys (Smile and eyes).  |
-| `app:placeHolderSmileColor`  | To set the color of all placeholder smiley's (Smile and eyes) color.  |
-| `app:placeHolderBackgroundColor`  | To set the color of all placeholder smiley's background color.  |
-| `app:textSelectionColor`  | To set the color of the selected smiley's text color.  |
-| `app:textNonSelectionColor`  | To set the color of the non-selected smiley's text color  |
+| `nodeSize`  | To set the color of the Angry/Terrible smiley's background color.  |
+| `distance`  | To change the color of all smileys background color except Angry/Terrible smiley.  |
+| `gravity`  | To change the color of all smileys (Smile and eyes).  |
+| `friction`  | To set the color of all placeholder smiley's (Smile and eyes) color.  |
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).

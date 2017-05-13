@@ -50,8 +50,8 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodeSize(nodeswidth: Int): Properties{
-        this.nodeswidth = nodeswidth
+    fun nodeSize(nodesWidth: Int): Properties{
+        this.nodeswidth = nodesWidth
 
         return this
     }

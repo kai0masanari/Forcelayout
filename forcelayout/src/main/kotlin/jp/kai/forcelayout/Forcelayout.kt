@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
+import jp.kai.forcelayout.properties.GraphStyle
 import jp.kai.forcelayout.properties.Properties
 
 /**
@@ -112,7 +113,12 @@ open class Forcelayout(mContext: Context): View(mContext){
             while (iterator.hasNext()) {
                 val pair: Pair<String, Bitmap> = iterator.next()
 
-                canvas.drawBitmap(pair.second, properties.nodes[index].x.toFloat(), properties.nodes[index].y.toFloat(), paint)
+                if(GraphStyle.isImgDraw) {
+                    canvas.drawBitmap(pair.second, properties.nodes[index].x.toFloat(), properties.nodes[index].y.toFloat(), paint)
+                }else{
+
+                }
+
                 paint.textSize = FONT_SIZE
                 paint.color = Color.BLACK
                 canvas.drawText(properties.nodes[index].nodename, (properties.nodes[index].x + properties.nodes[index].width).toFloat(), (properties.nodes[index].y + properties.nodes[index].height + 30.0).toFloat(), paint)

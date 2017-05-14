@@ -9,6 +9,8 @@ import jp.kai.forcelayout.COULOMB
 import jp.kai.forcelayout.Links
 import jp.kai.forcelayout.Nodes
 import jp.kai.forcelayout.Nodes.NodePair
+import jp.kai.forcelayout.properties.GraphStyle.nodesWidth
+import jp.kai.forcelayout.properties.GraphStyle.roundSize
 import jp.kai.forcelayout.properties.Util.Companion.getCroppedBitmap
 import jp.kai.forcelayout.properties.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.properties.Util.Companion.resizeBitmap
@@ -42,8 +44,6 @@ class ForceProperty(private val mContext: Context){
     private var gravity: Double = 0.04
 
     /** node style */
-    private var nodesWidth: Int = 150
-    private val roundSize = 5
     private var reduction: Int = 30
 
     fun prepare(): ForceProperty {
@@ -54,8 +54,8 @@ class ForceProperty(private val mContext: Context){
         return this
     }
 
-    fun nodeSize(nodesWidth: Int): ForceProperty {
-        this.nodesWidth = nodesWidth
+    fun size(width: Int): ForceProperty {
+        GraphStyle.nodesWidth = width
 
         return this
     }

@@ -8,8 +8,10 @@ import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
-import jp.kai.forcelayout.properties.GraphStyle
 import jp.kai.forcelayout.properties.ForceProperty
+import jp.kai.forcelayout.properties.GraphStyle
+import jp.kai.forcelayout.properties.LinkProperty
+import jp.kai.forcelayout.properties.NodeProperty
 
 /**
  * Created by kai on 2017/05/01.
@@ -19,14 +21,25 @@ import jp.kai.forcelayout.properties.ForceProperty
 open class Forcelayout(mContext: Context): View(mContext){
     /** instance */
     private val forceProperty: ForceProperty = ForceProperty(mContext)
+    private val nodeProperty: NodeProperty = NodeProperty()
+    private val linkProperty: LinkProperty = LinkProperty()
+
     private var targetNode = -1
 
     private var touch_x: Int = 0
     private var touch_y: Int = 0
 
     /**
-     * Create Builder
+     * Create Builders
      */
+    fun node(): NodeProperty {
+        return nodeProperty.prepare()
+    }
+
+    fun link(): LinkProperty {
+        return linkProperty.prepare()
+    }
+
     fun with(): ForceProperty {
         return forceProperty.prepare()
     }

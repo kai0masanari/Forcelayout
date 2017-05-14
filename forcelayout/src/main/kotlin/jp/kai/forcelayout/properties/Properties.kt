@@ -9,9 +9,9 @@ import jp.kai.forcelayout.COULOMB
 import jp.kai.forcelayout.Links
 import jp.kai.forcelayout.Nodes
 import jp.kai.forcelayout.Nodes.NodePair
-import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
-import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
-import jp.kai.forcelayout.Util.Companion.resizeBitmap
+import jp.kai.forcelayout.properties.Util.Companion.getCroppedBitmap
+import jp.kai.forcelayout.properties.Util.Companion.getDisplayMetrics
+import jp.kai.forcelayout.properties.Util.Companion.resizeBitmap
 import java.util.ArrayList
 
 /**

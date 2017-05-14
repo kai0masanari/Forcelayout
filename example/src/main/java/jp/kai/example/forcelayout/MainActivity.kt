@@ -47,7 +47,7 @@ class MainActivity : Activity() {
                 .distance(350) /** distance between each nodes */
                 .gravity(0.04) /** gravitation from center of view */
                 .friction(0.02) /** value of gravitation between each nodes */
-                .nodeSize(130) /** node width */
+                .size(130) /** node width */
                 .nodes(nodes) /** set nodes */
                 .links(links) /** set links */
                 .start() /** start animation */

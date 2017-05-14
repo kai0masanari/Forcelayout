@@ -1,4 +1,4 @@
-package jp.kai.forcelayout.model
+package jp.kai.forcelayout.properties
 
 import android.content.Context
 import android.graphics.Bitmap

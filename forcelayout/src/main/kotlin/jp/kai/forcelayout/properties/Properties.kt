@@ -33,18 +33,18 @@ class Properties(private val mContext: Context){
     /** draw area */
     private var displayWidth: Float = 0f
     private var displayHeight: Float = 0f
-    private var drawAreaWidth: Float = 0f //draw area = screen size
+    private var drawAreaWidth: Float = 0f /** draw-area means screen-size */
     private var drawAreaHeight: Float = 0f
 
     /** spring-like force */
     private var distance: Int = 300
     private var bounce: Double = 0.08
     private var gravity: Double = 0.04
-    private var reduction: Int = 30
 
     /** node style */
     private var nodesWidth: Int = 150
     private val roundSize = 5
+    private var reduction: Int = 30
 
     fun prepare(): Properties {
         val mDisplay = getDisplayMetrics(mContext)
@@ -309,8 +309,8 @@ class Properties(private val mContext: Context){
             }
 
             /** calculate gravity */
-            var distXC = displayWidth / 2 - (nodes[i].x + nodes[i].width / 2)
-            var distYC = displayHeight / 2 - (nodes[i].y + nodes[i].height / 2)
+            val distXC = displayWidth / 2 - (nodes[i].x + nodes[i].width / 2)
+            val distYC = displayHeight / 2 - (nodes[i].y + nodes[i].height / 2)
 
             fx += gravity * distXC
             fy += gravity * distYC

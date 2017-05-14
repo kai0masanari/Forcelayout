@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
+import jp.kai.forcelayout.model.Properties
 
 /**
  * Created by kai on 2017/05/01.

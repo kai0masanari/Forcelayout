@@ -5,7 +5,7 @@ package jp.kai.forcelayout.model
  * Node Class
  */
 
-open class Node{
+internal class Node{
     var nodename: String = ""
 
     var x: Double = 0.toDouble()

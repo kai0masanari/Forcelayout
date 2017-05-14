@@ -5,7 +5,7 @@ package jp.kai.forcelayout.model
  * Edge Class
  */
 
-open class Edge{
+internal class Edge{
     var from: Int = 0
     var to: Int = 0
     var group: Boolean = false

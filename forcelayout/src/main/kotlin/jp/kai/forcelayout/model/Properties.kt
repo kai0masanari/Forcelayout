@@ -1,15 +1,17 @@
-package jp.kai.forcelayout
+package jp.kai.forcelayout.model
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Pair
+import jp.kai.forcelayout.ATTENUATION
+import jp.kai.forcelayout.COULOMB
+import jp.kai.forcelayout.Links
+import jp.kai.forcelayout.Nodes
 import jp.kai.forcelayout.Nodes.NodePair
 import jp.kai.forcelayout.Util.Companion.getCroppedBitmap
 import jp.kai.forcelayout.Util.Companion.getDisplayMetrics
 import jp.kai.forcelayout.Util.Companion.resizeBitmap
-import jp.kai.forcelayout.model.Edge
-import jp.kai.forcelayout.model.Node
 import java.util.ArrayList
 
 /**
@@ -21,8 +23,8 @@ class Properties(private val mContext: Context){
     var isReady: Boolean = false
 
     /** node's and link's */
-    var nodes = ArrayList<Node>()
-    var edges = ArrayList<Edge>()
+    internal var nodes = ArrayList<Node>()
+    internal var edges = ArrayList<Edge>()
     var nodeindex: Int = 0
     var nedges: Int = 0
     private var nodeNameArray: Array<String?> = arrayOfNulls(0)
@@ -42,7 +44,7 @@ class Properties(private val mContext: Context){
     private var nodeswidth: Int = 150 //node's width
     private val roundSize = 5
 
-    fun prepare(): Properties{
+    fun prepare(): Properties {
         val mDisplay = getDisplayMetrics(mContext)
         displayWidth = mDisplay.width.toFloat()
         displayHeight = mDisplay.height.toFloat()
@@ -50,13 +52,13 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodeSize(nodesWidth: Int): Properties{
+    fun nodeSize(nodesWidth: Int): Properties {
         this.nodeswidth = nodesWidth
 
         return this
     }
 
-    fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties{
+    fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties {
         initNodes()
 
         val resource = mContext.resources
@@ -111,7 +113,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodes(nodemaps: Nodes): Properties{
+    fun nodes(nodemaps: Nodes): Properties {
         initNodes()
 
         val resource = mContext.resources
@@ -166,7 +168,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun links(linkMaps: List<String>): Properties{
+    fun links(linkMaps: List<String>): Properties {
         initEdges()
 
         for (i in 0..nodeindex -1) {
@@ -192,7 +194,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun links(linkMaps: Links): Properties{
+    fun links(linkMaps: Links): Properties {
         initEdges()
 
         for (i in 0..nodeindex -1) {
@@ -221,19 +223,19 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun friction(bounce: Double): Properties{
+    fun friction(bounce: Double): Properties {
         this.bounce = bounce
 
         return this
     }
 
-    fun distance(distance: Int): Properties{
+    fun distance(distance: Int): Properties {
         this.distance = distance
 
         return this
     }
 
-    fun gravity(gravity: Double): Properties{
+    fun gravity(gravity: Double): Properties {
         this.gravity = gravity
 
         return this

@@ -62,6 +62,7 @@ class Properties(private val mContext: Context){
 
     fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties {
         initNodes()
+        GraphStyle.isImgDraw = true
 
         val resource = mContext.resources
         val iterator :Iterator<Pair<String, Int>> = nodemaps.iterator()
@@ -117,6 +118,7 @@ class Properties(private val mContext: Context){
 
     fun nodes(nodemaps: Nodes): Properties {
         initNodes()
+        GraphStyle.isImgDraw = true
 
         val resource = mContext.resources
         val iterator :Iterator<NodePair> = nodemaps.iterator()
@@ -171,6 +173,9 @@ class Properties(private val mContext: Context){
     }
 
     fun nodes(nodemaps: Array<String>): Properties {
+        initNodes()
+        GraphStyle.isImgDraw = false
+
         nodeNameArray = arrayOfNulls(nodemaps.size)
 
         for (i in 0..nodemaps.size ){

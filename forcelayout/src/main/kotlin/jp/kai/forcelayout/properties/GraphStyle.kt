@@ -1,4 +1,4 @@
-package jp.kai.forcelayout
+package jp.kai.forcelayout.properties
 
 import android.graphics.Color
 

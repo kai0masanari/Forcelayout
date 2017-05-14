@@ -9,7 +9,7 @@ import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
 import jp.kai.forcelayout.properties.GraphStyle
-import jp.kai.forcelayout.properties.Properties
+import jp.kai.forcelayout.properties.ForceProperty
 
 /**
  * Created by kai on 2017/05/01.
@@ -18,7 +18,7 @@ import jp.kai.forcelayout.properties.Properties
 
 open class Forcelayout(mContext: Context): View(mContext){
     /** instance */
-    private val properties: Properties = Properties(mContext)
+    private val forceProperty: ForceProperty = ForceProperty(mContext)
     private var targetNode = -1
 
     private var touch_x: Int = 0
@@ -27,8 +27,8 @@ open class Forcelayout(mContext: Context): View(mContext){
     /**
      * Create Builder
      */
-    fun with(): Properties {
-        return properties.prepare()
+    fun with(): ForceProperty {
+        return forceProperty.prepare()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -41,38 +41,38 @@ open class Forcelayout(mContext: Context): View(mContext){
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> if (targetNode == -1) {
-                for (i in 0..properties.nodeindex - 1) {
-                    if (properties.nodes[i].x + properties.nodes[i].width >= touch_x &&
-                        properties.nodes[i].x <= touch_x &&
-                        properties.nodes[i].y + properties.nodes[i].height >= touch_y &&
-                        properties.nodes[i].y <= touch_y) {
+                for (i in 0..forceProperty.nodeindex - 1) {
+                    if (forceProperty.nodes[i].x + forceProperty.nodes[i].width >= touch_x &&
+                        forceProperty.nodes[i].x <= touch_x &&
+                        forceProperty.nodes[i].y + forceProperty.nodes[i].height >= touch_y &&
+                        forceProperty.nodes[i].y <= touch_y) {
 
                         targetNode = i
                     }
                 }
             }else{
                 if (targetNode != -1) {
-                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
-                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
                 }
             }
 
             MotionEvent.ACTION_MOVE ->
                 if (targetNode != -1) {
-                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
-                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_HOVER_MOVE ->
                 if (targetNode != -1) {
-                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
-                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_HOVER_EXIT ->
                 if (targetNode != -1) {
-                    properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
-                    properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_UP -> targetNode = -1
@@ -87,19 +87,19 @@ open class Forcelayout(mContext: Context): View(mContext){
         val paint = Paint()
 
         if (targetNode != -1) {
-            properties.nodes[targetNode].x = touch_x - properties.nodes[targetNode].width / 2
-            properties.nodes[targetNode].y = touch_y - properties.nodes[targetNode].height / 2
+            forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
+            forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
         }
 
-        if(properties.isReady) {
+        if(forceProperty.isReady) {
             //draw link's line
-            for (i in 0..properties.nedges - 1 ) {
-                if (properties.edges[i].group) {
-                    val e = properties.edges[i]
-                    val x1 = (properties.nodes[e.from].x + properties.nodes[e.from].width / 2).toFloat()
-                    val y1 = (properties.nodes[e.from].y + properties.nodes[e.from].height / 2).toFloat()
-                    val x2 = (properties.nodes[e.to].x + properties.nodes[e.to].width / 2).toFloat()
-                    val y2 = (properties.nodes[e.to].y + properties.nodes[e.to].height / 2).toFloat()
+            for (i in 0..forceProperty.nedges - 1 ) {
+                if (forceProperty.edges[i].group) {
+                    val e = forceProperty.edges[i]
+                    val x1 = (forceProperty.nodes[e.from].x + forceProperty.nodes[e.from].width / 2).toFloat()
+                    val y1 = (forceProperty.nodes[e.from].y + forceProperty.nodes[e.from].height / 2).toFloat()
+                    val x2 = (forceProperty.nodes[e.to].x + forceProperty.nodes[e.to].width / 2).toFloat()
+                    val y2 = (forceProperty.nodes[e.to].y + forceProperty.nodes[e.to].height / 2).toFloat()
 
                     paint.strokeWidth = STROKE_WIDTH
                     paint.color = Color.BLACK
@@ -108,26 +108,26 @@ open class Forcelayout(mContext: Context): View(mContext){
             }
 
             /** draw node images and labels */
-            val iterator: Iterator<Pair<String, Bitmap>> = properties.nodesList.iterator()
+            val iterator: Iterator<Pair<String, Bitmap>> = forceProperty.nodesList.iterator()
             var index: Int = 0
             while (iterator.hasNext()) {
                 val pair: Pair<String, Bitmap> = iterator.next()
 
                 if(GraphStyle.isImgDraw) {
-                    canvas.drawBitmap(pair.second, properties.nodes[index].x.toFloat(), properties.nodes[index].y.toFloat(), paint)
+                    canvas.drawBitmap(pair.second, forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), paint)
                 }else{
 
                 }
 
                 paint.textSize = FONT_SIZE
                 paint.color = Color.BLACK
-                canvas.drawText(properties.nodes[index].nodename, (properties.nodes[index].x + properties.nodes[index].width).toFloat(), (properties.nodes[index].y + properties.nodes[index].height + 30.0).toFloat(), paint)
+                canvas.drawText(forceProperty.nodes[index].nodename, (forceProperty.nodes[index].x + forceProperty.nodes[index].width).toFloat(), (forceProperty.nodes[index].y + forceProperty.nodes[index].height + 30.0).toFloat(), paint)
 
                 index++
             }
 
             /** calculate spring-like forces */
-            properties.relax()
+            forceProperty.relax()
         }
 
         invalidate()

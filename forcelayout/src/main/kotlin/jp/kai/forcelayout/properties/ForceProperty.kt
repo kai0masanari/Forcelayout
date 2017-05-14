@@ -19,7 +19,7 @@ import java.util.ArrayList
  * Builder Class
  */
 
-class Properties(private val mContext: Context){
+class ForceProperty(private val mContext: Context){
     var isReady: Boolean = false
 
     /** node's and link's List */
@@ -46,7 +46,7 @@ class Properties(private val mContext: Context){
     private val roundSize = 5
     private var reduction: Int = 30
 
-    fun prepare(): Properties {
+    fun prepare(): ForceProperty {
         val mDisplay = getDisplayMetrics(mContext)
         displayWidth = mDisplay.width.toFloat()
         displayHeight = mDisplay.height.toFloat()
@@ -54,13 +54,13 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodeSize(nodesWidth: Int): Properties {
+    fun nodeSize(nodesWidth: Int): ForceProperty {
         this.nodesWidth = nodesWidth
 
         return this
     }
 
-    fun nodes(nodemaps: ArrayList<Pair<String, Int>>): Properties {
+    fun nodes(nodemaps: ArrayList<Pair<String, Int>>): ForceProperty {
         initNodes()
         GraphStyle.isImgDraw = true
 
@@ -116,7 +116,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodes(nodemaps: Nodes): Properties {
+    fun nodes(nodemaps: Nodes): ForceProperty {
         initNodes()
         GraphStyle.isImgDraw = true
 
@@ -172,7 +172,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun nodes(nodemaps: Array<String>): Properties {
+    fun nodes(nodemaps: Array<String>): ForceProperty {
         initNodes()
         GraphStyle.isImgDraw = false
 
@@ -189,7 +189,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun links(linkMaps: List<String>): Properties {
+    fun links(linkMaps: List<String>): ForceProperty {
         initEdges()
 
         for (i in 0..nodeindex -1) {
@@ -215,7 +215,7 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun links(linkMaps: Links): Properties {
+    fun links(linkMaps: Links): ForceProperty {
         initEdges()
 
         for (i in 0..nodeindex -1) {
@@ -244,19 +244,19 @@ class Properties(private val mContext: Context){
         return this
     }
 
-    fun friction(bounce: Double): Properties {
+    fun friction(bounce: Double): ForceProperty {
         this.bounce = bounce
 
         return this
     }
 
-    fun distance(distance: Int): Properties {
+    fun distance(distance: Int): ForceProperty {
         this.distance = distance
 
         return this
     }
 
-    fun gravity(gravity: Double): Properties {
+    fun gravity(gravity: Double): ForceProperty {
         this.gravity = gravity
 
         return this

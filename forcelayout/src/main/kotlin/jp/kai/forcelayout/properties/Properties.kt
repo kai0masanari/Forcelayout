@@ -43,7 +43,7 @@ class Properties(private val mContext: Context){
     private var reduction: Int = 30
 
     /** node style */
-    private var nodeswidth: Int = 150
+    private var nodesWidth: Int = 150
     private val roundSize = 5
 
     fun prepare(): Properties {
@@ -55,7 +55,7 @@ class Properties(private val mContext: Context){
     }
 
     fun nodeSize(nodesWidth: Int): Properties {
-        this.nodeswidth = nodesWidth
+        this.nodesWidth = nodesWidth
 
         return this
     }
@@ -81,7 +81,7 @@ class Properties(private val mContext: Context){
             val bmfOptions = BitmapFactory.Options()
 
             /** resize image */
-            reduction = bitmapWidth / nodeswidth
+            reduction = bitmapWidth / nodesWidth
             if (reduction != 0) {
                 bmfOptions.inSampleSize = reduction
             }
@@ -90,8 +90,8 @@ class Properties(private val mContext: Context){
             var imgheight = bmfOptions.outHeight
             var imgwidth = bmfOptions.outWidth
 
-            if (imgwidth != nodeswidth) {
-                bitmap = resizeBitmap(bitmap, nodeswidth)
+            if (imgwidth != nodesWidth) {
+                bitmap = resizeBitmap(bitmap, nodesWidth)
 
                 imgheight = bitmap.height
                 imgwidth = bitmap.width
@@ -136,7 +136,7 @@ class Properties(private val mContext: Context){
             val bmfOptions = BitmapFactory.Options()
 
             /** resize image */
-            reduction = bitmapWidth / nodeswidth
+            reduction = bitmapWidth / nodesWidth
             if (reduction != 0) {
                 bmfOptions.inSampleSize = reduction
             }
@@ -145,8 +145,8 @@ class Properties(private val mContext: Context){
             var imgheight = bmfOptions.outHeight
             var imgwidth = bmfOptions.outWidth
 
-            if (imgwidth != nodeswidth) {
-                bitmap = resizeBitmap(bitmap, nodeswidth)
+            if (imgwidth != nodesWidth) {
+                bitmap = resizeBitmap(bitmap, nodesWidth)
 
                 imgheight = bitmap.height
                 imgwidth = bitmap.width
@@ -174,12 +174,12 @@ class Properties(private val mContext: Context){
         nodeNameArray = arrayOfNulls(nodemaps.size)
 
         for (i in 0..nodemaps.size ){
-            addNode(nodemaps[i], nodeswidth, nodeswidth)
+            addNode(nodemaps[i], nodesWidth, nodesWidth)
             nodeNameArray[i] = nodemaps[i]
         }
 
-        drawAreaWidth = displayWidth - nodeswidth
-        drawAreaHeight = displayHeight - nodeswidth
+        drawAreaWidth = displayWidth - nodesWidth
+        drawAreaHeight = displayHeight - nodesWidth
 
         return this
     }

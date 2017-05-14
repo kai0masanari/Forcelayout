@@ -20,6 +20,12 @@
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+
+    <activity
+        android:name=".SubActivity"
+        android:label="@string/example_circle"
+        >
+    </activity>
   </application>
 
 </manifest>

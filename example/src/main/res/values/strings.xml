@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">forcelayout</string>
+  <string name="example_circle">circle node</string>
   <string name="hello_world">Hello world!</string>
 </resources>

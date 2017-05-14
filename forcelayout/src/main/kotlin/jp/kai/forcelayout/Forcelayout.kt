@@ -114,8 +114,8 @@ open class Forcelayout(mContext: Context): View(mContext){
                     val x2 = (forceProperty.nodes[e.to].x + forceProperty.nodes[e.to].width / 2).toFloat()
                     val y2 = (forceProperty.nodes[e.to].y + forceProperty.nodes[e.to].height / 2).toFloat()
 
-                    paint.strokeWidth = STROKE_WIDTH
-                    paint.color = Color.BLACK
+                    paint.strokeWidth = GraphStyle.linkWidth
+                    paint.color = GraphStyle.linkColor
                     canvas.drawLine(x1, y1, x2, y2, paint)
                 }
             }
@@ -129,11 +129,12 @@ open class Forcelayout(mContext: Context): View(mContext){
                 if(GraphStyle.isImgDraw) {
                     canvas.drawBitmap(pair.second, forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), paint)
                 }else{
-
+                    paint.color = GraphStyle.nodeColor
+                    canvas.drawCircle(forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), (GraphStyle.nodesWidth/2).toFloat(), paint)
                 }
 
-                paint.textSize = FONT_SIZE
-                paint.color = Color.BLACK
+                paint.textSize = GraphStyle.fontSize
+                paint.color = GraphStyle.fontColor
                 canvas.drawText(forceProperty.nodes[index].nodename, (forceProperty.nodes[index].x + forceProperty.nodes[index].width).toFloat(), (forceProperty.nodes[index].y + forceProperty.nodes[index].height + 30.0).toFloat(), paint)
 
                 index++

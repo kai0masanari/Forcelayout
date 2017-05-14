@@ -119,27 +119,35 @@ open class Forcelayout(mContext: Context): View(mContext){
                     canvas.drawLine(x1, y1, x2, y2, paint)
                 }
             }
+            if(GraphStyle.isImgDraw) {
+                /** draw node images and labels */
+                val iterator: Iterator<Pair<String, Bitmap>> = forceProperty.nodesList.iterator()
+                var index: Int = 0
+                while (iterator.hasNext()) {
+                    val pair: Pair<String, Bitmap> = iterator.next()
 
-            /** draw node images and labels */
-            val iterator: Iterator<Pair<String, Bitmap>> = forceProperty.nodesList.iterator()
-            var index: Int = 0
-            while (iterator.hasNext()) {
-                val pair: Pair<String, Bitmap> = iterator.next()
 
-                if(GraphStyle.isImgDraw) {
                     canvas.drawBitmap(pair.second, forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), paint)
-                }else{
+
+                    paint.textSize = GraphStyle.fontSize
+                    paint.color = GraphStyle.fontColor
+                    canvas.drawText(forceProperty.nodes[index].nodename, (forceProperty.nodes[index].x + forceProperty.nodes[index].width).toFloat(), (forceProperty.nodes[index].y + forceProperty.nodes[index].height + 30.0).toFloat(), paint)
+
+                    index++
+                }
+            }else{
+                paint.color = GraphStyle.nodeColor
+
+                for(i in 0..forceProperty.nodeindex - 1){
                     paint.color = GraphStyle.nodeColor
-                    canvas.drawCircle(forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), (GraphStyle.nodesWidth/2).toFloat(), paint)
+                    canvas.drawCircle((forceProperty.nodes[i].x + GraphStyle.nodesWidth/2).toFloat(), (forceProperty.nodes[i].y + GraphStyle.nodesWidth/2).toFloat(), (GraphStyle.nodesWidth/2).toFloat(), paint)
+
+                    paint.textSize = GraphStyle.fontSize
+                    paint.color = GraphStyle.fontColor
+                    canvas.drawText(forceProperty.nodes[i].nodename, (forceProperty.nodes[i].x + forceProperty.nodes[i].width).toFloat(), (forceProperty.nodes[i].y + forceProperty.nodes[i].height + 30.0).toFloat(), paint)
                 }
 
-                paint.textSize = GraphStyle.fontSize
-                paint.color = GraphStyle.fontColor
-                canvas.drawText(forceProperty.nodes[index].nodename, (forceProperty.nodes[index].x + forceProperty.nodes[index].width).toFloat(), (forceProperty.nodes[index].y + forceProperty.nodes[index].height + 30.0).toFloat(), paint)
-
-                index++
             }
-
             /** calculate spring-like forces */
             forceProperty.relax()
         }

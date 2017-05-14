@@ -17,13 +17,13 @@ class NodeProperty {
         return this
     }
 
-    fun syle(color: String): NodeProperty {
+    fun style(color: String): NodeProperty {
         GraphStyle.nodeColor = parseInt(color, 16)
 
         return this
     }
 
-    fun syle(color: Int): NodeProperty {
+    fun style(color: Int): NodeProperty {
         GraphStyle.nodeColor = color
 
         return this

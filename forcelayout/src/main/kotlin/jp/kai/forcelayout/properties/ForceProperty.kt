@@ -29,7 +29,7 @@ class ForceProperty(private val mContext: Context){
     internal var edges = ArrayList<Edge>()
     var nodeindex: Int = 0
     var nedges: Int = 0
-    private var nodeNameArray: Array<String?> = arrayOfNulls(0)
+    var nodeNameArray: Array<String?> = arrayOfNulls(0)
     var nodesList = ArrayList<Pair<String, Bitmap>>()
 
     /** draw area */
@@ -178,7 +178,7 @@ class ForceProperty(private val mContext: Context){
 
         nodeNameArray = arrayOfNulls(nodemaps.size)
 
-        for (i in 0..nodemaps.size ){
+        for (i in 0..nodemaps.size - 1){
             addNode(nodemaps[i], nodesWidth, nodesWidth)
             nodeNameArray[i] = nodemaps[i]
         }
@@ -192,7 +192,7 @@ class ForceProperty(private val mContext: Context){
     fun links(linkMaps: List<String>): ForceProperty {
         initEdges()
 
-        for (i in 0..nodeindex -1) {
+        for (i in 0..nodeindex - 1) {
             for (j in 0..nodeindex - 1) {
                 if (i != j) {
                     addEdge(i, j)

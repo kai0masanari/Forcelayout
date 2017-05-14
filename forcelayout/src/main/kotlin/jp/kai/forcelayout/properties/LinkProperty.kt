@@ -11,14 +11,14 @@ class LinkProperty {
         return this
     }
 
-    fun syle(color:String ,width: Float): LinkProperty {
+    fun style(color:String ,width: Float): LinkProperty {
         GraphStyle.linkColor = parseInt(color, 16)
         GraphStyle.linkWidth = width
 
         return this
     }
 
-    fun syle(color:Int ,width: Float): LinkProperty {
+    fun style(color:Int ,width: Float): LinkProperty {
         GraphStyle.linkColor = color
         GraphStyle.linkWidth = width
 

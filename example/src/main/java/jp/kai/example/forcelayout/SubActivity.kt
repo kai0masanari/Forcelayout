@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.widget.SeekBar
 import jp.kai.forcelayout.Forcelayout
 import jp.kai.forcelayout.Links
-import org.jetbrains.anko.button
 import org.jetbrains.anko.seekBar
 import org.jetbrains.anko.verticalLayout
-import java.util.*
 
 /**
  * Created by kai on 2017/05/14.

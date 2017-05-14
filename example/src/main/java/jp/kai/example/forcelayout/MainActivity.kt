@@ -39,7 +39,6 @@ class MainActivity : Activity() {
         nodes.add(NodePair("cat_e1", R.drawable.e))
         nodes.add(NodePair("cat_f1", R.drawable.f))
 
-
         /** set links */
         val links: Links = Links()
         links.add(LinkPair("cat_a1", "cat_a2"))
@@ -86,7 +85,7 @@ class MainActivity : Activity() {
 
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        force.with().gravity((progress.toFloat() / 1000).toDouble())
+                        force.with().gravity((progress.toFloat() / 1000).toDouble()).start()
 
                     }
 

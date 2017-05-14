@@ -50,6 +50,7 @@ class ForceProperty(private val mContext: Context){
         val mDisplay = getDisplayMetrics(mContext)
         displayWidth = mDisplay.width.toFloat()
         displayHeight = mDisplay.height.toFloat()
+        isReady = false;
 
         return this
     }

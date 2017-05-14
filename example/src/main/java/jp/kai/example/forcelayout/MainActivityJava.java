@@ -77,7 +77,7 @@ public class MainActivityJava extends Activity{
         seek1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                bane.with().gravity((float)progress/1000);
+                bane.with().gravity((float)progress/1000).start();
 
             }
 
@@ -91,7 +91,6 @@ public class MainActivityJava extends Activity{
 
             }
         });
-
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);

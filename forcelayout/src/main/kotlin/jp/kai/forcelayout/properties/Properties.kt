@@ -22,7 +22,7 @@ import java.util.ArrayList
 class Properties(private val mContext: Context){
     var isReady: Boolean = false
 
-    /** node's and link's */
+    /** node's and link's List */
     internal var nodes = ArrayList<Node>()
     internal var edges = ArrayList<Edge>()
     var nodeindex: Int = 0
@@ -41,7 +41,9 @@ class Properties(private val mContext: Context){
     private var bounce: Double = 0.08
     private var gravity: Double = 0.04
     private var reduction: Int = 30
-    private var nodeswidth: Int = 150 //node's width
+
+    /** node style */
+    private var nodeswidth: Int = 150
     private val roundSize = 5
 
     fun prepare(): Properties {
@@ -164,6 +166,20 @@ class Properties(private val mContext: Context){
             nodemaps.removeAt(i)
         }
         nodemaps.clear()
+
+        return this
+    }
+
+    fun nodes(nodemaps: Array<String>): Properties {
+        nodeNameArray = arrayOfNulls(nodemaps.size)
+
+        for (i in 0..nodemaps.size ){
+            addNode(nodemaps[i], nodeswidth, nodeswidth)
+            nodeNameArray[i] = nodemaps[i]
+        }
+
+        drawAreaWidth = displayWidth - nodeswidth
+        drawAreaHeight = displayHeight - nodeswidth
 
         return this
     }

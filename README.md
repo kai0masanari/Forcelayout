@@ -63,7 +63,7 @@ You can set node's size and link-strength, and so on. Please use anko if you wri
 val forcelayout = Forcelayout(applicationContext) 
 
 forcelayout.with(this)
-	.nodeSize(200)
+	.size(200)
 	.distance(200)
 	.gravity(0.04)
 	.friction(0.04)
@@ -74,7 +74,7 @@ forcelayout.with(this)
 
 | Params  | Description |
 | ------------- | ------------- |
-| `nodeSize`  | To set image width.  |
+| `size`  | To set image width.  |
 | `distance`  | To set distance between each nodes.  |
 | `gravity`  | To set gravitation.  |
 | `friction`  | To set gravitation between pair of nodes.  |

@@ -7,7 +7,7 @@ import java.lang.Integer.parseInt
  */
 
 class NodeProperty {
-    fun prepare(): NodeProperty {
+    internal fun prepare(): NodeProperty {
         return this
     }
 

@@ -7,7 +7,7 @@ import java.lang.Integer.parseInt
  */
 
 class LinkProperty {
-    fun prepare(): LinkProperty {
+    internal fun prepare(): LinkProperty {
         return this
     }
 

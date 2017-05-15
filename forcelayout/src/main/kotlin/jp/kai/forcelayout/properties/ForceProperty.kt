@@ -46,7 +46,7 @@ class ForceProperty(private val mContext: Context){
     /** node style */
     private var reduction: Int = 30
 
-    fun prepare(): ForceProperty {
+    internal fun prepare(): ForceProperty {
         val mDisplay = getDisplayMetrics(mContext)
         displayWidth = mDisplay.width.toFloat()
         displayHeight = mDisplay.height.toFloat()

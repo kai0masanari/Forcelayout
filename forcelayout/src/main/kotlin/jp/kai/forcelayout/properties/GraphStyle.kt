@@ -20,4 +20,6 @@ object GraphStyle {
     /** label */
     var fontSize: Float = 30.0f
     var fontColor: Int = Color.BLACK
+
+    val defaultColor: Int = Color.BLACK
 }

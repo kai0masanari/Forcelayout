@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import jp.kai.forcelayout.properties.ForceProperty
 import jp.kai.forcelayout.properties.GraphStyle
+import jp.kai.forcelayout.properties.GraphStyle.defaultColor
 import jp.kai.forcelayout.properties.LinkProperty
 import jp.kai.forcelayout.properties.NodeProperty
 
@@ -125,7 +126,7 @@ open class Forcelayout(mContext: Context): View(mContext){
                 while (iterator.hasNext()) {
                     val pair: Pair<String, Bitmap> = iterator.next()
 
-
+                    paint.color = defaultColor
                     canvas.drawBitmap(pair.second, forceProperty.nodes[index].x.toFloat(), forceProperty.nodes[index].y.toFloat(), paint)
 
                     paint.textSize = GraphStyle.fontSize

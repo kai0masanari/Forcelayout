@@ -30,7 +30,6 @@ class MainActivity : Activity() {
     override fun onStart() {
         super.onStart()
 
-        val context: Context = applicationContext
         val force = Forcelayout(this)
 
         example1(force)
@@ -145,7 +144,6 @@ class MainActivity : Activity() {
 
         force.link()
                 .style(Color.argb(60,50,30,200), 5.0f)
-
 
         force.with()
                 .distance(350) /** distance between each nodes */

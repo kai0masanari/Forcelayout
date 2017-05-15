@@ -56,7 +56,24 @@ links.add(LinkPair("nodeName1", "nodeName2"))
 links.add(LinkPair("nodeName1", "nodeName3"))
 ```
 
-### 4. Set nodes and links
+### 4. Set node and link style
+If you .
+```kotlin
+val forcelayout = Forcelayout(applicationContext)
+
+forcelayout.node()
+    .size(100)
+    .style(Color.argb(100,200,30,50))
+
+forcelayout.link()
+    .style(Color.argb(60,50,30,200), 5.0f)
+```
+
+```kotlin
+
+```
+
+### 5. Set nodes and links
 You can set node's size and link-strength, and so on. Please use anko if you write in kotlin.
 
 ```kotlin

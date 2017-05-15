@@ -43,6 +43,14 @@ nodes.add(NodePair("nodeName2", R.drawable.example2))
 nodes.add(NodePair("nodeName3", R.drawable.example3))
 ```
 
+If you don't use image. You can just write node name.
+
+```kotlin
+val nodes: Array<String> = arrayOf( "nodeName1", "nodeName2", "nodeName3")
+```
+
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image5.gif)
+
 ### 3. Definitions of links
 ```kotlin
 val links = Arrays.asList("nodeName1-nodeName2", "nodeName1-nodeName3")
@@ -56,8 +64,7 @@ links.add(LinkPair("nodeName1", "nodeName2"))
 links.add(LinkPair("nodeName1", "nodeName3"))
 ```
 
-### 4. Set node and link style
-If you .
+### 4. Set node and link style (optional)
 ```kotlin
 val forcelayout = Forcelayout(applicationContext)
 
@@ -67,10 +74,6 @@ forcelayout.node()
 
 forcelayout.link()
     .style(Color.argb(60,50,30,200), 5.0f)
-```
-
-```kotlin
-
 ```
 
 ### 5. Set nodes and links

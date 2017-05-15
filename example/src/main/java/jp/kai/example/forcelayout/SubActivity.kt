@@ -43,6 +43,9 @@ class SubActivity : Activity() {
                 .size(100)
                 .style(Color.argb(100,200,30,50))
 
+        forceSub.link()
+                .style(Color.argb(60,50,30,200), 5.0f)
+
 
         forceSub.with()
                 .distance(350) /** distance between each nodes */
@@ -57,7 +60,7 @@ class SubActivity : Activity() {
                 max = 100
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        forceSub.with().gravity((progress.toFloat() / 1000).toDouble())
+                        forceSub.with().gravity((progress.toFloat() / 1000).toDouble()).start()
 
                     }
 

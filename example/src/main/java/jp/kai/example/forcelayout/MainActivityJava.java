@@ -20,8 +20,6 @@ import jp.kai.forcelayout.Forcelayout;
  */
 
 public class MainActivityJava extends Activity{
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -69,8 +67,6 @@ public class MainActivityJava extends Activity{
             }
         });
         button1.setText("change links");
-
-
 
         SeekBar seek1 = new SeekBar(this);
         seek1.setMax(100);

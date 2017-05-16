@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.8'
+    compile 'jp.kai:forcelayout:1.0.9'
 }
 ```
 
@@ -103,7 +103,6 @@ forcelayout.with(this)
 
 ## Thanks
 Inspired by `force layout` in [D3.js](https://d3js.org/).
-
 
 ## License
 -------

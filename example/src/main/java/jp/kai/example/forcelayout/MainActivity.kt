@@ -1,7 +1,6 @@
 package jp.kai.example.forcelayout
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.SeekBar
@@ -115,7 +114,6 @@ class MainActivity : Activity() {
                 .links(links) /** set links */
                 .start() /** start animation */
     }
-
 
     private fun example2(force: Forcelayout){
         /** set nodes */

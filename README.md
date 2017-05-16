@@ -8,9 +8,7 @@ Forcelayout is an Android library for visualizing data. You can drawing graph wi
 
 ## Demo
 
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image1.gif)
-
-![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
+![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image1.gif) ![image](https://raw.githubusercontent.com/kai0masanari/Forcelayout/master/art/image2.gif)
 
 ## Usage
 Usage in kotlin

@@ -1,5 +1,6 @@
 package jp.kai.forcelayout
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -44,48 +45,43 @@ open class Forcelayout(mContext: Context): View(mContext){
         return forceProperty.prepare()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        val touch_x = event.x.toInt()
-        val touch_y = event.y.toInt()
+        val touchX = event.x.toInt()
+        val touchY = event.y.toInt()
 
-        this.touch_x = touch_x
-        this.touch_y = touch_y
+        this.touch_x = touchX
+        this.touch_y = touchY
 
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> if (targetNode == -1) {
-                for (i in 0..forceProperty.nodeindex - 1) {
-                    if (forceProperty.nodes[i].x + forceProperty.nodes[i].width >= touch_x &&
-                        forceProperty.nodes[i].x <= touch_x &&
-                        forceProperty.nodes[i].y + forceProperty.nodes[i].height >= touch_y &&
-                        forceProperty.nodes[i].y <= touch_y) {
-
-                        targetNode = i
-                    }
-                }
+                (0 until forceProperty.nodeindex)
+                        .filter { forceProperty.nodes[it].x + forceProperty.nodes[it].width >= touchX && forceProperty.nodes[it].x <= touchX && forceProperty.nodes[it].y + forceProperty.nodes[it].height >= touchY && forceProperty.nodes[it].y <= touchY }
+                        .forEach { targetNode = it }
             }else{
                 if (targetNode != -1) {
-                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
-                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touchX - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touchY - forceProperty.nodes[targetNode].height / 2
                 }
             }
 
             MotionEvent.ACTION_MOVE ->
                 if (targetNode != -1) {
-                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
-                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touchX - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touchY - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_HOVER_MOVE ->
                 if (targetNode != -1) {
-                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
-                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touchX - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touchY - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_HOVER_EXIT ->
                 if (targetNode != -1) {
-                    forceProperty.nodes[targetNode].x = touch_x - forceProperty.nodes[targetNode].width / 2
-                    forceProperty.nodes[targetNode].y = touch_y - forceProperty.nodes[targetNode].height / 2
+                    forceProperty.nodes[targetNode].x = touchX - forceProperty.nodes[targetNode].width / 2
+                    forceProperty.nodes[targetNode].y = touchY - forceProperty.nodes[targetNode].height / 2
                 }
 
             MotionEvent.ACTION_UP -> targetNode = -1
@@ -106,7 +102,7 @@ open class Forcelayout(mContext: Context): View(mContext){
 
         if(forceProperty.isReady) {
             //draw link's line
-            for (i in 0..forceProperty.nedges - 1 ) {
+            for (i in 0 until forceProperty.nedges) {
                 if (forceProperty.edges[i].group) {
                     val e = forceProperty.edges[i]
                     val x1 = (forceProperty.nodes[e.from].x + forceProperty.nodes[e.from].width / 2).toFloat()
@@ -122,7 +118,7 @@ open class Forcelayout(mContext: Context): View(mContext){
             if(GraphStyle.isImgDraw) {
                 /** draw node images and labels */
                 val iterator: Iterator<Pair<String, Bitmap>> = forceProperty.nodesList.iterator()
-                var index: Int = 0
+                var index = 0
                 while (iterator.hasNext()) {
                     val pair: Pair<String, Bitmap> = iterator.next()
 
@@ -138,7 +134,7 @@ open class Forcelayout(mContext: Context): View(mContext){
             }else{
                 paint.color = GraphStyle.nodeColor
 
-                for(i in 0..forceProperty.nodeindex - 1){
+                for(i in 0 until forceProperty.nodeindex){
                     paint.color = GraphStyle.nodeColor
                     canvas.drawCircle((forceProperty.nodes[i].x + GraphStyle.nodesWidth/2).toFloat(), (forceProperty.nodes[i].y + GraphStyle.nodesWidth/2).toFloat(), (GraphStyle.nodesWidth/2).toFloat(), paint)
 

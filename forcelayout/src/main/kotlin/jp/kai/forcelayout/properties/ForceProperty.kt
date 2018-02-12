@@ -50,7 +50,7 @@ class ForceProperty(private val mContext: Context){
         val mDisplay = getDisplayMetrics(mContext)
         displayWidth = mDisplay.width.toFloat()
         displayHeight = mDisplay.height.toFloat()
-        isReady = false;
+        isReady = false
 
         return this
     }
@@ -193,25 +193,20 @@ class ForceProperty(private val mContext: Context){
     fun links(linkMaps: List<String>): ForceProperty {
         initEdges()
 
-        for (i in 0..nodeindex - 1) {
-            for (j in 0..nodeindex - 1) {
-                if (i != j) {
-                    addEdge(i, j)
-                }
-            }
+        for (i in 0 until nodeindex) {
+            (0 until nodeindex)
+                    .filter { i != it }
+                    .forEach { addEdge(i, it) }
         }
 
-        for (k in 0..linkMaps.size - 1) {
-            val pair = linkMaps[k].split("-")
-
-            if (pair.size == 2) {
-                for (i in 0..nedges - 1) {
-                    if (edges[i].from == nodeNameArray.indexOf(pair[0]) && edges[i].to == nodeNameArray.indexOf(pair[1]) || edges[i].to == nodeNameArray.indexOf(pair[0]) && edges[i].from == nodeNameArray.indexOf(pair[1])) {
-                        edges[i].group = true
-                    }
+        (0 until linkMaps.size)
+                .map { linkMaps[it].split("-") }
+                .filter { it.size == 2 }
+                .forEach { pair ->
+                    (0 until nedges)
+                            .filter { edges[it].from == nodeNameArray.indexOf(pair[0]) && edges[it].to == nodeNameArray.indexOf(pair[1]) || edges[it].to == nodeNameArray.indexOf(pair[0]) && edges[it].from == nodeNameArray.indexOf(pair[1]) }
+                            .forEach { edges[it].group = true }
                 }
-            }
-        }
 
         return this
     }
@@ -219,23 +214,19 @@ class ForceProperty(private val mContext: Context){
     fun links(linkMaps: Links): ForceProperty {
         initEdges()
 
-        for (i in 0..nodeindex -1) {
-            for (j in 0..nodeindex - 1) {
-                if (i != j) {
-                    addEdge(i, j)
-                }
-            }
+        for (i in 0 until nodeindex) {
+            (0 until nodeindex)
+                    .filter { i != it }
+                    .forEach { addEdge(i, it) }
         }
 
-        for (k in 0..linkMaps.size - 1) {
-            val pair = linkMaps[k]
-
-            for (i in 0..nedges - 1) {
-                if (edges[i].from == nodeNameArray.indexOf(pair.child()) && edges[i].to == nodeNameArray.indexOf(pair.parent()) || edges[i].to == nodeNameArray.indexOf(pair.child()) && edges[i].from == nodeNameArray.indexOf(pair.parent())) {
-                    edges[i].group = true
+        (0 until linkMaps.size)
+                .map { linkMaps[it] }
+                .forEach { pair ->
+                    (0 until nedges)
+                            .filter { edges[it].from == nodeNameArray.indexOf(pair.child()) && edges[it].to == nodeNameArray.indexOf(pair.parent()) || edges[it].to == nodeNameArray.indexOf(pair.child()) && edges[it].from == nodeNameArray.indexOf(pair.parent()) }
+                            .forEach { edges[it].group = true }
                 }
-            }
-        }
 
         for(i in (linkMaps.size - 1)..0){
             linkMaps.removeAt(i)

@@ -5,14 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.SeekBar
 import jp.kai.forcelayout.Forcelayout
-import jp.kai.forcelayout.Links
-import jp.kai.forcelayout.Links.LinkPair
-import jp.kai.forcelayout.Nodes
-import jp.kai.forcelayout.Nodes.NodePair
 import org.jetbrains.anko.button
 import org.jetbrains.anko.seekBar
 import org.jetbrains.anko.verticalLayout
 import java.util.Arrays
+import android.util.Pair
 
 /**
  * Created by kai on 2016/09/03.
@@ -87,23 +84,20 @@ class MainActivity : Activity() {
 
     private fun example1(force: Forcelayout){
         /** set nodes */
-        val nodes: Nodes = Nodes()
-        nodes.add(NodePair("cat_a1", R.drawable.a))
-        nodes.add(NodePair("cat_a2", R.drawable.a))
-        nodes.add(NodePair("cat_a3", R.drawable.a))
-        nodes.add(NodePair("cat_b1", R.drawable.b))
-        nodes.add(NodePair("cat_c1", R.drawable.c))
-        nodes.add(NodePair("cat_d1", R.drawable.d))
-        nodes.add(NodePair("cat_d2", R.drawable.d))
-        nodes.add(NodePair("cat_e1", R.drawable.e))
-        nodes.add(NodePair("cat_f1", R.drawable.f))
+        val nodes: ArrayList<Pair<String, Int>> = ArrayList<Pair<String, Int>>()
+
+        nodes.add(Pair("cat_a1", R.drawable.a))
+        nodes.add(Pair("cat_a2", R.drawable.a))
+        nodes.add(Pair("cat_a3", R.drawable.a))
+        nodes.add(Pair("cat_b1", R.drawable.b))
+        nodes.add(Pair("cat_c1", R.drawable.c))
+        nodes.add(Pair("cat_d1", R.drawable.d))
+        nodes.add(Pair("cat_d2", R.drawable.d))
+        nodes.add(Pair("cat_e1", R.drawable.e))
+        nodes.add(Pair("cat_f1", R.drawable.f))
 
         /** set links */
-        val links: Links = Links()
-        links.add(LinkPair("cat_a1", "cat_a2"))
-        links.add(LinkPair("cat_a2", "cat_a3"))
-        links.add(LinkPair("cat_a1", "cat_a3"))
-        links.add(LinkPair("cat_d1", "cat_d2"))
+        val links: List<String> = Arrays.asList("cat_d1-cat_d2","cat_a1-cat_a3","cat_a2-cat_a3","cat_a1-cat_a2")
 
         force.with()
                 .distance(350) /** distance between each nodes */
@@ -120,21 +114,7 @@ class MainActivity : Activity() {
         val nodes: Array<String> = arrayOf( "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n","o","p","q","r")
 
         /** set links */
-        val links: Links = Links()
-        links.add(Links.LinkPair("a", "b"))
-        links.add(Links.LinkPair("b", "c"))
-        links.add(Links.LinkPair("a", "c"))
-        links.add(Links.LinkPair("d", "e"))
-        links.add(Links.LinkPair("d", "g"))
-        links.add(Links.LinkPair("d", "l"))
-        links.add(Links.LinkPair("l", "k"))
-        links.add(Links.LinkPair("l", "m"))
-        links.add(Links.LinkPair("l", "n"))
-        links.add(Links.LinkPair("h", "i"))
-        links.add(Links.LinkPair("o", "p"))
-        links.add(Links.LinkPair("p", "q"))
-        links.add(Links.LinkPair("q", "r"))
-        links.add(Links.LinkPair("r", "o"))
+        val links: List<String> = Arrays.asList("a-b","c-d","d-g","r-o")
 
         force.node()
                 .size(100)

@@ -6,9 +6,6 @@ import android.graphics.BitmapFactory
 import android.util.Pair
 import jp.kai.forcelayout.ATTENUATION
 import jp.kai.forcelayout.COULOMB
-import jp.kai.forcelayout.Links
-import jp.kai.forcelayout.Nodes
-import jp.kai.forcelayout.Nodes.NodePair
 import jp.kai.forcelayout.properties.GraphStyle.nodesWidth
 import jp.kai.forcelayout.properties.GraphStyle.roundSize
 import jp.kai.forcelayout.properties.Util.Companion.getCroppedBitmap
@@ -27,8 +24,8 @@ class ForceProperty(private val mContext: Context){
     /** node's and link's List */
     internal var nodes = ArrayList<Node>()
     internal var edges = ArrayList<Edge>()
-    var nodeindex: Int = 0
-    var nedges: Int = 0
+    var nodeIndex: Int = 0
+    var nEdges: Int = 0
     var nodeNameArray: Array<String?> = arrayOfNulls(0)
     var nodesList = ArrayList<Pair<String, Bitmap>>()
 
@@ -104,65 +101,9 @@ class ForceProperty(private val mContext: Context){
 
             addNode(pair.first, imgwidth, imgheight)
 
-            nodeNameArray[nodeindex-1] = pair.first
+            nodeNameArray[nodeIndex -1] = pair.first
 
             nodesList.add(Pair(pair.first, getCroppedBitmap(bitmap, roundSize)))
-        }
-
-        for(i in (nodemaps.size - 1)..0){
-            nodemaps.removeAt(i)
-        }
-        nodemaps.clear()
-
-        return this
-    }
-
-    fun nodes(nodemaps: Nodes): ForceProperty {
-        initNodes()
-        GraphStyle.isImgDraw = true
-
-        val resource = mContext.resources
-        val iterator :Iterator<NodePair> = nodemaps.iterator()
-
-        nodeNameArray = arrayOfNulls(nodemaps.size)
-
-        while (iterator.hasNext()){
-            /** Node List */
-            val pair: NodePair = iterator.next()
-
-            /** get image properties */
-            val imageOptions = BitmapFactory.Options()
-            imageOptions.inPreferredConfig = Bitmap.Config.ARGB_8888
-            imageOptions.inJustDecodeBounds = true
-            BitmapFactory.decodeResource(resource, pair.getResource(), imageOptions)
-            val bitmapWidth = imageOptions.outWidth
-            val bmfOptions = BitmapFactory.Options()
-
-            /** resize image */
-            reduction = bitmapWidth / nodesWidth
-            if (reduction != 0) {
-                bmfOptions.inSampleSize = reduction
-            }
-
-            var bitmap = BitmapFactory.decodeResource(resource, pair.getResource(), bmfOptions)
-            var imgheight = bmfOptions.outHeight
-            var imgwidth = bmfOptions.outWidth
-
-            if (imgwidth != nodesWidth) {
-                bitmap = resizeBitmap(bitmap, nodesWidth)
-
-                imgheight = bitmap.height
-                imgwidth = bitmap.width
-            }
-
-            drawAreaWidth = displayWidth - imgwidth
-            drawAreaHeight = displayHeight - imgheight
-
-            addNode(pair.getLabel(), imgwidth, imgheight)
-
-            nodeNameArray[nodeindex-1] = pair.getLabel()
-
-            nodesList.add(Pair(pair.getLabel(), getCroppedBitmap(bitmap, roundSize)))
         }
 
         for(i in (nodemaps.size - 1)..0){
@@ -193,8 +134,8 @@ class ForceProperty(private val mContext: Context){
     fun links(linkMaps: List<String>): ForceProperty {
         initEdges()
 
-        for (i in 0 until nodeindex) {
-            (0 until nodeindex)
+        for (i in 0 until nodeIndex) {
+            (0 until nodeIndex)
                     .filter { i != it }
                     .forEach { addEdge(i, it) }
         }
@@ -203,35 +144,10 @@ class ForceProperty(private val mContext: Context){
                 .map { linkMaps[it].split("-") }
                 .filter { it.size == 2 }
                 .forEach { pair ->
-                    (0 until nedges)
+                    (0 until nEdges)
                             .filter { edges[it].from == nodeNameArray.indexOf(pair[0]) && edges[it].to == nodeNameArray.indexOf(pair[1]) || edges[it].to == nodeNameArray.indexOf(pair[0]) && edges[it].from == nodeNameArray.indexOf(pair[1]) }
                             .forEach { edges[it].group = true }
                 }
-
-        return this
-    }
-
-    fun links(linkMaps: Links): ForceProperty {
-        initEdges()
-
-        for (i in 0 until nodeindex) {
-            (0 until nodeindex)
-                    .filter { i != it }
-                    .forEach { addEdge(i, it) }
-        }
-
-        (0 until linkMaps.size)
-                .map { linkMaps[it] }
-                .forEach { pair ->
-                    (0 until nedges)
-                            .filter { edges[it].from == nodeNameArray.indexOf(pair.child()) && edges[it].to == nodeNameArray.indexOf(pair.parent()) || edges[it].to == nodeNameArray.indexOf(pair.child()) && edges[it].from == nodeNameArray.indexOf(pair.parent()) }
-                            .forEach { edges[it].group = true }
-                }
-
-        for(i in (linkMaps.size - 1)..0){
-            linkMaps.removeAt(i)
-        }
-        linkMaps.clear()
 
         return this
     }
@@ -268,7 +184,7 @@ class ForceProperty(private val mContext: Context){
         n.dx = 0.0
         n.dy = 0.0
         nodes.add(n)
-        nodeindex++
+        nodeIndex++
     }
 
     private fun addEdge(from: Int, to: Int) {
@@ -277,15 +193,15 @@ class ForceProperty(private val mContext: Context){
         e.to = to
         e.group = false
         edges.add(e)
-        nedges++
+        nEdges++
     }
 
     fun relax() {
-        for (i in 0..nodeindex - 1) {
+        for (i in 0..nodeIndex - 1) {
             var fx = 0.0
             var fy = 0.0
 
-            for (j in 0..nodeindex - 1) {
+            for (j in 0..nodeIndex - 1) {
                 val distX = ((nodes[i].x + nodes[i].width / 2 - (nodes[j].x + nodes[j].width / 2)).toInt()).toDouble()
                 val distY = ((nodes[i].y + nodes[i].height / 2 - (nodes[j].y + nodes[j].height / 2)).toInt()).toDouble()
                 var rsq = distX * distX + distY * distY
@@ -313,7 +229,7 @@ class ForceProperty(private val mContext: Context){
             fy += gravity * distYC
 
             /** calculate spring like force between from and to */
-            for (j in 0..nedges - 1 - 1) {
+            for (j in 0..nEdges - 1 - 1) {
                 var distX = 0.0
                 var distY = 0.0
                 if (edges[j].group) {
@@ -340,14 +256,14 @@ class ForceProperty(private val mContext: Context){
     }
 
     private fun initNodes() {
-        nodeindex = 0
+        nodeIndex = 0
         nodes = ArrayList<Node>()
         nodeNameArray = arrayOfNulls(0)
         nodesList.clear()
     }
 
     private fun initEdges(){
-        nedges = 0
+        nEdges = 0
         edges = ArrayList<Edge>()
     }
 }

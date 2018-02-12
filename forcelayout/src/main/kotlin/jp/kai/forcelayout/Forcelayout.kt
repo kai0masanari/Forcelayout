@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.AttributeSet
 import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
@@ -19,14 +20,21 @@ import jp.kai.forcelayout.properties.NodeProperty
  * Main Class
  */
 
-open class Forcelayout(mContext: Context): View(mContext){
+open class Forcelayout: View{
     /** instance */
-    private val forceProperty: ForceProperty = ForceProperty(mContext)
+    private var  forceProperty: ForceProperty
     private val nodeProperty: NodeProperty = NodeProperty()
     private val linkProperty: LinkProperty = LinkProperty()
 
-    private var targetNode = -1
+    /** constructor */
+    constructor(mContext: Context) : super(mContext) {
+        forceProperty = ForceProperty(mContext)
+    }
+    constructor(mContext: Context, attrs: AttributeSet) : super(mContext, attrs) {
+        forceProperty = ForceProperty(mContext)
+    }
 
+    private var targetNode = -1
     private var touch_x: Int = 0
     private var touch_y: Int = 0
 
@@ -56,7 +64,7 @@ open class Forcelayout(mContext: Context): View(mContext){
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> if (targetNode == -1) {
-                (0 until forceProperty.nodeindex)
+                (0 until forceProperty.nodeIndex)
                         .filter { forceProperty.nodes[it].x + forceProperty.nodes[it].width >= touchX && forceProperty.nodes[it].x <= touchX && forceProperty.nodes[it].y + forceProperty.nodes[it].height >= touchY && forceProperty.nodes[it].y <= touchY }
                         .forEach { targetNode = it }
             }else{
@@ -102,7 +110,7 @@ open class Forcelayout(mContext: Context): View(mContext){
 
         if(forceProperty.isReady) {
             //draw link's line
-            for (i in 0 until forceProperty.nedges) {
+            for (i in 0 until forceProperty.nEdges) {
                 if (forceProperty.edges[i].group) {
                     val e = forceProperty.edges[i]
                     val x1 = (forceProperty.nodes[e.from].x + forceProperty.nodes[e.from].width / 2).toFloat()
@@ -134,7 +142,7 @@ open class Forcelayout(mContext: Context): View(mContext){
             }else{
                 paint.color = GraphStyle.nodeColor
 
-                for(i in 0 until forceProperty.nodeindex){
+                for(i in 0 until forceProperty.nodeIndex){
                     paint.color = GraphStyle.nodeColor
                     canvas.drawCircle((forceProperty.nodes[i].x + GraphStyle.nodesWidth/2).toFloat(), (forceProperty.nodes[i].y + GraphStyle.nodesWidth/2).toFloat(), (GraphStyle.nodesWidth/2).toFloat(), paint)
 

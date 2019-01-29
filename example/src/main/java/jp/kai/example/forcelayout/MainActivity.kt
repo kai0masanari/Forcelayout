@@ -3,16 +3,13 @@ package jp.kai.example.forcelayout
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import android.widget.SeekBar
 import jp.kai.forcelayout.Forcelayout
 import jp.kai.forcelayout.Links
 import jp.kai.forcelayout.Links.LinkPair
 import jp.kai.forcelayout.Nodes
 import jp.kai.forcelayout.Nodes.NodePair
-import org.jetbrains.anko.button
-import org.jetbrains.anko.seekBar
-import org.jetbrains.anko.verticalLayout
-import java.util.Arrays
 
 /**
  * Created by kai on 2016/09/03.
@@ -24,68 +21,35 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
+        setContentView(R.layout.activity_main)
 
-    override fun onStart() {
-        super.onStart()
-
-        val force = Forcelayout(this)
-
+        val force: Forcelayout = findViewById(R.id.forcelayout) as Forcelayout
         example1(force)
 
-        verticalLayout {
-            button {
-                text = "change examples"
+        val button: Button? = findViewById(R.id.button) as? Button
+        val seekBar: SeekBar? = findViewById(R.id.seekbar) as? SeekBar
 
-                setOnClickListener {
-                    if(isFlip){
-                        example1(force)
-                        isFlip = false
-                    }else {
-                        example2(force)
-                        isFlip = true
-                    }
-                }
+        button?.setOnClickListener {
+            isFlip = if (isFlip) {
+                example1(force)
+                false
+            } else {
+                example2(force)
+                true
             }
-
-            button {
-                text = "change links"
-
-                setOnClickListener {
-                    /** set links */
-                    val links = Arrays.asList("cat_a1-cat_a2", "cat_a2-cat_a3", "cat_a3-cat_d1", "cat_d1-cat_d2", "cat_d2-cat_e1")
-
-                    force.with()
-                            .friction(0.02)
-                            .gravity(0.08)
-                            .links(links)
-                            .start()
-                }
-            }
-
-            seekBar {
-                max = 100
-
-                setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        force.with().gravity((progress.toFloat() / 1000).toDouble()).start()
-
-                    }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar) {
-
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-                    }
-                })
-            }
-            addView(force)
         }
+
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                force.with().gravity((progress.toFloat() / 1000).toDouble()).start()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
     }
 
-    private fun example1(force: Forcelayout){
+    private fun example1(force: Forcelayout) {
         /** set nodes */
         val nodes: Nodes = Nodes()
         nodes.add(NodePair("cat_a1", R.drawable.a))
@@ -106,18 +70,26 @@ class MainActivity : Activity() {
         links.add(LinkPair("cat_d1", "cat_d2"))
 
         force.with()
-                .distance(350) /** distance between each nodes */
-                .gravity(0.04) /** gravitation from center of view */
-                .friction(0.02) /** value of gravitation between each nodes */
-                .size(130) /** node width */
-                .nodes(nodes) /** set nodes */
-                .links(links) /** set links */
-                .start() /** start animation */
+                .distance(350)
+                /** distance between each nodes */
+                .gravity(0.04)
+                /** gravitation from center of view */
+                .friction(0.02)
+                /** value of gravitation between each nodes */
+                .size(130)
+                /** node width */
+                .nodes(nodes)
+                /** set nodes */
+                .links(links)
+                /** set links */
+                .start()
+        /** start animation */
     }
 
-    private fun example2(force: Forcelayout){
+
+    private fun example2(force: Forcelayout) {
         /** set nodes */
-        val nodes: Array<String> = arrayOf( "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n","o","p","q","r")
+        val nodes: Array<String> = arrayOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r")
 
         /** set links */
         val links: Links = Links()
@@ -138,17 +110,23 @@ class MainActivity : Activity() {
 
         force.node()
                 .size(100)
-                .style(Color.argb(100,200,30,50))
+                .style(Color.argb(100, 200, 30, 50))
 
         force.link()
-                .style(Color.argb(60,50,30,200), 5.0f)
+                .style(Color.argb(60, 50, 30, 200), 5.0f)
 
         force.with()
-                .distance(350) /** distance between each nodes */
-                .gravity(0.04) /** gravitation from center of view */
-                .friction(0.02) /** value of gravitation between each nodes */
-                .nodes(nodes) /** set nodes */
-                .links(links) /** set links */
-                .start() /** start animation */
+                .distance(350)
+                /** distance between each nodes */
+                .gravity(0.04)
+                /** gravitation from center of view */
+                .friction(0.02)
+                /** value of gravitation between each nodes */
+                .nodes(nodes)
+                /** set nodes */
+                .links(links)
+                /** set links */
+                .start()
+        /** start animation */
     }
 }

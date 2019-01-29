@@ -7,5 +7,5 @@ package jp.kai.forcelayout
 
 const val ATTENUATION: Double = 0.5
 const val COULOMB: Double = 680.0
-const val FONT_SIZE: Float = 30.0f
-const val STROKE_WIDTH: Float = 5.0f
+const val MIN_ZOOM: Float = 1f
+const val MAX_ZOOM: Float = 5f

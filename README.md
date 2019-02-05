@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'jp.kai:forcelayout:1.0.9'
+    compile 'jp.kai:forcelayout:1.1.0'
 }
 ```
 
